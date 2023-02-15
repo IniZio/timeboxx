@@ -1,0 +1,10 @@
+version: '3'
+
+output: prefixed
+
+tasks:
+  vendor: exit 0
+
+  dev: exit 0
+
+  build: exit 0
