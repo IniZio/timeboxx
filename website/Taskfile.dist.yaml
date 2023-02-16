@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 output: prefixed
 
@@ -8,6 +8,36 @@ tasks:
 
   dev: |
     pnpm dev
+
+  format:
+    deps:
+      - prettier-fix
+      - eslint-fix
+
+  lint:
+    deps:
+      - prettier-check
+      - eslint-check
+
+  eslint-fix:
+    internal: true
+    cmds:
+      - pnpm run eslint:fix
+
+  eslint-check:
+    internal: true
+    cmds:
+      - pnpm run eslint:check
+
+  prettier-fix:
+    internal: true
+    cmds:
+      - pnpm run prettier:fix
+
+  prettier-check:
+    internal: true
+    cmds:
+      - pnpm run prettier:check
 
   build: |
     pnpm build
