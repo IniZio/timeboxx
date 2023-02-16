@@ -10,5 +10,7 @@
 
 ```sh
 asdf plugin add task || true
+asdf plugin add nodejs || true
+asdf plugin add pnpm || true
 asdf install
 ```

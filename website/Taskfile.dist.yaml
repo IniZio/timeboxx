@@ -1,0 +1,13 @@
+version: '3'
+
+output: prefixed
+
+tasks:
+  vendor: |
+    pnpm install
+
+  dev: |
+    pnpm dev
+
+  build: |
+    pnpm build
