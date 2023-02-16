@@ -3,19 +3,19 @@ version: '3'
 output: prefixed
 
 includes:
-  website:
-    dir: website
-    taskfile: website
+  app:
+    dir: app
+    taskfile: app
 
 tasks:
   vendor:
     deps:
-      - website:vendor
+      - app:vendor
 
   dev:
     deps:
-      - website:dev
+      - app:dev
 
   build:
     deps:
-      - website:build
+      - app:build
