@@ -2,9 +2,20 @@ version: '3'
 
 output: prefixed
 
+includes:
+  website:
+    dir: website
+    taskfile: website
+
 tasks:
-  vendor: exit 0
+  vendor:
+    deps:
+      - website:vendor
 
-  dev: exit 0
+  dev:
+    deps:
+      - website:dev
 
-  build: exit 0
+  build:
+    deps:
+      - website:build

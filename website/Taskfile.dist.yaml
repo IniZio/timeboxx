@@ -1,0 +1,13 @@
+version: '3'
+
+output: prefixed
+
+tasks:
+  vendor: |
+    bun install
+
+  dev: |
+    bun dev
+
+  build: |
+    bun run build
