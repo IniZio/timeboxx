@@ -1,0 +1,11 @@
+{
+  "eslint.workingDirectories": [
+    {
+      "directory": "website"
+    }
+  ],
+  "unocss.disable": false,
+  "unocss.root": [
+    "./website"
+  ]
+}
