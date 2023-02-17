@@ -11,30 +11,30 @@ tasks:
 
   format:
     deps:
-      - prettier-fix
-      - eslint-fix
+      - prettier:fix
+      - eslint:fix
 
   lint:
     deps:
-      - prettier-check
-      - eslint-check
+      - prettier:check
+      - eslint:check
 
-  eslint-fix:
+  eslint:fix:
     internal: true
     cmds:
       - pnpm run eslint:fix
 
-  eslint-check:
+  eslint:check:
     internal: true
     cmds:
       - pnpm run eslint:check
 
-  prettier-fix:
+  prettier:fix:
     internal: true
     cmds:
       - pnpm run prettier:fix
 
-  prettier-check:
+  prettier:check:
     internal: true
     cmds:
       - pnpm run prettier:check

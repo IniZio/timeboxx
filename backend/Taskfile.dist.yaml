@@ -10,4 +10,46 @@ tasks:
     poetry install
 
   dev: |
-    poetry run uvicorn main:app --reload --host localhost --port {{ .PORT }}
+    poetry run uvicorn timeboxx.main:app --reload --host localhost --port {{ .PORT }}
+
+  format:
+    deps:
+      - autoflake:fix
+      - isort:fix
+      - black:fix
+
+  lint:
+    deps:
+      - autoflake:check
+      - isort:check
+      - black:check
+
+  black:fix:
+    internal: true
+    cmds:
+      - poetry run black .
+
+  black:check:
+    internal: true
+    cmds:
+      - poetry run black . --check
+
+  isort:fix:
+    internal: true
+    cmds:
+      - poetry run isort .
+
+  isort:check:
+    internal: true
+    cmds:
+      - poetry run isort . --check-only
+
+  autoflake:fix:
+    internal: true
+    cmds:
+      - poetry run autoflake . --in-place
+
+  autoflake:check:
+    internal: true
+    cmds:
+      - poetry run autoflake . --check-diff
