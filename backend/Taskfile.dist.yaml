@@ -2,14 +2,21 @@ version: '3'
 
 output: prefixed
 
+
 env:
   PORT: 8000
 
+dotenv:
+  - .env
+
 tasks:
-  vendor: |
+  setup-local:
+    cp .env.example .env
+
+  vendor:
     poetry install
 
-  dev: |
+  dev:
     poetry run uvicorn timeboxx.main:app --reload --host localhost --port {{ .PORT }}
 
   format:
@@ -23,6 +30,9 @@ tasks:
       - autoflake:check
       - isort:check
       - black:check
+
+  alembic:
+    poetry run alembic {{.CLI_ARGS}}
 
   black:fix:
     internal: true
@@ -53,3 +63,12 @@ tasks:
     internal: true
     cmds:
       - poetry run autoflake . --check-diff
+
+  db:revision:
+    poetry run alembic revision --autogenerate -m "{{.CLI_ARGS}}"
+
+  db:upgrade:
+    poetry run alembic upgrade {{or .CLI_ARGS "head"}}
+
+  db:downgrade:
+    poetry run alembic downgrade {{or .CLI_ARGS -1}}

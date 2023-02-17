@@ -42,3 +42,6 @@
 
 # go-task
 Taskfile.yaml
+
+# env file
+.env

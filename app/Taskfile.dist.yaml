@@ -3,11 +3,9 @@ version: "3"
 output: prefixed
 
 tasks:
-  vendor: |
-    pnpm install
+  vendor: pnpm install
 
-  dev: |
-    pnpm dev
+  dev: pnpm dev
 
   format:
     deps:
@@ -39,5 +37,4 @@ tasks:
     cmds:
       - pnpm run prettier:check
 
-  build: |
-    pnpm build
+  build: pnpm build

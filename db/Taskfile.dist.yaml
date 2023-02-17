@@ -1,0 +1,8 @@
+version: '3'
+
+dotenv:
+  - .env
+
+tasks:
+  setup-local:
+    cp -p .env.example .env
