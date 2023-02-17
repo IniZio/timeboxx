@@ -1,0 +1,13 @@
+version: '3'
+
+output: prefixed
+
+env:
+  PORT: 8000
+
+tasks:
+  vendor: |
+    poetry install
+
+  dev: |
+    poetry run uvicorn main:app --reload --host localhost --port {{ .PORT }}

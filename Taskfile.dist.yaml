@@ -7,14 +7,20 @@ includes:
     dir: app
     taskfile: app
 
+  backend:
+    dir: backend
+    taskfile: backend
+
 tasks:
   vendor:
     deps:
       - app:vendor
+      - backend:vendor
 
   dev:
     deps:
       - app:dev
+      - backend:dev
 
   build:
     deps:

@@ -14,4 +14,6 @@ asdf plugin add nodejs || true
 asdf plugin add pnpm || true
 asdf plugin add poetry || true
 asdf install
+
+task dev
 ```
