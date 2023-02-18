@@ -2,10 +2,23 @@ version: "3"
 
 output: prefixed
 
+dotenv:
+  - .env
+
 tasks:
+  setup-local: cp .env.example .env
+
   vendor: pnpm install
 
-  dev: pnpm dev
+  dev:
+    deps:
+      - .dev
+      - codegen
+
+  .dev:
+    internal: true
+    cmds:
+      - pnpm dev
 
   format:
     deps:
@@ -37,4 +50,9 @@ tasks:
     cmds:
       - pnpm run prettier:check
 
-  build: pnpm build
+  codegen: pnpm graphql:codegen
+
+  build:
+    cmds:
+      - pnpm graphql:codegen
+      - pnpm build

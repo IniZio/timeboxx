@@ -8,6 +8,7 @@ tasks:
       - task: vendor
       - task -d db setup-local
       - task -d backend setup-local
+      - task -d app setup-local
 
   vendor:
     deps:
@@ -68,7 +69,8 @@ tasks:
   # ./backend
   #########################
 
-  backend:vendor: task -d backend vendor
-  backend:dev:    task -d backend dev
-  backend:format: task -d backend format
-  backend:lint:   task -d backend lint
+  backend:vendor:         task -d backend vendor
+  backend:dev:            task -d backend dev
+  backend:format:         task -d backend format
+  backend:lint:           task -d backend lint
+  backend:graphql:export: task -d backend graphql:export

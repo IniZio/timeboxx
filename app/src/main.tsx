@@ -4,11 +4,15 @@ import "virtual:unocss-devtools";
 
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Provider as UrqlProvider } from "urql";
 
+import { grahpqlClient } from "./apis/graphql/client";
 import App from "./App";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <App />
+    <UrqlProvider value={grahpqlClient}>
+      <App />
+    </UrqlProvider>
   </React.StrictMode>,
 );
