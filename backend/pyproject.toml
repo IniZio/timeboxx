@@ -12,8 +12,8 @@ fastapi = "^0.92.0"
 uvicorn = {extras = ["standard"], version = "^0.20.0"}
 sqlalchemy = "^2.0.3"
 ulid = "^1.1"
-psycopg2-binary = "^2.9.5"
 strawberry-graphql = {extras = ["fastapi"], version = "^0.156.4"}
+asyncpg = "^0.27.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1.0"

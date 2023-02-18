@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from sqlalchemy import select
 
 from timeboxx.graphql.router import router as graphql_router
 from timeboxx.pkg.db import db_session
@@ -8,13 +9,20 @@ app = FastAPI()
 
 
 @app.get("/healthz")
-async def main_route():
+async def healthz_route():
+    errors: list[Exception] = []
+
     db_healthy = True
     try:
-        with db_session() as db:
-            db.query(User).limit(1).all()
-    except Exception:
+        async with db_session() as db:
+            # db.add(User())
+            (await db.execute(select(User).limit(0))).all()
+    except Exception as e:
+        errors.append(e)
         db_healthy = False
+
+    if len(errors) != 0:
+        print(errors)
 
     return {"db_healthy": db_healthy}
 

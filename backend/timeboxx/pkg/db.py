@@ -1,29 +1,40 @@
-from contextlib import AbstractContextManager, contextmanager
-from typing import Callable, Iterator
+from asyncio import current_task
+from contextlib import AbstractAsyncContextManager, asynccontextmanager
+from typing import Callable
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session as SASession
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import (
+    AsyncSession,
+    async_scoped_session,
+    async_sessionmaker,
+    create_async_engine,
+)
 
 from .config import settings
 
-engine = create_engine(settings.DATABASE_URL, future=True)
-Session = sessionmaker(bind=engine, autocommit=False, autoflush=False)
+engine = create_async_engine(
+    settings.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://"), future=True
+)
+async_session_factory = async_sessionmaker(
+    bind=engine,
+    class_=AsyncSession,
+    autocommit=False,
+    autoflush=False,
+)
+Session = async_scoped_session(async_session_factory, scopefunc=current_task)
 
-SessionContextManagerFactory = Callable[[], AbstractContextManager[SASession]]
 
-
-@contextmanager
-def _db_session() -> Iterator[SASession]:
+@asynccontextmanager
+async def _db_session():
     session = Session()
     try:
         yield session
-        session.commit()
-    except:  # noqa
-        session.rollback()
+        await session.commit()
+    except:
+        await session.rollback()
         raise
     finally:
-        session.close()
+        await session.close()
 
 
+SessionContextManagerFactory = Callable[[], AbstractAsyncContextManager[AsyncSession]]
 db_session: SessionContextManagerFactory = _db_session
