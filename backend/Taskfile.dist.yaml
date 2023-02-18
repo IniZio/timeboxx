@@ -24,12 +24,14 @@ tasks:
       - autoflake:fix
       - isort:fix
       - black:fix
+      - pyright:check
 
   lint:
     deps:
       - autoflake:check
       - isort:check
       - black:check
+      - pyright:check
 
   alembic:
     poetry run alembic {{.CLI_ARGS}}
@@ -63,6 +65,11 @@ tasks:
     internal: true
     cmds:
       - poetry run autoflake . --check-diff
+
+  pyright:check:
+    internal: true
+    cmds:
+      - poetry run pyright .
 
   db:revision:
     poetry run alembic revision --autogenerate -m "{{.CLI_ARGS}}"

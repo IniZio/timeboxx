@@ -18,12 +18,17 @@ psycopg2-binary = "^2.9.5"
 black = "^23.1.0"
 isort = "^5.12.0"
 autoflake = "^2.0.1"
+pyright = "^1.1.294"
 
 [tool.autoflake]
 remove-all-unused-imports=true
 ignore-init-module-imports=true
 remove-unused-variables=true
 recursive=true
+
+[tool.pyright]
+include = ["timebox", "alembic"]
+exclude = ["**/__pycache__"]
 
 [build-system]
 requires = ["poetry-core"]
