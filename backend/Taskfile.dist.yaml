@@ -71,6 +71,9 @@ tasks:
     cmds:
       - poetry run pyright .
 
+  graphql:export:
+    poetry run strawberry export-schema timeboxx.graphql:schema > schema.graphql
+
   db:revision:
     poetry run alembic revision --autogenerate -m "{{.CLI_ARGS}}"
 
