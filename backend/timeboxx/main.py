@@ -3,18 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import select
 
 from timeboxx.graphql.router import router as graphql_router
+from timeboxx.pkg.config import settings
 from timeboxx.pkg.db import db_session
 from timeboxx.pkg.db_models.user import User
-
-# TODO: env variable
-allowed_origins = [
-    "http://localhost:5173",
-]
 
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
