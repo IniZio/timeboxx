@@ -79,7 +79,7 @@ tasks:
   graphql:check:
     cmds:
       - task: graphql:export
-      - git status --porcelain ../public_schema.graphql | grep "public_schema.graphql"; test $? -eq 1
+      - git status --porcelain ../public_schema.graphql | grep -q M && exit 1 || exit 0
 
   db:revision:
     poetry run alembic revision --autogenerate -m "{{.CLI_ARGS}}"
