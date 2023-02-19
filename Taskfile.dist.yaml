@@ -2,20 +2,75 @@ version: '3'
 
 output: prefixed
 
-includes:
-  app:
-    dir: app
-    taskfile: app
-
 tasks:
+  setup-local:
+    cmds:
+      - task: vendor
+      - task -d db setup-local
+      - task -d backend setup-local
+      - task -d app setup-local
+
   vendor:
     deps:
       - app:vendor
+      - backend:vendor
 
   dev:
     deps:
       - app:dev
+      - backend:dev
+
+  format:
+    deps:
+      - app:format
+      - backend:format
+
+  lint:
+    deps:
+      - app:lint
+      - backend:lint
 
   build:
     deps:
       - app:build
+
+  #########################
+  # Docker
+  #########################
+
+  docker:dev:
+    deps:
+      - docker:db:dev
+      - dev
+
+  docker:db:dev:
+    deps:
+      - task: docker:container
+        vars:
+          CONTAINER: db
+
+  docker:container:
+    internal: true
+    cmds:
+      - docker-compose stop {{ .CONTAINER }}
+      - docker-compose up {{ .CONTAINER }}
+
+  #########################
+  # ./app
+  #########################
+
+  app:vendor:     task -d app vendor
+  app:dev:        task -d app dev
+  app:format:     task -d app format
+  app:lint:       task -d app lint
+  app:build:      task -d app build
+
+  #########################
+  # ./backend
+  #########################
+
+  backend:vendor:         task -d backend vendor
+  backend:dev:            task -d backend dev
+  backend:format:         task -d backend format
+  backend:lint:           task -d backend lint
+  backend:graphql:export: task -d backend graphql:export

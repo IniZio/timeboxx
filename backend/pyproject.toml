@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "timeboxx"
+version = "0.1.0"
+description = "Backend for timeboxx"
+authors = ["IniZio <newman.kcchow@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+alembic = "^1.9.4"
+python = "^3.10"
+fastapi = "^0.92.0"
+uvicorn = {extras = ["standard"], version = "^0.20.0"}
+sqlalchemy = "^2.0.3"
+ulid = "^1.1"
+strawberry-graphql = {extras = ["fastapi"], version = "^0.156.4"}
+asyncpg = "^0.27.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+isort = "^5.12.0"
+autoflake = "^2.0.1"
+pyright = "^1.1.294"
+
+[tool.autoflake]
+remove-all-unused-imports=true
+ignore-init-module-imports=true
+remove-unused-variables=true
+recursive=true
+
+[tool.pyright]
+include = ["timebox", "alembic"]
+exclude = ["**/__pycache__"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

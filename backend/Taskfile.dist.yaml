@@ -1,0 +1,91 @@
+version: '3'
+
+output: prefixed
+
+
+env:
+  PORT: 8000
+
+dotenv:
+  - .env
+
+tasks:
+  setup-local:
+    cp .env.example .env
+
+  vendor:
+    poetry install
+
+  dev:
+    poetry run uvicorn timeboxx.main:app --reload --host localhost --port {{ .PORT }}
+
+  format:
+    deps:
+      - autoflake:fix
+      - isort:fix
+      - black:fix
+      - pyright:check
+      - graphql:export
+
+  lint:
+    deps:
+      - autoflake:check
+      - isort:check
+      - black:check
+      - pyright:check
+      - graphql:check
+
+  alembic:
+    poetry run alembic {{.CLI_ARGS}}
+
+  black:fix:
+    internal: true
+    cmds:
+      - poetry run black .
+
+  black:check:
+    internal: true
+    cmds:
+      - poetry run black . --check
+
+  isort:fix:
+    internal: true
+    cmds:
+      - poetry run isort .
+
+  isort:check:
+    internal: true
+    cmds:
+      - poetry run isort . --check-only
+
+  autoflake:fix:
+    internal: true
+    cmds:
+      - poetry run autoflake . --in-place
+
+  autoflake:check:
+    internal: true
+    cmds:
+      - poetry run autoflake . --check-diff
+
+  pyright:check:
+    internal: true
+    cmds:
+      - poetry run pyright .
+
+  graphql:export:
+    poetry run strawberry export-schema timeboxx.graphql.schema:public_schema > ../public_schema.graphql
+
+  graphql:check:
+    cmds:
+      - task: graphql:export
+      - git status --porcelain ../public_schema.graphql | grep "public_schema.graphql"; test $? -eq 1
+
+  db:revision:
+    poetry run alembic revision --autogenerate -m "{{.CLI_ARGS}}"
+
+  db:upgrade:
+    poetry run alembic upgrade {{or .CLI_ARGS "head"}}
+
+  db:downgrade:
+    poetry run alembic downgrade {{or .CLI_ARGS -1}}
