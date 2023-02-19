@@ -13,6 +13,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@authgear/web": "^2.0.0",
     "@unocss/reset": "^0.49.5",
     "graphql": "^16.6.0",
     "react": "^18.2.0",
