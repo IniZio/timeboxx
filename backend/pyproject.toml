@@ -27,6 +27,9 @@ ignore-init-module-imports=true
 remove-unused-variables=true
 recursive=true
 
+[tool.isort]
+profile = "black"
+
 [tool.pyright]
 include = ["timebox", "alembic"]
 exclude = ["**/__pycache__"]

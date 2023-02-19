@@ -8,7 +8,7 @@ dotenv:
 tasks:
   setup-local: cp .env.example .env
 
-  vendor: pnpm install
+  vendor: pnpm install --frozen-lockfile
 
   dev:
     deps:
