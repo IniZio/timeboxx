@@ -11,7 +11,7 @@ dotenv:
 
 tasks:
   setup-local:
-    cp .env.example .env
+    cp -p .env.example .env
 
   vendor:
     poetry install

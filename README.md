@@ -15,5 +15,6 @@ asdf plugin add pnpm || true
 asdf plugin add poetry || true
 asdf install
 
+task setup-local
 task dev
 ```
