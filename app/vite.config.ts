@@ -1,9 +1,10 @@
+import eslint from "@nabla/vite-plugin-eslint";
 import unocssAttributify from "@unocss/preset-attributify";
 import unocssPresetUno from "@unocss/preset-uno";
 import react from "@vitejs/plugin-react-swc";
 import unocss from "unocss/vite";
 import { defineConfig } from "vite";
-import eslint from "vite-plugin-eslint";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,7 +14,10 @@ export default defineConfig({
       presets: [unocssPresetUno(), unocssAttributify()],
     }),
     eslint({
-      cache: true,
+      eslintOptions: {
+        cache: true,
+      },
     }),
+    tsconfigPaths(),
   ],
 });
