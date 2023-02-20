@@ -7,7 +7,7 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "eslint-config-prettier",
   ],
-  plugins: ["simple-import-sort"],
+  plugins: ["import", "simple-import-sort", "unused-imports"],
   settings: {
     react: {
       version: "detect",
@@ -17,6 +17,9 @@ module.exports = {
         paths: ["src"],
         extensions: [".js", ".jsx", ".ts", ".tsx"],
       },
+      typescript: {
+        project: ".",
+      },
     },
   },
   rules: {
@@ -24,7 +27,11 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     // For unocss attributify
     "react/no-unknown-property": "off",
+
     "import/no-unresolved": ["error", { ignore: ["virtual:.*$", "unocss/vite"] }],
+
+    // Sort imports
+    "simple-import-sort/exports": "error",
     "simple-import-sort/imports": [
       "error",
       {
@@ -43,6 +50,13 @@ module.exports = {
         ],
       },
     ],
-    "simple-import-sort/exports": "error",
+
+    // Remove unused imports
+    "no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      { vars: "all", varsIgnorePattern: "^_", args: "after-used", argsIgnorePattern: "^_" },
+    ],
   },
 };
