@@ -16,6 +16,18 @@ class AuthClient {
 
     return authgear.startAuthentication(...args);
   }
+
+  async finishAuthentication(...args: Parameters<typeof authgear.finishAuthentication>) {
+    await this.#ensureInitialized;
+
+    return authgear.finishAuthentication(...args);
+  }
+
+  async fetchUserInfo(...args: Parameters<typeof authgear.fetchUserInfo>) {
+    await this.#ensureInitialized;
+
+    return authgear.fetchUserInfo(...args);
+  }
 }
 
 export const authClient = new AuthClient();
