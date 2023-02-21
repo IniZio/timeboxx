@@ -27,6 +27,10 @@ class IDMixin:
             default=lambda: cls.id_factory(),
         )
 
+    @declared_attr
+    def client_id(cls) -> Mapped[str]:
+        return mapped_column(Text, unique=True, nullable=True)
+
 
 @declarative_mixin
 class AuditableMixin:
