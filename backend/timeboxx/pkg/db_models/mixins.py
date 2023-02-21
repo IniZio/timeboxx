@@ -29,6 +29,13 @@ class IDMixin:
 
 
 @declarative_mixin
+class OfflineMixin:
+    @declared_attr
+    def client_id(cls) -> Mapped[str]:
+        return mapped_column(Text, unique=True, nullable=True)
+
+
+@declarative_mixin
 class AuditableMixin:
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
