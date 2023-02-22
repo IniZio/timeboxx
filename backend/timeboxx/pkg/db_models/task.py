@@ -36,4 +36,4 @@ class Task(Base, IDMixin, AuditableMixin):
         nullable=False,
     )
 
-    timeslots: Mapped[list[Timeslot]] = relationship(back_populates="timeslot")
+    timeslots: Mapped[list[Timeslot]] = relationship(back_populates="task")

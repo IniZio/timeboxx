@@ -1,6 +1,4 @@
 from asyncio import current_task
-from contextlib import AbstractAsyncContextManager, asynccontextmanager
-from typing import Callable
 
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
@@ -22,9 +20,8 @@ async_session_factory = async_sessionmaker(
 )
 Session = async_scoped_session(async_session_factory, scopefunc=current_task)
 
-
-@asynccontextmanager
-async def _db_session():
+async def db_session():
+    print("NEW SESSION")
     session = Session()
     try:
         yield session
@@ -34,7 +31,3 @@ async def _db_session():
         raise
     finally:
         await session.close()
-
-
-SessionContextManagerFactory = Callable[[], AbstractAsyncContextManager[AsyncSession]]
-db_session: SessionContextManagerFactory = _db_session
