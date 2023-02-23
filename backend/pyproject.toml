@@ -23,6 +23,7 @@ black = "^23.1.0"
 isort = "^5.12.0"
 autoflake = "^2.0.1"
 pyright = "^1.1.294"
+debugpy = "^1.6.6"
 
 [tool.autoflake]
 remove-all-unused-imports=true
