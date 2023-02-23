@@ -11,8 +11,9 @@ from timeboxx.pkg.config import settings
 # TODO: Disable under production
 debugpy.listen(("0.0.0.0", 5678))
 
+container = Container()
+
 app = FastAPI()
-app.container = Container()  # type: ignore
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,
@@ -20,7 +21,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.add_middleware(SQLAlchemyMiddleware, db_url=settings.ASYNC_DATABASE_URL)
+app.add_middleware(
+    SQLAlchemyMiddleware, db_url=settings.ASYNC_DATABASE_URL, commit_on_exit=True
+)
 
 app.include_router(healthz_router)
 app.include_router(graphql_router, prefix="/graphql")

@@ -12,17 +12,56 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** Date with time (isoformat) */
+  DateTime: any;
 };
 
 export type Query = {
   __typename?: 'Query';
-  hello: Scalars['String'];
+  ping: Scalars['String'];
+  tasks: Array<Task>;
+};
+
+export type Task = {
+  __typename?: 'Task';
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  endTime?: Maybe<Scalars['DateTime']>;
+  id: Scalars['String'];
+  startTime?: Maybe<Scalars['DateTime']>;
+  timeslots: TimeslotConnection;
+  title?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+};
+
+export type Timeslot = {
+  __typename?: 'Timeslot';
+  clientId?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  endTime?: Maybe<Scalars['DateTime']>;
+  id: Scalars['String'];
+  startTime: Scalars['DateTime'];
+  task?: Maybe<Task>;
+  taskId?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+};
+
+export type TimeslotConnection = {
+  __typename?: 'TimeslotConnection';
+  edges: Array<TimeslotEdge>;
+};
+
+export type TimeslotEdge = {
+  __typename?: 'TimeslotEdge';
+  node: Timeslot;
 };
 
 export type SayHelloQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SayHelloQuery = { __typename?: 'Query', hello: string };
+export type SayHelloQuery = { __typename?: 'Query', ping: string };
 
 
-export const SayHelloDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"sayHello"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hello"}}]}}]} as unknown as DocumentNode<SayHelloQuery, SayHelloQueryVariables>;
+export const SayHelloDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"sayHello"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ping"}}]}}]} as unknown as DocumentNode<SayHelloQuery, SayHelloQueryVariables>;

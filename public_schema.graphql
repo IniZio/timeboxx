@@ -1,3 +1,39 @@
+"""Date with time (isoformat)"""
+scalar DateTime
+
 type Query {
-  hello: String!
+  tasks: [Task!]!
+  ping: String!
+}
+
+type Task {
+  title: String
+  description: String
+  startTime: DateTime
+  endTime: DateTime
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  timeslots: TimeslotConnection!
+}
+
+type Timeslot {
+  taskId: String
+  title: String
+  description: String
+  startTime: DateTime!
+  endTime: DateTime
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  clientId: String
+  task: Task
+}
+
+type TimeslotConnection {
+  edges: [TimeslotEdge!]!
+}
+
+type TimeslotEdge {
+  node: Timeslot!
 }

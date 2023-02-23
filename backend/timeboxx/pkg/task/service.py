@@ -11,3 +11,10 @@ class TaskService:
     async def list_tasks(self) -> list[Task]:
         results = await self.session.scalars(select(Task))
         return list(results.all())
+
+    async def create_task(self) -> Task:
+        task = Task(title="ABC", description="")
+
+        self.session.add(task)
+
+        return task

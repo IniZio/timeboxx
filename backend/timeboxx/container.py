@@ -5,7 +5,9 @@ from timeboxx.pkg.task.service import TaskService
 
 
 class Container(containers.DeclarativeContainer):
-    wiring_config = containers.WiringConfiguration(modules=[".healthz"])
+    wiring_config = containers.WiringConfiguration(
+        modules=[".healthz", ".graphql.router"]
+    )
 
     session = providers.Resource(lambda: db.session)
 
