@@ -9,7 +9,7 @@ import { Routes } from "./router/routes";
 
 const sayHelloDocument = graphql(`
   query sayHello {
-    hello
+    ping
   }
 `);
 

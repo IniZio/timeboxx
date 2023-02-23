@@ -1,8 +1,24 @@
+from dependency_injector.wiring import Provide, inject
+from fastapi import Depends
+from fastapi_async_sqlalchemy import db
 from strawberry.fastapi import GraphQLRouter
+from strawberry_sqlalchemy_mapper import StrawberrySQLAlchemyLoader
 
+from timeboxx.container import Container
+from timeboxx.graphql.context import Context
 from timeboxx.graphql.schema import public_schema
+from timeboxx.pkg.task.service import TaskService
 
-router = GraphQLRouter(public_schema)
+
+@inject
+def get_context(task_service: TaskService = Depends(Provide[Container.task_service])):
+    return Context(
+        sqlalchemy_loader=StrawberrySQLAlchemyLoader(bind=db.session),
+        task_service=task_service,
+    )
+
+
+router = GraphQLRouter(public_schema, context_getter=get_context)
 
 
 @router.on_event("startup")
