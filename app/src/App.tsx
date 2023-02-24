@@ -1,34 +1,16 @@
-import { PromptOption } from "@authgear/web";
-import { useCallback } from "react";
-import { useQuery } from "urql";
+import { useMount } from 'react-use';
 
-import { authClient } from "./apis/auth/client";
-import { graphql } from "./apis/graphql/generated";
+import { useAuth } from './auth/store';
 import { Router } from "./router/Router";
-import { Routes } from "./router/routes";
-
-const sayHelloDocument = graphql(`
-  query sayHello {
-    ping
-  }
-`);
 
 function App() {
-  const [askHello] = useQuery({
-    query: sayHelloDocument,
+  const auth = useAuth();
+  useMount(() => {
+    auth.fetchUserInfo();
   });
-
-  const handleLogin = useCallback(() => {
-    authClient.startAuthentication({
-      redirectURI: `http://localhost:5173${Routes.OAuthRedirect}`,
-      prompt: PromptOption.Login,
-    });
-  }, []);
 
   return (
     <div className="App">
-      <h1 un-text="purple">{askHello.fetching ? "Loading..." : askHello.data?.hello}</h1>
-      <button onClick={handleLogin}>Login</button>
       <Router />
     </div>
   );

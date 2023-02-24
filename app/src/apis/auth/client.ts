@@ -11,6 +11,10 @@ class AuthClient {
     });
   }
 
+  async initialize() {
+    await this.#ensureInitialized;
+  }
+
   async startAuthentication(...args: Parameters<typeof authgear.startAuthentication>) {
     await this.#ensureInitialized;
 
