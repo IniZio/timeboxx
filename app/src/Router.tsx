@@ -2,9 +2,17 @@ import React from "react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import HomeScreen from "@/Home.screen";
+import { AppShell } from "@/shells";
 import { OAuthRedirectScreen } from "@/modules/auth/screens/OAuthRedirect.screen";
 
-import { Routes } from "./routes";
+export const Routes = {
+  Home: "/",
+  OAuthRedirect: "/oauth-redirect",
+  App: {
+    Today: "/app/today",
+  },
+};
 
 const router = createBrowserRouter([
   {
@@ -13,7 +21,16 @@ const router = createBrowserRouter([
   },
   {
     path: Routes.Home,
-    element: null,
+    element: <HomeScreen />,
+  },
+  {
+    element: <AppShell />,
+    children: [
+      {
+        path: Routes.App.Today,
+        element: null,
+      },
+    ],
   },
 ]);
 
