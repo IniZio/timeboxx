@@ -9,8 +9,11 @@ import tsconfigPaths from "vite-tsconfig-paths";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      jsxImportSource: "@iniz/react",
+    }),
     unocss({
+      // @ts-expect-error Preset type incompatitable
       presets: [unocssPresetUno(), unocssAttributify()],
     }),
     eslint({

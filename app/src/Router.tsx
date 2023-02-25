@@ -3,8 +3,8 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import HomeScreen from "@/Home.screen";
-import { AppShell } from "@/shells";
 import { OAuthRedirectScreen } from "@/modules/auth/screens/OAuthRedirect.screen";
+import { AppShell } from "@/shells";
 
 export const Routes = {
   Home: "/",
@@ -25,6 +25,7 @@ const router = createBrowserRouter([
   },
   {
     element: <AppShell />,
+    loader: AppShell.loader,
     children: [
       {
         path: Routes.App.Today,

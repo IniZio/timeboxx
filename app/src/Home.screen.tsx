@@ -3,18 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { useMount } from "react-use";
 
 import LogoWithTitle from "@/assets/logo_with_title.svg";
-import { useAuth } from "@/modules/auth/store";
+import { authStore } from "@/modules/auth/store";
 import { Routes } from "@/Router";
 
 const HomeScreen: React.FC = () => {
   const navigate = useNavigate();
-  const auth = useAuth();
   const { t } = useTranslation();
 
   useMount(() => {
-    auth.fetchUserInfo().then((userInfo) => {
+    authStore.fetchUserInfo().then((userInfo) => {
       if (!userInfo) {
-        return auth.login();
+        return authStore.login();
       }
 
       navigate({ pathname: Routes.App.Today });
