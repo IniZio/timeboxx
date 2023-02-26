@@ -1,4 +1,4 @@
-import { ClockIcon } from "@radix-ui/react-icons";
+import { Clock } from "iconoir-react";
 import { useTranslation } from "react-i18next";
 
 import { LogoWithTitle } from "@/components/LogoWithTitle";
@@ -15,7 +15,7 @@ const SideNav: React.FC = () => {
       </div>
       <div un-p="x-8 y-4">
         <NavItem
-          icon={<ClockIcon un-text="gray-900" className="w-4 h-4" un-stroke="2" />}
+          icon={<Clock width={16} height={16} strokeWidth={2} un-text="gray-900" />}
           label={t("shells.app.nav.today")}
           to={Routes.App.Today}
         />

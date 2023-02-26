@@ -1,4 +1,16 @@
+input CreateTimeboxInput {
+  clientId: String = null
+  title: String = null
+  description: String = null
+  startTime: DateTime = null
+  endTime: DateTime = null
+}
+
 scalar DateTime
+
+type Mutation {
+  createTimebox(input: CreateTimeboxInput!): Timebox!
+}
 
 type Query {
   tasks: [Task!]!

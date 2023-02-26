@@ -27,10 +27,10 @@ export const TimeboxItem: React.FC<TimeboxItemProps> = ({ timebox }) => {
   return (
     <li un-flex="~ row" un-justify="center" un-items="center" un-gap="4" un-p="3">
       <input type="checkbox" />
-      <p un-flex="1" un-leading="7" un-text="gray-900" un-line-clamp="2">
+      <p un-flex="1" un-leading="normal" un-text="gray-900" un-line-clamp="2">
         {timebox.title}
       </p>
-      <span className="text-sm leading-7 text-right text-gray-500 h-min">{formattedPeriod}</span>
+      <span className="text-sm text-right text-gray-500 h-min">{formattedPeriod}</span>
     </li>
   );
 };
