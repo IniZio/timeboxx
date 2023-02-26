@@ -1,4 +1,5 @@
 import { PromptOption } from "@authgear/web";
+import { atom } from "@iniz/react";
 import { useCallback } from "react";
 import { useQuery } from "urql";
 
@@ -11,6 +12,9 @@ const sayHelloDocument = graphql(`
     ping
   }
 `);
+
+const counter = atom(1);
+const increment = () => counter(counter() + 1);
 
 function App() {
   const [askHello] = useQuery({
@@ -28,6 +32,7 @@ function App() {
     <div className="App">
       <h1 un-text="purple">{askHello.fetching ? "Loading..." : askHello.data?.hello}</h1>
       <button onClick={handleLogin}>Login</button>
+      <button onClick={increment}>{counter()}++</button>
       <Router />
     </div>
   );

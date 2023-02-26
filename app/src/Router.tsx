@@ -1,9 +1,12 @@
 import React from "react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import HomeScreen from "@/Home.screen";
+import { FullScreenLoading } from "@/components/FullScreenLoading";
+import { HomeScreen } from "@/Home.screen";
 import { OAuthRedirectScreen } from "@/modules/auth/screens/OAuthRedirect.screen";
+import { TodayScreen } from "@/modules/today/screens/Today.screen";
 import { AppShell } from "@/shells";
 
 export const Routes = {
@@ -29,20 +32,22 @@ const router = createBrowserRouter([
     children: [
       {
         path: Routes.App.Today,
-        element: null,
+        element: <TodayScreen />,
       },
     ],
   },
 ]);
 
 export const Router: React.FC = () => {
-  const defaultTitle = "Timeboxx";
-  const titleTemplate = "Timeboxx - %s";
+  const { t } = useTranslation();
+
+  const defaultTitle = t("app.name");
+  const titleTemplate = `%s | ${t("app.name")}`;
 
   return (
     <HelmetProvider>
       <Helmet titleTemplate={titleTemplate} defaultTitle={defaultTitle} />
-      <RouterProvider router={router} />
+      <RouterProvider router={router} fallbackElement={<FullScreenLoading />} />
     </HelmetProvider>
   );
 };

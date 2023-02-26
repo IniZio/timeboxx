@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useMount } from "react-use";
 
-import { LogoWithTitle } from "@/components/LogoWithTitle";
+import { FullScreenLoading } from "@/components/FullScreenLoading";
 import { authStore } from "@/modules/auth/store";
 import { Routes } from "@/Router";
 
@@ -18,9 +18,5 @@ export const HomeScreen: React.FC = () => {
     });
   });
 
-  return (
-    <div un-h="screen" un-flex="~" un-justify="center" un-items="center" un-duration="1000" un-animate="pulse">
-      <LogoWithTitle />
-    </div>
-  );
+  return <FullScreenLoading />;
 };
