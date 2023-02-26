@@ -8,13 +8,18 @@ from timeboxx.container import Container
 from timeboxx.graphql.context import Context
 from timeboxx.graphql.schema import public_schema
 from timeboxx.pkg.task.service import TaskService
+from timeboxx.pkg.timebox.service import TimeboxService
 
 
 @inject
-def get_context(task_service: TaskService = Depends(Provide[Container.task_service])):
+def get_context(
+    task_service: TaskService = Depends(Provide[Container.task_service]),
+    timebox_service: TimeboxService = Depends(Provide[Container.timebox_service]),
+):
     return Context(
         sqlalchemy_loader=StrawberrySQLAlchemyLoader(bind=db.session),
         task_service=task_service,
+        timebox_service=timebox_service,
     )
 
 

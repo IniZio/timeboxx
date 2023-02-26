@@ -1,8 +1,8 @@
-"""Date with time (isoformat)"""
 scalar DateTime
 
 type Query {
   tasks: [Task!]!
+  timeboxes(startTime: DateTime = null, endTime: DateTime = null): [Timebox!]!
   ping: String!
 }
 
@@ -14,11 +14,34 @@ type Task {
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  timeboxes: TimeboxConnection!
   timeslots: TimeslotConnection!
+}
+
+type Timebox {
+  taskId: String
+  title: String
+  description: String
+  startTime: DateTime
+  endTime: DateTime
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  task: Task
+  timeslots: TimeslotConnection!
+}
+
+type TimeboxConnection {
+  edges: [TimeboxEdge!]!
+}
+
+type TimeboxEdge {
+  node: Timebox!
 }
 
 type Timeslot {
   taskId: String
+  timeboxId: String
   title: String
   description: String
   startTime: DateTime!
@@ -28,6 +51,7 @@ type Timeslot {
   updatedAt: DateTime!
   clientId: String
   task: Task
+  timebox: Timebox
 }
 
 type TimeslotConnection {

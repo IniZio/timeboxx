@@ -22,7 +22,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.add_middleware(
-    SQLAlchemyMiddleware, db_url=settings.ASYNC_DATABASE_URL, commit_on_exit=True
+    SQLAlchemyMiddleware,
+    db_url=settings.ASYNC_DATABASE_URL,
+    commit_on_exit=True,
+    engine_args={"echo": True},
 )
 
 app.include_router(healthz_router)
