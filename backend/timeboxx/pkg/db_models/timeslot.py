@@ -12,6 +12,7 @@ from timeboxx.pkg.db_models.mixins import AuditableMixin, IDMixin, OfflineMixin
 
 if TYPE_CHECKING:
     from timeboxx.pkg.db_models import Task
+    from timeboxx.pkg.db_models.timebox import Timebox
 
 
 class Timeslot(Base, IDMixin, AuditableMixin, OfflineMixin):
@@ -20,7 +21,12 @@ class Timeslot(Base, IDMixin, AuditableMixin, OfflineMixin):
     task_id: Mapped[int] = mapped_column(
         ForeignKey(f"{settings.DATABASE_SCHEMA}.task.id"), nullable=True
     )
-    task: Mapped[Task] = relationship(back_populates="timeslots")
+    task: Mapped[Task] = relationship(back_populates="timeslots", lazy=False)
+
+    timebox_id: Mapped[int] = mapped_column(
+        ForeignKey(f"{settings.DATABASE_SCHEMA}.timebox.id"), nullable=True
+    )
+    timebox: Mapped[Timebox] = relationship(back_populates="timeslots", lazy=False)
 
     title: Mapped[str] = mapped_column(
         Text,

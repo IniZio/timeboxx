@@ -9,7 +9,7 @@ import SideNav from "@/shells/SideNav";
 export const AppShell: LoaderScreen<UserInfo> = () => {
   return (
     <>
-      <div className="flex flex-col lg:flex-row h-screen">
+      <div className="flex h-screen">
         <SideNav />
         <div className="flex-1 lg:min-w-0 isolate">
           <Outlet />

@@ -9,7 +9,7 @@ const SideNav: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div un-w="260px" un-bg="#FDFDFD" un-border="~ right slate-200">
+    <div un-w="260px" un-bg="#FDFDFD" un-border="r slate-200">
       <div className="px-8 py-6">
         <LogoWithTitle />
       </div>
