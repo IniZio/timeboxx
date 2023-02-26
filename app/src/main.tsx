@@ -1,6 +1,7 @@
 import "@unocss/reset/tailwind.css";
 import "virtual:uno.css";
 import "virtual:unocss-devtools";
+import "./i18n";
 
 import React from "react";
 import ReactDOM from "react-dom/client";

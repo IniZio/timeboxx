@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { generatePath, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { authClient } from "@/apis/auth/client";
-import { Routes } from "@/router/routes";
+import { Routes } from "@/Router";
 
 export const OAuthRedirectScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -10,21 +10,11 @@ export const OAuthRedirectScreen: React.FC = () => {
   useEffect(() => {
     authClient
       .finishAuthentication()
-      .then((user) => {
-        console.log("user", user);
+      .then(() => {
+        navigate({ pathname: Routes.App.Today }, { replace: true });
       })
       .catch((e) => console.error(e));
   });
 
-  useEffect(() => {
-    authClient.fetchUserInfo().then((user) => {
-      if (!user) {
-        return;
-      }
-
-      navigate({ pathname: generatePath(Routes.Home) }, { replace: true });
-    });
-  }, [navigate]);
-
-  return <div className="flex items-center justify-center h-full">Redirecting...</div>;
+  return <div className="flex items-center justify-center h-screen">Redirecting...</div>;
 };
