@@ -11,11 +11,11 @@ export const NavItem: React.FC<NavItemProps> = ({ to, icon, label }) => {
   return (
     <NavLink
       to={to}
-      className="inline-flex space-x-2 items-center justify-start rounded-md w-full py-2.5 px-2.5 bg-gray-100 transition-colors"
+      className="items-center w-full inline-flex space-x-2 justify-start rounded-md py-2.5 px-2.5 bg-gray-100 transition-colors"
       un-hover="bg-gray-200"
     >
       {icon}
-      <p className="flex-1 text-sm text-gray-900 font-medium leading-tight">{label}</p>
+      <p className="text-sm text-gray-900 flex-1 font-medium leading-tight">{label}</p>
     </NavLink>
   );
 };

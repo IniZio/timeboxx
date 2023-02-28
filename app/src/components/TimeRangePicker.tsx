@@ -14,7 +14,6 @@ export const TimeRangePicker: React.FC<TimeRangePickerProps> = ({ value, onChang
       className="leading-7 text-sm text-right text-gray-500 h-min flex-none"
       value={value}
       onChange={onChange}
-      format="h:mm a"
       disableCalendar
       disableClock
       calendarIcon={<Calendar />}

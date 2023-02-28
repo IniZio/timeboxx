@@ -55,14 +55,14 @@ export const TodayScreen: React.FC = () => {
         endTime: value.dateRange[1],
       },
     }).then(refetchTodayScreen);
-  }, []);
+  }, [createTimeboxMutation, refetchTodayScreen]);
 
   return (
     <div un-p="x-6 y-6" un-h="full" un-w="128" un-border="r slate-200">
       <h1 un-m="b-4" un-text="3xl" un-font="semibold">
         Today
       </h1>
-      <CreateTimeboxInput onSubmit={handleSubmitCreateTimebox} />
+      <CreateTimeboxInput className="mb-2.5" onSubmit={handleSubmitCreateTimebox} />
       {todayScreen.fetching && !todayScreen.stale ? (
         "Loading..."
       ) : (

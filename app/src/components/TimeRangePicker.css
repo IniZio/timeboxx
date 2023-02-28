@@ -14,7 +14,19 @@
   white-space: pre;
 }
 
-.react-datetimerange-picker__inputGroup__minute ~ .react-datetime-picker__inputGroup__divider {
+.react-datetimerange-picker__inputGroup__month,
+.react-datetimerange-picker__inputGroup__month + .react-datetime-picker__inputGroup__divider,
+.react-datetimerange-picker__inputGroup__day,
+.react-datetimerange-picker__inputGroup__day + .react-datetime-picker__inputGroup__divider,
+.react-datetimerange-picker__inputGroup__year {
+  display: none;
+}
+
+.react-datetimerange-picker__inputGroup__input--hasLeadingZero {
+  margin-left: 0 !important;
+}
+
+.react-datetimerange-picker__inputGroup__minute + .react-datetime-picker__inputGroup__divider {
   display: none !important;
 }
 

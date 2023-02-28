@@ -4,8 +4,10 @@ import { ChangeEvent, KeyboardEventHandler, useCallback, useState } from "react"
 import { useTranslation } from "react-i18next";
 
 import { TimeRangePicker } from "@/components/TimeRangePicker";
+import { cn } from "@/utils";
 
 export interface CreateTimeboxInputProps {
+  className?: string;
   onSubmit: (value: InputValue) => void;
 }
 
@@ -14,7 +16,7 @@ interface InputValue {
   dateRange: [Maybe<Date>, Maybe<Date>];
 }
 
-export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ onSubmit }) => {
+export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ className, onSubmit }) => {
   const { t } = useTranslation();
 
   const title = useAtom("");
@@ -27,23 +29,33 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ onSubmit
 
   const [dateRange, setDateRange] = useState(() => [new Date(), null] as [Maybe<Date>, Maybe<Date>]);
 
-  const handleKeyDown = useCallback<KeyboardEventHandler<HTMLInputElement>>((evt) => {
-    if (evt.key === "Enter") {
-      onSubmit({ title: title(), dateRange });
-      console.log("=== submit");
+  const handleKeyDown = useCallback<KeyboardEventHandler<HTMLInputElement>>(
+    (evt) => {
+      if (evt.key === "Enter") {
+        onSubmit({ title: title(), dateRange });
 
-      title("");
-      setDateRange([new Date(), null]);
+        title("");
+        setDateRange([new Date(), null]);
 
-      return;
-    }
-  }, []);
+        return;
+      }
+    },
+    [dateRange, onSubmit, title],
+  );
 
   return (
-    <div className="items-center inline-flex space-x-2 justify-start p-3 w-full bg-white shadow border rounded-md border-gray-200 focus-within:ring">
+    <div
+      className={cn(
+        "items-center inline-flex space-x-2 justify-start",
+        "p-3 w-full",
+        "bg-white shadow border rounded-md border-gray-200",
+        "focus-within:ring",
+        className,
+      )}
+    >
       <Plus height={24} width={24} un-flex="none" un-text="gray-900" />
       <input
-        className="w-full leading-7 text-base text-gray-900 focus:outline-none"
+        className="leading-7 w-full text-base text-gray-900 focus:outline-none"
         placeholder={t("modules.today.components.CreateTimeboxInput.title.placeholder")}
         value={title()}
         onChange={handleChangeTitle}
