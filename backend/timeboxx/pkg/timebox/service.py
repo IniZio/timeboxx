@@ -44,6 +44,4 @@ class TimeboxService:
             end_time=end_time,
         )
         self.session.add(timebox)
-        # FIXME: The middleware is not committing, why
-        await self.session.commit()
         return timebox
