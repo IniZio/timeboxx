@@ -1,6 +1,6 @@
-import { useAtom } from "@iniz/react";
+import { useStore } from "@iniz/react";
 import { Plus } from "iconoir-react";
-import { ChangeEvent, KeyboardEventHandler, useCallback, useState } from "react";
+import { ChangeEvent, KeyboardEventHandler, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 import { TimeRangePicker } from "@/components/TimeRangePicker";
@@ -19,28 +19,32 @@ interface InputValue {
 export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ className, onSubmit }) => {
   const { t } = useTranslation();
 
-  const title = useAtom("");
-  const handleChangeTitle = useCallback(
-    (evt: ChangeEvent<HTMLInputElement>) => {
-      title(evt.target.value);
-    },
-    [title],
-  );
+  const inputStore = useStore({
+    title: "",
+    dateRange: [new Date(), null] as [Maybe<Date>, Maybe<Date>],
 
-  const [dateRange, setDateRange] = useState(() => [new Date(), null] as [Maybe<Date>, Maybe<Date>]);
+    onChangeTitle(evt: ChangeEvent<HTMLInputElement>) {
+      inputStore.title = evt.target.value;
+    },
+    onChangeDateRange(value: InputValue["dateRange"]) {
+      inputStore.dateRange = value;
+    },
+
+    reset() {
+      inputStore.title = "";
+      inputStore.dateRange = [new Date(), null];
+    },
+  });
 
   const handleKeyDown = useCallback<KeyboardEventHandler<HTMLInputElement>>(
     (evt) => {
       if (evt.key === "Enter") {
-        onSubmit({ title: title(), dateRange });
-
-        title("");
-        setDateRange([new Date(), null]);
-
+        onSubmit(inputStore);
+        inputStore.reset();
         return;
       }
     },
-    [dateRange, onSubmit, title],
+    [inputStore, onSubmit],
   );
 
   return (
@@ -57,11 +61,11 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
       <input
         className="leading-7 w-full text-base text-gray-900 focus:outline-none"
         placeholder={t("modules.today.components.CreateTimeboxInput.title.placeholder")}
-        value={title()}
-        onChange={handleChangeTitle}
+        value={inputStore.title}
+        onChange={inputStore.onChangeTitle}
         onKeyDown={handleKeyDown}
       />
-      <TimeRangePicker value={dateRange} onChange={setDateRange} />
+      <TimeRangePicker value={inputStore.dateRange} onChange={inputStore.onChangeDateRange} />
     </div>
   );
 };

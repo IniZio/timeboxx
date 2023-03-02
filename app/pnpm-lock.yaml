@@ -6,7 +6,7 @@ specifiers:
   '@graphql-codegen/cli': ^3.0.0
   '@graphql-codegen/client-preset': ^2.0.0
   '@graphql-codegen/typescript-urql': ^3.7.3
-  '@iniz/react': ^0.6.5
+  '@iniz/react': ^0.7.0
   '@nabla/vite-plugin-eslint': ^1.5.0
   '@radix-ui/react-icons': ^1.2.0
   '@types/react': ^18.0.27
@@ -54,7 +54,7 @@ specifiers:
 dependencies:
   '@authgear/web': 2.0.0
   '@fontsource/inter': 4.5.15
-  '@iniz/react': 0.6.5_react@18.2.0
+  '@iniz/react': 0.7.0_react@18.2.0
   '@radix-ui/react-icons': 1.2.0_react@18.2.0
   '@unocss/eslint-config': 0.50.1_7kw3g6rralp5ps6mg3uyzz6azm
   '@unocss/reset': 0.49.5
@@ -1635,16 +1635,16 @@ packages:
       - supports-color
     dev: true
 
-  /@iniz/core/0.7.3:
-    resolution: {integrity: sha512-iwjHF1U456lyti+53XANytvGKuzrAb1RGuUh8tiSBLMzV5UvXqFZd96uKy+AdB3UEbEcPHmNKMFLOqC9YQLZCg==}
+  /@iniz/core/0.8.0:
+    resolution: {integrity: sha512-+mrr8g2FQevjDKc1E6EQdjCyiRI0xkgxdF6K7F98gd/nFCbFXc4TshR67DzORlKisKw+0b8p/+5lZyZtlySttA==}
     dev: false
 
-  /@iniz/react/0.6.5_react@18.2.0:
-    resolution: {integrity: sha512-Num29G4Ix7tcSWajS/d5I9KPuDE5WvlQM9cNrW7T37PsssXqxn5rb2TkVXM+5fx0uTKQRJDkwOtjmn2J0o7v6g==}
+  /@iniz/react/0.7.0_react@18.2.0:
+    resolution: {integrity: sha512-C0n4UeqyV/Sy24oHEuneHr0N/jj81j79GuFY+d0+6iij24VD1fNO8HmgmRk/yQCi1PTEG1MPVxZ1yYA0D3G/tw==}
     peerDependencies:
       react: 17.x || 18.x
     dependencies:
-      '@iniz/core': 0.7.3
+      '@iniz/core': 0.8.0
       react: 18.2.0
       use-sync-external-store: 1.2.0_react@18.2.0
     dev: false

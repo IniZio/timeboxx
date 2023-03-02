@@ -1,6 +1,6 @@
 import type { UserInfo } from "@authgear/web";
 import { PromptOption } from "@authgear/web";
-import { state } from "@iniz/react";
+import { store } from "@iniz/react";
 
 import { authClient } from "@/apis/auth/client";
 import { Routes } from "@/Router";
@@ -11,10 +11,10 @@ interface AuthState {
   login: () => Promise<void>;
 }
 
-export const authStore = state<AuthState>({
+export const authStore = store<AuthState>({
   userInfo: undefined,
   async fetchUserInfo() {
-    this.userInfo = await authClient.fetchUserInfo().catch(() => undefined);
+    authStore.userInfo = await authClient.fetchUserInfo().catch(() => undefined);
     return this.userInfo;
   },
   async login() {

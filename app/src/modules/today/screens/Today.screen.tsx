@@ -47,15 +47,18 @@ export const TodayScreen: React.FC = () => {
   });
 
   const [_, createTimeboxMutation] = useMutation<Timebox, CreateTimeboxMutationVariables>(CreateTimeboxMutation);
-  const handleSubmitCreateTimebox = useCallback<CreateTimeboxInputProps["onSubmit"]>((value) => {
-    createTimeboxMutation({
-      input: {
-        title: value.title,
-        startTime: value.dateRange[0],
-        endTime: value.dateRange[1],
-      },
-    }).then(refetchTodayScreen);
-  }, [createTimeboxMutation, refetchTodayScreen]);
+  const handleSubmitCreateTimebox = useCallback<CreateTimeboxInputProps["onSubmit"]>(
+    (value) => {
+      createTimeboxMutation({
+        input: {
+          title: value.title,
+          startTime: value.dateRange[0],
+          endTime: value.dateRange[1],
+        },
+      }).then(refetchTodayScreen);
+    },
+    [createTimeboxMutation, refetchTodayScreen],
+  );
 
   return (
     <div un-p="x-6 y-6" un-h="full" un-w="128" un-border="r slate-200">
