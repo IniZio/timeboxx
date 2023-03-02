@@ -10,6 +10,7 @@ scalar DateTime
 
 type Mutation {
   createTimebox(input: CreateTimeboxInput!): Timebox!
+  updateTimebox(input: UpdateTimeboxInput!): Timebox!
 }
 
 type Query {
@@ -72,4 +73,13 @@ type TimeslotConnection {
 
 type TimeslotEdge {
   node: Timeslot!
+}
+
+input UpdateTimeboxInput {
+  id: String
+  clientId: String
+  title: String
+  description: String
+  startTime: DateTime
+  endTime: DateTime
 }

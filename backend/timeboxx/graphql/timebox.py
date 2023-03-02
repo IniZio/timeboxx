@@ -19,3 +19,13 @@ class CreateTimeboxInput:
     description: Optional[str] = None
     start_time: Optional[datetime] = None
     end_time: Optional[datetime] = None
+
+
+@strawberry.input
+class UpdateTimeboxInput:
+    id: Optional[str] = strawberry.UNSET
+    client_id: Optional[str] = strawberry.UNSET
+    title: Optional[str] = strawberry.UNSET
+    description: Optional[str] = strawberry.UNSET
+    start_time: Optional[datetime] = strawberry.UNSET
+    end_time: Optional[datetime] = strawberry.UNSET
