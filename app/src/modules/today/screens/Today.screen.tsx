@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useMutation, useQuery } from "urql";
 
 import { graphql } from "@/apis/graphql/generated";
@@ -10,7 +10,9 @@ import {
   TodayQueryVariables,
 } from "@/apis/graphql/generated/graphql";
 import { CreateTimeboxInput, CreateTimeboxInputProps } from "@/modules/today/components/CreateTimeboxInput";
+import { TimeboxDetail } from "@/modules/today/components/TimeboxDetail";
 import { TimeboxItem } from "@/modules/today/components/TimeboxItem";
+import { TimeboxDetailTimebox, TimeboxItemTimebox } from "@/modules/today/view-models";
 
 const TodayScreenQuery = graphql(`
   query Today($startTime: DateTime, $endTime: DateTime) {
@@ -60,21 +62,32 @@ export const TodayScreen: React.FC = () => {
     [createTimeboxMutation, refetchTodayScreen],
   );
 
+  const [focusedTimebox, setFocusedTimebox] = useState<TimeboxDetailTimebox>();
+  const handleClickTimeboxItem = useCallback(
+    (focused: TimeboxItemTimebox) => {
+      setFocusedTimebox(todayScreen.data?.timeboxes.find((t) => t.id === focused.id));
+    },
+    [todayScreen.data?.timeboxes],
+  );
+
   return (
-    <div un-p="x-6 y-6" un-h="full" un-w="128" un-border="r slate-200">
-      <h1 un-m="b-4" un-text="3xl" un-font="semibold">
-        Today
-      </h1>
-      <CreateTimeboxInput className="mb-2.5" onSubmit={handleSubmitCreateTimebox} />
-      {todayScreen.fetching && !todayScreen.stale ? (
-        "Loading..."
-      ) : (
-        <ul>
-          {todayScreen.data?.timeboxes.map((timebox) => (
-            <TimeboxItem key={timebox.id} timebox={timebox} />
-          ))}
-        </ul>
-      )}
+    <div className="flex h-full">
+      <div un-p="x-6 y-6" un-h="full" un-w="128" un-border="r slate-200">
+        <h1 un-m="b-4" un-text="3xl" un-font="semibold">
+          Today
+        </h1>
+        <CreateTimeboxInput className="mb-2.5" onSubmit={handleSubmitCreateTimebox} />
+        {todayScreen.fetching && !todayScreen.stale ? (
+          "Loading..."
+        ) : (
+          <div>
+            {todayScreen.data?.timeboxes.map((timebox) => (
+              <TimeboxItem key={timebox.id} timebox={timebox} onClick={handleClickTimeboxItem} />
+            ))}
+          </div>
+        )}
+      </div>
+      {!!focusedTimebox && <TimeboxDetail timebox={focusedTimebox} />}
     </div>
   );
 };

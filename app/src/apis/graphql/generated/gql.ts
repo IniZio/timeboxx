@@ -14,6 +14,7 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  */
 const documents = {
     "\n  query sayHello {\n    ping\n  }\n": types.SayHelloDocument,
+    "\n  mutation UpdateTimebox($input: UpdateTimeboxInput!) {\n    updateTimebox(input: $input) {\n      id\n    }\n  }\n": types.UpdateTimeboxDocument,
     "\n  query Today($startTime: DateTime, $endTime: DateTime) {\n    timeboxes(startTime: $startTime, endTime: $endTime) {\n      id\n      title\n      description\n      startTime\n      endTime\n      task {\n        title\n        id\n      }\n    }\n  }\n": types.TodayDocument,
     "\n  mutation CreateTimebox($input: CreateTimeboxInput!) {\n    createTimebox(input: $input) {\n      id\n    }\n  }\n": types.CreateTimeboxDocument,
 };
@@ -36,6 +37,10 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query sayHello {\n    ping\n  }\n"): (typeof documents)["\n  query sayHello {\n    ping\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateTimebox($input: UpdateTimeboxInput!) {\n    updateTimebox(input: $input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateTimebox($input: UpdateTimeboxInput!) {\n    updateTimebox(input: $input) {\n      id\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
