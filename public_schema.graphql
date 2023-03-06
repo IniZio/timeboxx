@@ -1,4 +1,18 @@
+input CreateTimeboxInput {
+  clientId: String = null
+  title: String = null
+  description: String = null
+  startTime: DateTime = null
+  endTime: DateTime = null
+}
+
 scalar DateTime
+
+type Mutation {
+  createTimebox(input: CreateTimeboxInput!): Timebox!
+  updateTimebox(input: UpdateTimeboxInput!): Timebox!
+  deleteTimebox(id: String!): Boolean!
+}
 
 type Query {
   tasks: [Task!]!
@@ -60,4 +74,13 @@ type TimeslotConnection {
 
 type TimeslotEdge {
   node: Timeslot!
+}
+
+input UpdateTimeboxInput {
+  id: String
+  clientId: String
+  title: String
+  description: String
+  startTime: DateTime
+  endTime: DateTime
 }

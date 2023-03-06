@@ -1,13 +1,14 @@
 import dayjs from "dayjs";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 import { TimeboxItemTimebox } from "@/modules/today/view-models";
 
 export interface TimeboxItemProps {
   timebox: TimeboxItemTimebox;
+  onClick?: (timebox: TimeboxItemTimebox) => void;
 }
 
-export const TimeboxItem: React.FC<TimeboxItemProps> = ({ timebox }) => {
+export const TimeboxItem: React.FC<TimeboxItemProps> = ({ timebox, onClick }) => {
   const formattedPeriod = useMemo(() => {
     const format = "h:mma";
 
@@ -24,13 +25,17 @@ export const TimeboxItem: React.FC<TimeboxItemProps> = ({ timebox }) => {
     return "-";
   }, [timebox.startTime, timebox.endTime]);
 
+  const handleClick = useCallback(() => {
+    onClick?.(timebox);
+  }, [onClick, timebox]);
+
   return (
-    <li un-flex="~ row" un-justify="center" un-items="center" un-gap="4" un-p="3">
+    <button un-flex="~ row" un-justify="center" un-items="center" un-gap="4" un-p="3" un-w="full" onClick={handleClick}>
       <input type="checkbox" />
-      <p un-flex="1" un-leading="7" un-text="gray-900" un-line-clamp="2">
+      <p un-flex="1" un-leading="normal" un-text="left gray-900" un-line-clamp="2">
         {timebox.title}
       </p>
-      <span className="text-sm leading-7 text-right text-gray-500 h-min">{formattedPeriod}</span>
-    </li>
+      <span className="text-sm text-right text-gray-500 h-min">{formattedPeriod}</span>
+    </button>
   );
 };

@@ -15,6 +15,36 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type CreateTimeboxInput = {
+  clientId?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  endTime?: InputMaybe<Scalars['DateTime']>;
+  startTime?: InputMaybe<Scalars['DateTime']>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  createTimebox: Timebox;
+  deleteTimebox: Scalars['Boolean'];
+  updateTimebox: Timebox;
+};
+
+
+export type MutationCreateTimeboxArgs = {
+  input: CreateTimeboxInput;
+};
+
+
+export type MutationDeleteTimeboxArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationUpdateTimeboxArgs = {
+  input: UpdateTimeboxInput;
+};
+
 export type Query = {
   __typename?: 'Query';
   ping: Scalars['String'];
@@ -91,10 +121,33 @@ export type TimeslotEdge = {
   node: Timeslot;
 };
 
+export type UpdateTimeboxInput = {
+  clientId?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  endTime?: InputMaybe<Scalars['DateTime']>;
+  id?: InputMaybe<Scalars['String']>;
+  startTime?: InputMaybe<Scalars['DateTime']>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
 export type SayHelloQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type SayHelloQuery = { __typename?: 'Query', ping: string };
+
+export type UpdateTimeboxMutationVariables = Exact<{
+  input: UpdateTimeboxInput;
+}>;
+
+
+export type UpdateTimeboxMutation = { __typename?: 'Mutation', updateTimebox: { __typename?: 'Timebox', id: string } };
+
+export type DeleteTimeboxMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteTimeboxMutation = { __typename?: 'Mutation', deleteTimebox: boolean };
 
 export type TodayQueryVariables = Exact<{
   startTime?: InputMaybe<Scalars['DateTime']>;
@@ -104,6 +157,16 @@ export type TodayQueryVariables = Exact<{
 
 export type TodayQuery = { __typename?: 'Query', timeboxes: Array<{ __typename?: 'Timebox', id: string, title?: string | null, description?: string | null, startTime?: any | null, endTime?: any | null, task?: { __typename?: 'Task', title?: string | null, id: string } | null }> };
 
+export type CreateTimeboxMutationVariables = Exact<{
+  input: CreateTimeboxInput;
+}>;
+
+
+export type CreateTimeboxMutation = { __typename?: 'Mutation', createTimebox: { __typename?: 'Timebox', id: string } };
+
 
 export const SayHelloDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"sayHello"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ping"}}]}}]} as unknown as DocumentNode<SayHelloQuery, SayHelloQueryVariables>;
+export const UpdateTimeboxDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateTimebox"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateTimeboxInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTimebox"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateTimeboxMutation, UpdateTimeboxMutationVariables>;
+export const DeleteTimeboxDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteTimebox"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteTimebox"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<DeleteTimeboxMutation, DeleteTimeboxMutationVariables>;
 export const TodayDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Today"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"startTime"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"DateTime"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"endTime"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"DateTime"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"timeboxes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"startTime"},"value":{"kind":"Variable","name":{"kind":"Name","value":"startTime"}}},{"kind":"Argument","name":{"kind":"Name","value":"endTime"},"value":{"kind":"Variable","name":{"kind":"Name","value":"endTime"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"startTime"}},{"kind":"Field","name":{"kind":"Name","value":"endTime"}},{"kind":"Field","name":{"kind":"Name","value":"task"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<TodayQuery, TodayQueryVariables>;
+export const CreateTimeboxDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateTimebox"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateTimeboxInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTimebox"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateTimeboxMutation, CreateTimeboxMutationVariables>;

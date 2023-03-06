@@ -2,10 +2,12 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:import/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:@typescript-eslint/recommended",
     "eslint-config-prettier",
+    "@unocss",
   ],
   plugins: ["import", "simple-import-sort", "unused-imports"],
   settings: {
@@ -53,6 +55,15 @@ module.exports = {
 
     // Remove unused imports
     "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    // "@typescript-eslint/no-unused-vars": [
+    //   "error", // or "error"
+    //   {
+    //     "argsIgnorePattern": "^_",
+    //     "varsIgnorePattern": "^_",
+    //     "caughtErrorsIgnorePattern": "^_"
+    //   }
+    // ],
     "unused-imports/no-unused-imports": "error",
     "unused-imports/no-unused-vars": [
       "warn",
