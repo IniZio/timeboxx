@@ -46,6 +46,7 @@ export const TodayScreen: React.FC = () => {
       startTime: todayStart,
       endTime: todayEnd,
     },
+    requestPolicy: "cache-and-network",
   });
 
   const [_, createTimeboxMutation] = useMutation<Timebox, CreateTimeboxMutationVariables>(CreateTimeboxMutation);
@@ -70,6 +71,11 @@ export const TodayScreen: React.FC = () => {
     [todayScreen.data?.timeboxes],
   );
 
+  const handleTimeboxDeleted = useCallback(() => {
+    setFocusedTimebox(undefined);
+    refetchTodayScreen();
+  }, [refetchTodayScreen]);
+
   return (
     <div className="flex h-full">
       <div un-p="x-6 y-6" un-h="full" un-w="128" un-border="r slate-200">
@@ -87,7 +93,7 @@ export const TodayScreen: React.FC = () => {
           </div>
         )}
       </div>
-      {!!focusedTimebox && <TimeboxDetail timebox={focusedTimebox} />}
+      {!!focusedTimebox && <TimeboxDetail timebox={focusedTimebox} onDelete={handleTimeboxDeleted} />}
     </div>
   );
 };

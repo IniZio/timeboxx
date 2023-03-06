@@ -11,6 +11,7 @@ scalar DateTime
 type Mutation {
   createTimebox(input: CreateTimeboxInput!): Timebox!
   updateTimebox(input: UpdateTimeboxInput!): Timebox!
+  deleteTimebox(id: String!): Boolean!
 }
 
 type Query {

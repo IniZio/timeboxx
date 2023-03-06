@@ -61,3 +61,15 @@ class TimeboxMutation:
         )
 
         return cast(Timebox, timebox)
+
+    @strawberry.field
+    async def delete_timebox(
+        self,
+        info: Info[Context, Any],
+        id: str,
+    ) -> bool:
+        timebox_service = info.context.timebox_service
+
+        await timebox_service.delete_timebox(id=id)
+
+        return True

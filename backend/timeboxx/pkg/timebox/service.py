@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import or_, select
+from sqlalchemy import delete, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from timeboxx.pkg.db_models.timebox import Timebox
@@ -85,3 +85,6 @@ class TimeboxService:
             timebox.end_time = end_time  # type: ignore
 
         return timebox
+
+    async def delete_timebox(self, id: str):
+        await self.session.execute(delete(Timebox).where(Timebox.id == id))
