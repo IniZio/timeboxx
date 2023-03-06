@@ -21,7 +21,7 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
 
   const inputStore = useStore({
     title: "",
-    dateRange: [new Date(), null] as [Maybe<Date>, Maybe<Date>],
+    dateRange: [new Date(), new Date()] as [Maybe<Date>, Maybe<Date>],
 
     onChangeTitle(evt: ChangeEvent<HTMLInputElement>) {
       inputStore.title = evt.target.value;
@@ -32,7 +32,7 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
 
     reset() {
       inputStore.title = "";
-      inputStore.dateRange = [new Date(), null];
+      inputStore.dateRange = [new Date(), new Date()];
     },
   });
 

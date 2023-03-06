@@ -51,7 +51,7 @@ export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox
   }, []);
 
   const handleDeleteTimebox = useCallback(() => {
-    deleteTimeboxMutation({ id: timebox.id }).then(() => onDelete(timebox.id));
+    deleteTimeboxMutation({ id: timebox.id }).then(() => onDelete?.(timebox.id));
   }, [deleteTimeboxMutation, onDelete, timebox.id]);
 
   useEffect(() => {
