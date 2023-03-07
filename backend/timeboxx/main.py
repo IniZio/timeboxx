@@ -6,7 +6,6 @@ from fastapi_async_sqlalchemy import SQLAlchemyMiddleware
 from timeboxx.container import Container
 from timeboxx.graphql.router import router as graphql_router
 from timeboxx.healthz import router as healthz_router
-from timeboxx.pkg.config import settings
 
 # TODO: Disable under production
 debugpy.listen(("0.0.0.0", 5678))
@@ -16,14 +15,14 @@ container = Container()
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
+    allow_origins=container.settings().CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 app.add_middleware(
     SQLAlchemyMiddleware,
-    db_url=settings.ASYNC_DATABASE_URL,
+    db_url=container.settings().ASYNC_DATABASE_URL,
     commit_on_exit=True,
     engine_args={"echo": True},
 )

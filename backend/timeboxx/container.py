@@ -1,6 +1,9 @@
 from dependency_injector import containers, providers
 from fastapi_async_sqlalchemy import db
 
+from timeboxx.pkg.auth.authgear_admin import AuthgearAdminAPI
+from timeboxx.pkg.auth.service import AuthService
+from timeboxx.pkg.config import Settings
 from timeboxx.pkg.task.service import TaskService
 from timeboxx.pkg.timebox.service import TimeboxService
 
@@ -10,7 +13,18 @@ class Container(containers.DeclarativeContainer):
         modules=[".healthz", ".graphql.router"]
     )
 
+    settings = providers.Singleton(Settings)
+
     session = providers.Resource(lambda: db.session)
+
+    authgear_admin = providers.Factory(AuthgearAdminAPI, settings=settings)
+
+    auth_service = providers.Factory(
+        AuthService,
+        session=session,
+        settings=settings,
+        authgear_admin=authgear_admin,
+    )
 
     task_service = providers.Factory(
         TaskService,
