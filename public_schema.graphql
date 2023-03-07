@@ -28,6 +28,8 @@ type Task {
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  createdById: String
+  updatedById: String
   timeboxes: TimeboxConnection!
   timeslots: TimeslotConnection!
 }
@@ -41,6 +43,8 @@ type Timebox {
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  createdById: String
+  updatedById: String
   task: Task
   timeslots: TimeslotConnection!
 }
@@ -63,6 +67,8 @@ type Timeslot {
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  createdById: String
+  updatedById: String
   clientId: String
   task: Task
   timebox: Timebox
