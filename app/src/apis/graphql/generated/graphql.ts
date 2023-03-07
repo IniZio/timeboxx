@@ -61,6 +61,7 @@ export type QueryTimeboxesArgs = {
 export type Task = {
   __typename?: 'Task';
   createdAt: Scalars['DateTime'];
+  createdById?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   endTime?: Maybe<Scalars['DateTime']>;
   id: Scalars['String'];
@@ -69,11 +70,13 @@ export type Task = {
   timeslots: TimeslotConnection;
   title?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
+  updatedById?: Maybe<Scalars['String']>;
 };
 
 export type Timebox = {
   __typename?: 'Timebox';
   createdAt: Scalars['DateTime'];
+  createdById?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   endTime?: Maybe<Scalars['DateTime']>;
   id: Scalars['String'];
@@ -83,6 +86,7 @@ export type Timebox = {
   timeslots: TimeslotConnection;
   title?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
+  updatedById?: Maybe<Scalars['String']>;
 };
 
 export type TimeboxConnection = {
@@ -99,6 +103,7 @@ export type Timeslot = {
   __typename?: 'Timeslot';
   clientId?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
+  createdById?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   endTime?: Maybe<Scalars['DateTime']>;
   id: Scalars['String'];
@@ -109,6 +114,7 @@ export type Timeslot = {
   timeboxId?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
+  updatedById?: Maybe<Scalars['String']>;
 };
 
 export type TimeslotConnection = {

@@ -15,9 +15,11 @@ class TimeboxMutation:
         info: Info[Context, Any],
         input: CreateTimeboxInput,
     ) -> Timebox:
+        current_user = await info.context.current_user
         timebox_service = info.context.timebox_service
 
         timebox: Timebox = await timebox_service.create_timebox(
+            user_id=current_user.id if current_user else None,
             client_id=input.client_id,
             title=input.title,
             description=input.description,
@@ -33,6 +35,7 @@ class TimeboxMutation:
         info: Info[Context, Any],
         input: UpdateTimeboxInput,
     ) -> Timebox:
+        current_user = await info.context.current_user
         timebox_service = info.context.timebox_service
 
         dirty_fields: list[str] = []
@@ -51,6 +54,7 @@ class TimeboxMutation:
             dirty_fields.append("end_time")
 
         timebox: Timebox = await timebox_service.update_timebox(
+            user_id=current_user.id if current_user else None,
             id=input.id,
             client_id=input.client_id,
             title=input.title,

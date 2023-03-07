@@ -12,9 +12,16 @@ class TimeboxService:
         self.session = session
 
     async def list_timeboxes(
-        self, start_time: Optional[datetime] = None, end_time: Optional[datetime] = None
+        self,
+        user_id: str,
+        start_time: Optional[datetime] = None,
+        end_time: Optional[datetime] = None,
     ) -> list[Timebox]:
-        stmt = select(Timebox).order_by(Timebox.start_time, Timebox.end_time)
+        stmt = (
+            select(Timebox)
+            .filter(Timebox.created_by_id == user_id)
+            .order_by(Timebox.start_time, Timebox.end_time)
+        )
 
         if start_time:
             stmt = stmt.filter(Timebox.start_time >= start_time)
@@ -29,6 +36,7 @@ class TimeboxService:
 
     async def create_timebox(
         self,
+        user_id: Optional[str] = None,
         client_id: Optional[str] = None,
         title: Optional[str] = None,
         description: Optional[str] = None,
@@ -37,6 +45,8 @@ class TimeboxService:
     ):
         timebox = Timebox(
             id=Timebox.id_factory(),
+            created_by_id=user_id,
+            updated_by_id=user_id,
             client_id=client_id,
             title=title,
             description=description,
@@ -50,6 +60,7 @@ class TimeboxService:
         self,
         id: Optional[str] = None,
         client_id: Optional[str] = None,
+        user_id: str | None = None,
         title: Optional[str] = None,
         description: Optional[str] = None,
         start_time: Optional[datetime] = None,
@@ -69,8 +80,10 @@ class TimeboxService:
         else:
             raise ValueError("Either id or client_id is required to update timebox")
 
-        find_timebox_result = await self.session.scalars(find_timebox_stmt)
-        timebox = find_timebox_result.one()
+        timebox = await self.session.scalar(find_timebox_stmt)
+
+        if not timebox:
+            return None
 
         if not dirty_fields or "title" in dirty_fields:
             timebox.title = title  # type: ignore
@@ -83,6 +96,8 @@ class TimeboxService:
 
         if not dirty_fields or "end_time" in dirty_fields:
             timebox.end_time = end_time  # type: ignore
+
+        timebox.updated_by_id = user_id  # type: ignore
 
         return timebox
 
