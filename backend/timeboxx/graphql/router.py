@@ -1,6 +1,7 @@
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
 from fastapi_async_sqlalchemy import db
+from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry.fastapi import GraphQLRouter
 from strawberry_sqlalchemy_mapper import StrawberrySQLAlchemyLoader
 
@@ -14,11 +15,13 @@ from timeboxx.pkg.timebox.service import TimeboxService
 
 @inject
 def get_context(
+    session: AsyncSession = Depends(Provide[Container.session]),
     auth_service: AuthService = Depends(Provide[Container.auth_service]),
     task_service: TaskService = Depends(Provide[Container.task_service]),
     timebox_service: TimeboxService = Depends(Provide[Container.timebox_service]),
 ):
     return Context(
+        session=session,
         sqlalchemy_loader=StrawberrySQLAlchemyLoader(bind=db.session),
         auth_service=auth_service,
         task_service=task_service,

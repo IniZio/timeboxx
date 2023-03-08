@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import cast
 
 from asyncstdlib.functools import cached_property
+from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry.fastapi import BaseContext
 from strawberry_sqlalchemy_mapper import StrawberrySQLAlchemyLoader
 
@@ -13,6 +14,7 @@ from timeboxx.pkg.timebox.service import TimeboxService
 
 @dataclass
 class Context(BaseContext):
+    session: AsyncSession
     sqlalchemy_loader: StrawberrySQLAlchemyLoader
     task_service: TaskService
     timebox_service: TimeboxService

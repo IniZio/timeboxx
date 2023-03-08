@@ -1,27 +1,29 @@
-import os
-from dataclasses import dataclass
+from pydantic import BaseSettings
 
 
-@dataclass()
-class Settings:
-    DATABASE_URL = os.environ.get("DATABASE_URL", "")
-    DATABASE_SCHEMA = os.environ.get("DATABASE_SCHEMA", "")
+class Settings(BaseSettings):
+    @classmethod
+    def from_env(cls):
+        return cls.parse_obj({})
 
-    AUTHGEAR_ENDPOINT = os.environ.get("AUTHGEAR_ENDPOINT", "")
-    AUTHGEAR_ADMIN_API_ENDPOINT = os.environ.get("AUTHGEAR_ADMIN_API_ENDPOINT", "")
-    AUTHGEAR_ADMIN_API_KEY_ID = os.environ.get("AUTHGEAR_ADMIN_API_KEY_ID", "")
-    AUTHGEAR_ADMIN_API_KEY = os.environ.get("AUTHGEAR_ADMIN_API_KEY", "")
-    AUTHGEAR_APP_ID = os.environ.get("AUTHGEAR_APP_ID", "")
+    DATABASE_URL: str
+    DATABASE_SCHEMA: str
+
+    AUTHGEAR_ENDPOINT: str
+    AUTHGEAR_ADMIN_API_ENDPOINT: str
+    AUTHGEAR_ADMIN_API_KEY_ID: str
+    AUTHGEAR_ADMIN_API_KEY: str
+    AUTHGEAR_APP_ID: str
 
     @property
     def ASYNC_DATABASE_URL(self):
         return self.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
 
-    APP_URL = os.environ.get("APP_URL", "")
+    APP_URL: str
 
     @property
     def CORS_ORIGINS(self) -> list[str]:
         return [self.APP_URL]
 
 
-settings = Settings()
+settings = Settings.from_env()
