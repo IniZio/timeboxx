@@ -40,8 +40,17 @@ def upgrade() -> None:
         sa.UniqueConstraint("client_id", name=op.f("uq_timebox_client_id")),
         schema=settings.DATABASE_SCHEMA,
     )
-    op.add_column("timeslot", sa.Column("timebox_id", sa.Text(), nullable=True))
-    op.drop_constraint("fk_timeslot_task_id_task", "timeslot", type_="foreignkey")
+    op.add_column(
+        "timeslot",
+        sa.Column("timebox_id", sa.Text(), nullable=True),
+        schema=settings.DATABASE_SCHEMA,
+    )
+    op.drop_constraint(
+        "fk_timeslot_task_id_task",
+        "timeslot",
+        type_="foreignkey",
+        schema=settings.DATABASE_SCHEMA,
+    )
     op.create_foreign_key(
         op.f("fk_timeslot_task_id_task"),
         "timeslot",
@@ -76,7 +85,12 @@ def downgrade() -> None:
         type_="foreignkey",
     )
     op.create_foreign_key(
-        "fk_timeslot_task_id_task", "timeslot", "task", ["task_id"], ["id"]
+        "fk_timeslot_task_id_task",
+        "timeslot",
+        "task",
+        ["task_id"],
+        ["id"],
+        schema=settings.DATABASE_SCHEMA,
     )
-    op.drop_column("timeslot", "timebox_id")
+    op.drop_column("timeslot", "timebox_id", schema=settings.DATABASE_SCHEMA)
     op.drop_table("timebox", schema=settings.DATABASE_SCHEMA)
