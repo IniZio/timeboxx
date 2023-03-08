@@ -30,9 +30,7 @@ class TimeboxService:
                 or_(Timebox.end_time <= end_time, Timebox.end_time.is_(None))
             )
 
-        results = await self.session.scalars(stmt)
-
-        return list(results.all())
+        return list(await self.session.scalars(stmt))
 
     async def create_timebox(
         self,

@@ -13,9 +13,9 @@ class Container(containers.DeclarativeContainer):
         modules=[".healthz", ".graphql.router"]
     )
 
-    settings = providers.Singleton(Settings)
+    settings = providers.Singleton(Settings.from_env)
 
-    session = providers.Resource(lambda: db.session)
+    session = providers.ThreadLocalSingleton(lambda: db.session)
 
     authgear_admin = providers.Factory(AuthgearAdminAPI, settings=settings)
 
