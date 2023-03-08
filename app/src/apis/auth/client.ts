@@ -21,7 +21,7 @@ class AuthClient {
     const _input = input instanceof URL ? input.toString() : input;
 
     return authgear.fetch(_input, init);
-  }
+  };
 
   async startAuthentication(...args: Parameters<typeof authgear.startAuthentication>) {
     await this.#ensureInitialized;
