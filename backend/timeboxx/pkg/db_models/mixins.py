@@ -6,8 +6,6 @@ from sqlalchemy import func as sa_func
 from sqlalchemy.orm import Mapped, declarative_mixin, declared_attr, mapped_column
 from ulid import ulid
 
-from timeboxx.pkg.config import settings
-
 
 @declarative_mixin
 class IDMixin:
@@ -51,13 +49,9 @@ class AuditableMixin:
         server_default=sa_func.now(),
     )
 
-    created_by_id: Mapped[int] = mapped_column(
-        ForeignKey(f"{settings.DATABASE_SCHEMA}.user.id"), nullable=True
-    )
+    created_by_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=True)
 
-    updated_by_id: Mapped[int] = mapped_column(
-        ForeignKey(f"{settings.DATABASE_SCHEMA}.user.id"), nullable=True
-    )
+    updated_by_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=True)
 
     @staticmethod
     def update_time(mapper, connection, instance):

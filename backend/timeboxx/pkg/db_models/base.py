@@ -1,7 +1,7 @@
 from sqlalchemy import MetaData
 from sqlalchemy.ext.declarative import declarative_base
 
-from ..config import settings
+from ..config import AlembicSettings
 
 NAMING_CONVENTION = {
     "ix": "ix_%(column_0_label)s",
@@ -13,7 +13,7 @@ NAMING_CONVENTION = {
 
 metadata = MetaData(
     naming_convention=NAMING_CONVENTION,
-    schema=settings.DATABASE_SCHEMA,
+    schema=AlembicSettings.from_env().DATABASE_SCHEMA,
 )
 
 Base = declarative_base(metadata=metadata)

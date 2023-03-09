@@ -13,8 +13,10 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-from timeboxx.pkg.config import settings
+from timeboxx.pkg.config import AlembicSettings
 from timeboxx.pkg.db_models.base import Base
+
+settings = AlembicSettings.from_env()
 
 # add your model's MetaData object here
 # for 'autogenerate' support
