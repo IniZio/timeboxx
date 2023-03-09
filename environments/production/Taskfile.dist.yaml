@@ -1,0 +1,26 @@
+version: '3'
+
+output: prefixed
+
+env:
+  BLACKBOXDATA: environments/production/.blackbox
+
+tasks:
+  setup-env:timeboxx:
+    dir: timebox-server
+    cmds:
+      - fly launch --config {{.TASKFILE_DIR}}/timeboxx-server/fly.toml --force-machines --build-only
+
+  decrypt:
+    blackbox_decrypt_all_files
+
+  deploy:
+    cmds:
+      - task: decrypt
+      - task: deploy:timeboxx
+
+  deploy:timeboxx:
+    dir: timeboxx-server
+    cmds:
+      - flyctl secrets import --stage < .env
+      - flyctl deploy --config {{.TASKFILE_DIR}}/timeboxx-server/fly.toml ../../../backend
