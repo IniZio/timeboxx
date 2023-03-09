@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING
 from sqlalchemy import DateTime, ForeignKey, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from timeboxx.pkg.config import settings
 from timeboxx.pkg.db_models.base import Base
 from timeboxx.pkg.db_models.mixins import AuditableMixin, IDMixin, OfflineMixin
 
@@ -18,14 +17,10 @@ if TYPE_CHECKING:
 class Timeslot(Base, IDMixin, AuditableMixin, OfflineMixin):
     __tablename__ = "timeslot"
 
-    task_id: Mapped[int] = mapped_column(
-        ForeignKey(f"{settings.DATABASE_SCHEMA}.task.id"), nullable=True
-    )
+    task_id: Mapped[int] = mapped_column(ForeignKey("task.id"), nullable=True)
     task: Mapped[Task] = relationship(back_populates="timeslots", lazy=False)
 
-    timebox_id: Mapped[int] = mapped_column(
-        ForeignKey(f"{settings.DATABASE_SCHEMA}.timebox.id"), nullable=True
-    )
+    timebox_id: Mapped[int] = mapped_column(ForeignKey("timebox.id"), nullable=True)
     timebox: Mapped[Timebox] = relationship(back_populates="timeslots", lazy=False)
 
     title: Mapped[str] = mapped_column(

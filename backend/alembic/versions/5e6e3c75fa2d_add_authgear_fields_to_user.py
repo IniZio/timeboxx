@@ -8,13 +8,16 @@ Create Date: 2023-03-08 00:08:54.948711
 import sqlalchemy as sa
 
 from alembic import op
-from timeboxx.pkg.config import settings
+from timeboxx.pkg.config import AlembicSettings
 
 # revision identifiers, used by Alembic.
 revision = "5e6e3c75fa2d"
 down_revision = "03d3bea9bf2e"
 branch_labels = None
 depends_on = None
+
+
+settings = AlembicSettings.from_env()
 
 
 def upgrade() -> None:

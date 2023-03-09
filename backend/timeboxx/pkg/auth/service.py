@@ -9,7 +9,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from timeboxx.pkg.auth.authgear_admin import AuthgearAdminAPI
-from timeboxx.pkg.config import Settings
+from timeboxx.pkg.config import MainSettings
 from timeboxx.pkg.db_models.user import User
 
 
@@ -19,7 +19,7 @@ class AuthService:
     def __init__(
         self,
         session: AsyncSession,
-        settings: Settings,
+        settings: MainSettings,
         authgear_admin: AuthgearAdminAPI,
     ) -> None:
         self.settings = settings

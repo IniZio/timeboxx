@@ -1,7 +1,17 @@
 from pydantic import BaseSettings
 
 
-class Settings(BaseSettings):
+class AlembicSettings(BaseSettings):
+    @classmethod
+    def from_env(cls):
+        return cls.parse_obj({})
+
+    # DATABASE_URL will need runtime-checking anyway, so make it optional
+    DATABASE_URL: str = ""
+    DATABASE_SCHEMA: str = "timeboxx"
+
+
+class MainSettings(BaseSettings):
     @classmethod
     def from_env(cls):
         return cls.parse_obj({})
@@ -24,6 +34,3 @@ class Settings(BaseSettings):
     @property
     def CORS_ORIGINS(self) -> list[str]:
         return [self.APP_URL]
-
-
-settings = Settings.from_env()

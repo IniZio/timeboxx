@@ -8,13 +8,13 @@ import requests
 from pydantic import BaseModel
 
 from timeboxx.pkg.auth.models import AuthgearUser, encode_authgear_user_id
-from timeboxx.pkg.config import Settings
+from timeboxx.pkg.config import MainSettings
 
 
 class AuthgearAdminAPI:
     def __init__(
         self,
-        settings: Settings,
+        settings: MainSettings,
     ) -> None:
         self.access_token = ""
         self.exp = 0
