@@ -5,8 +5,12 @@ class AuthClient {
 
   constructor() {
     this.#ensureInitialized = authgear.configure({
-      endpoint: import.meta.env.VITE_APP_AUTHGEAR_ENDPOINT,
-      clientID: import.meta.env.VITE_APP_AUTHGEAR_CLIENTID,
+      endpoint: import.meta.env.DEV
+        ? import.meta.env.VITE_APP_AUTHGEAR_ENDPOINT
+        : window.__timeboxx_config.AUTHGEAR_ENDPOINT,
+      clientID: import.meta.env.DEV
+        ? import.meta.env.VITE_APP_AUTHGEAR_CLIENTID
+        : window.__timeboxx_config.AUTHGEAR_CLIENTID,
       sessionType: "refresh_token",
     });
   }

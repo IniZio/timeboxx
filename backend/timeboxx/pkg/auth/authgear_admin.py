@@ -19,7 +19,7 @@ class AuthgearAdminAPI:
         self.access_token = ""
         self.exp = 0
         self.endpoint = settings.AUTHGEAR_ADMIN_API_ENDPOINT
-        self.key = settings.AUTHGEAR_ADMIN_API_KEY
+        self.key = settings.AUTHGEAR_ADMIN_API_KEY.replace("\\n", "\n")
         self.key_id = settings.AUTHGEAR_ADMIN_API_KEY_ID
         self.app_id = settings.AUTHGEAR_APP_ID
 

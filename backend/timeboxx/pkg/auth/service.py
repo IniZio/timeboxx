@@ -84,5 +84,6 @@ class AuthService:
                 email=authgear_user.email,
             )
             self.session.add(user)
+            await self.session.commit()
 
         return user

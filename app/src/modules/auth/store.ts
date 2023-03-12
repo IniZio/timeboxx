@@ -19,7 +19,7 @@ export const authStore = store<AuthState>({
   },
   async login() {
     await authClient.startAuthentication({
-      redirectURI: `http://localhost:5173${Routes.OAuthRedirect}`,
+      redirectURI: new URL(Routes.OAuthRedirect, location.href).href,
       prompt: PromptOption.Login,
     });
   },

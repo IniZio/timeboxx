@@ -17,7 +17,16 @@ tasks:
     poetry install
 
   dev:
-    poetry run uvicorn timeboxx.main:app --reload --host localhost --port {{ .PORT }}
+    poetry run uvicorn timeboxx.main:app --reload --host 0.0.0.0 --port {{ .PORT }}
+
+  docker:build:
+    docker build -t timeboxx-server .
+
+  start:
+    poetry run uvicorn timeboxx.main:app --host 0.0.0.0
+
+  docker:start:
+    docker start timeboxx-container
 
   format:
     deps:

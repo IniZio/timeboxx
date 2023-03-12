@@ -45,3 +45,8 @@ Taskfile.yaml
 
 # env file
 .env
+
+# blackbox
+/environments/production/.blackbox/pubring.gpg~
+/environments/production/.blackbox/pubring.kbx~
+/environments/production/.blackbox/secring.gpg
