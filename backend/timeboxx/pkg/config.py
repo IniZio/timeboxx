@@ -11,6 +11,16 @@ class AlembicSettings(BaseSettings):
     DATABASE_SCHEMA: str = "timeboxx"
 
 
+class WebsiteSettings(BaseSettings):
+    @classmethod
+    def from_env(cls):
+        return cls.parse_obj({})
+
+    AUTHGEAR_ENDPOINT: str
+    AUTHGEAR_CLIENTID: str
+    GRAPHQL_PUBLIC_ENDPOINT: str
+
+
 class MainSettings(BaseSettings):
     @classmethod
     def from_env(cls):

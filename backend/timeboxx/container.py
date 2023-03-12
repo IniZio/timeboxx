@@ -3,17 +3,18 @@ from fastapi_async_sqlalchemy import db
 
 from timeboxx.pkg.auth.authgear_admin import AuthgearAdminAPI
 from timeboxx.pkg.auth.service import AuthService
-from timeboxx.pkg.config import MainSettings
+from timeboxx.pkg.config import MainSettings, WebsiteSettings
 from timeboxx.pkg.task.service import TaskService
 from timeboxx.pkg.timebox.service import TimeboxService
 
 
 class Container(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(
-        modules=[".healthz", ".graphql.router"]
+        modules=[".healthz", ".website", ".graphql.router"]
     )
 
     settings = providers.Singleton(MainSettings.from_env)
+    website_settings = providers.Singleton(WebsiteSettings.from_env)
 
     session = providers.ThreadLocalSingleton(lambda: db.session)
 

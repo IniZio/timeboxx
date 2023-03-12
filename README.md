@@ -16,5 +16,8 @@ asdf plugin add poetry || true
 asdf install
 
 task setup-local
-task dev
+task docker:dev # `task dev` if you host your own db
+
+# After db is ready
+task db:upgrade
 ```

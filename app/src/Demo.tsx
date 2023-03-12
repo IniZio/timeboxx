@@ -30,7 +30,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1 un-text="purple">{askHello.fetching ? "Loading..." : askHello.data?.hello}</h1>
+      <h1 un-text="purple">{askHello.fetching ? "Loading..." : askHello.data?.ping}</h1>
       <button onClick={handleLogin}>Login</button>
       <button onClick={increment}>{counter()}++</button>
       <Router />

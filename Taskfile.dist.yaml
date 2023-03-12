@@ -34,6 +34,13 @@ tasks:
     deps:
       - app:build
 
+  deploy:production:
+    cmds:
+      - task: backend:graphql:export
+      - task: app:build
+      - cp -r app/dist/* backend/timeboxx/public
+      - task -d environments/production deploy
+
   #########################
   # Docker
   #########################

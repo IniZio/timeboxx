@@ -13,7 +13,7 @@ tasks:
   dev:
     deps:
       - .dev
-      - codegen
+      - codegen:watch
 
   .dev:
     internal: true
@@ -50,7 +50,7 @@ tasks:
     cmds:
       - pnpm run prettier:check
 
-  codegen: pnpm graphql:codegen
+  codegen:watch: pnpm graphql:codegen --watch
 
   build:
     cmds:
