@@ -90,6 +90,9 @@ tasks:
       - task: graphql:export
       - git status --porcelain ../public_schema.graphql | grep -q M && exit 1 || exit 0
 
+  db:check:
+    poetry run alembic check
+
   db:revision:
     poetry run alembic revision --autogenerate -m "{{.CLI_ARGS}}"
 

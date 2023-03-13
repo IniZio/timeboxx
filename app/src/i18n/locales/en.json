@@ -2,5 +2,6 @@
   "app.name": "Timeboxx",
   "shells.app.nav.today": "Today",
   "shells.app.nav.tasks": "Tasks",
-  "modules.today.components.CreateTimeboxInput.title.placeholder": "Title here"
+  "modules.today.components.CreateTimeboxInput.title.placeholder": "Title here",
+  "modules.tasks.title": "Tasks"
 }
