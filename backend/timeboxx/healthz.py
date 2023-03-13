@@ -2,10 +2,11 @@ import traceback
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from timeboxx.container import Container
 from timeboxx.pkg.config import MainSettings
-from timeboxx.pkg.task.service import TaskService
 
 router = APIRouter()
 
@@ -14,11 +15,11 @@ router = APIRouter()
 @inject
 async def healthz_route(
     settings: MainSettings = Depends(Provide[Container.settings]),
-    task_service: TaskService = Depends(Provide[Container.task_service]),
+    session: AsyncSession = Depends(Provide[Container.session]),
 ):
     db_healthy = True
     try:
-        print(await task_service.list_tasks())
+        print(await session.scalar(text("SELECT 1")))
     except Exception as e:
         traceback.print_exception(e)
         db_healthy = False

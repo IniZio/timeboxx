@@ -11,8 +11,12 @@ from timeboxx.graphql.task import Task
 class TaskQuery:
     @strawberry.field
     async def tasks(self, info: Info[Context, Any]) -> list[Task]:
+        current_user = await info.context.current_user
         task_service = info.context.task_service
 
-        tasks = await task_service.list_tasks()
+        if not current_user:
+            return []
+
+        tasks = await task_service.list_tasks(user_id=current_user.id)
 
         return cast(list[Task], tasks)

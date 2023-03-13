@@ -8,8 +8,10 @@ class TaskService:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
-    async def list_tasks(self) -> list[Task]:
-        results = await self.session.scalars(select(Task))
+    async def list_tasks(self, user_id: str) -> list[Task]:
+        results = await self.session.scalars(
+            select(Task).filter(Task.created_by_id == user_id)
+        )
         return list(results.all())
 
     async def create_task(self) -> Task:

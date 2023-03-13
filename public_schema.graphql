@@ -20,11 +20,20 @@ type Query {
   ping: String!
 }
 
+enum StrawberryTaskStatus {
+  BACKLOG
+  TODO
+  IN_PROGRESS
+  DONE
+  CANCELLED
+}
+
 type Task {
   title: String
   description: String
   startTime: DateTime
   endTime: DateTime
+  status: StrawberryTaskStatus
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
