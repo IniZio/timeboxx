@@ -5,6 +5,7 @@ from enum import Enum
 from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import DateTime, Text
+from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from timeboxx.pkg.db_models.base import Base
@@ -25,6 +26,8 @@ class TaskStatus(Enum):
 
 class Task(Base, IDMixin, AuditableMixin, OfflineMixin):
     __tablename__ = "task"
+
+    Status = TaskStatus
 
     title: Mapped[str] = mapped_column(
         Text,
@@ -49,4 +52,6 @@ class Task(Base, IDMixin, AuditableMixin, OfflineMixin):
     timeboxes: Mapped[list[Timebox]] = relationship(back_populates="task")
     timeslots: Mapped[list[Timeslot]] = relationship(back_populates="task")
 
-    status: Mapped[Optional[TaskStatus]]
+    status: Mapped[Optional[TaskStatus]] = mapped_column(
+        postgresql.ENUM(TaskStatus, name="task_status")
+    )

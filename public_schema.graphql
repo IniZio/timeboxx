@@ -1,3 +1,12 @@
+input CreateTaskInput {
+  clientId: String = null
+  title: String = null
+  description: String = null
+  startTime: DateTime = null
+  endTime: DateTime = null
+  status: TaskStatus = null
+}
+
 input CreateTimeboxInput {
   clientId: String = null
   title: String = null
@@ -12,6 +21,7 @@ type Mutation {
   createTimebox(input: CreateTimeboxInput!): Timebox!
   updateTimebox(input: UpdateTimeboxInput!): Timebox!
   deleteTimebox(id: String!): Boolean!
+  createTask(input: CreateTaskInput!): Task!
 }
 
 type Query {
@@ -20,20 +30,12 @@ type Query {
   ping: String!
 }
 
-enum StrawberryTaskStatus {
-  BACKLOG
-  TODO
-  IN_PROGRESS
-  DONE
-  CANCELLED
-}
-
 type Task {
   title: String
   description: String
   startTime: DateTime
   endTime: DateTime
-  status: StrawberryTaskStatus
+  status: TaskStatus
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -41,6 +43,14 @@ type Task {
   updatedById: String
   timeboxes: TimeboxConnection!
   timeslots: TimeslotConnection!
+}
+
+enum TaskStatus {
+  BACKLOG
+  TODO
+  IN_PROGRESS
+  DONE
+  CANCELLED
 }
 
 type Timebox {

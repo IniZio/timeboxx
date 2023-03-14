@@ -3,5 +3,12 @@
   "shells.app.nav.today": "Today",
   "shells.app.nav.tasks": "Tasks",
   "modules.today.components.CreateTimeboxInput.title.placeholder": "Title here",
-  "modules.tasks.title": "Tasks"
+  "modules.tasks.title": "Tasks",
+  "modules.tasks.constants.status.no_status": "No Status",
+  "modules.tasks.constants.status.backlog": "Backlog",
+  "modules.tasks.constants.status.todo": "Todo",
+  "modules.tasks.constants.status.in_progress": "In Progress",
+  "modules.tasks.constants.status.done": "Done",
+  "modules.tasks.constants.status.cancelled": "Cancelled",
+  "modules.tasks.components.TaskList.add": "Add"
 }
