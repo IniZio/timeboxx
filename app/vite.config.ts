@@ -17,9 +17,7 @@ export default defineConfig({
         unocssAttributify(),
       ],
     }),
-    react({
-      jsxImportSource: "@iniz/react",
-    }),
+    react(),
     eslint({
       eslintOptions: {
         cache: true,
