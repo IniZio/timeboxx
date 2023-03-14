@@ -1,3 +1,4 @@
+from datetime import datetime
 from enum import Enum
 from typing import Optional
 
@@ -21,3 +22,13 @@ class Task:
     __exclude__ = ["client_id"]
 
     status: Optional[StrawberryTaskStatus]
+
+
+@strawberry.input
+class CreateTaskInput:
+    client_id: Optional[str] = None
+    title: Optional[str] = None
+    description: Optional[str] = None
+    start_time: Optional[datetime] = None
+    end_time: Optional[datetime] = None
+    status: Optional[StrawberryTaskStatus] = None

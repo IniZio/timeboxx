@@ -15,6 +15,15 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type CreateTaskInput = {
+  clientId?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  endTime?: InputMaybe<Scalars['DateTime']>;
+  startTime?: InputMaybe<Scalars['DateTime']>;
+  status?: InputMaybe<StrawberryTaskStatus>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
 export type CreateTimeboxInput = {
   clientId?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
@@ -25,9 +34,15 @@ export type CreateTimeboxInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createTask: Task;
   createTimebox: Timebox;
   deleteTimebox: Scalars['Boolean'];
   updateTimebox: Timebox;
+};
+
+
+export type MutationCreateTaskArgs = {
+  input: CreateTaskInput;
 };
 
 
