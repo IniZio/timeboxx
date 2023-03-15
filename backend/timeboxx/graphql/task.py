@@ -24,3 +24,15 @@ class CreateTaskInput:
     start_time: Optional[datetime] = None
     end_time: Optional[datetime] = None
     status: Optional[TaskStatus] = None
+
+
+@strawberry.input
+class UpdateTaskInput:
+    id: Optional[str] = None
+    client_id: Optional[str] = None
+    title: Optional[str] = None
+    description: Optional[str] = None
+    start_time: Optional[datetime] = None
+    end_time: Optional[datetime] = None
+    status: Optional[TaskStatus] = None
+    dirty_fields: Optional[list[str]] = None

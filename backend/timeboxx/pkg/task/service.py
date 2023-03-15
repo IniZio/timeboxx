@@ -13,7 +13,7 @@ class TaskService:
 
     async def list_tasks(self, user_id: str) -> list[Task]:
         results = await self.session.scalars(
-            select(Task).where(Task.created_by_id == user_id)
+            select(Task).where(Task.created_by_id == user_id).order_by(Task.created_at)
         )
         return list(results.all())
 

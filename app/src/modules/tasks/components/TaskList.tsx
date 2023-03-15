@@ -6,6 +6,7 @@ import { useMutation } from "urql";
 import { graphql } from "@/apis/graphql/generated";
 import { Card } from "@/components/Card";
 import { IconButton } from "@/components/IconButton";
+import { TaskCard } from "@/modules/tasks/components/TaskCard";
 import { TaskStatus } from "@/modules/tasks/constants";
 import { TaskListTask } from "@/modules/tasks/view-models";
 
@@ -35,7 +36,7 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh }) 
     setTitle(evt.target.value);
   }, []);
 
-  const handleSubmitTask = useCallback(
+  const handleSubmitCreateTask = useCallback(
     (evt: FormEvent<HTMLFormElement>) => {
       evt.preventDefault();
       createTaskMutation({
@@ -55,7 +56,7 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh }) 
   return (
     <div className="flex flex-col max-h-full">
       <div className="flex flex-shrink-0 w-70">
-        <p className="flex-1 text-sm leading-7 text-gray-500 capitalize">
+        <p className="text-sm flex-1 leading-7 text-gray-500 capitalize">
           {t(`modules.tasks.constants.status.${status?.toLowerCase() ?? "no_status"}` as never)}
         </p>
         <IconButton onClick={() => setTaskInputVisibility((v) => !v)}>
@@ -65,10 +66,10 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh }) 
 
       {taskInputVisibility && (
         <Card className="flex mt-2 p-2 gap-2">
-          <form onSubmit={handleSubmitTask}>
+          <form onSubmit={handleSubmitCreateTask}>
             <input
               placeholder="Title"
-              className="text-sm mb-2 p-1 leading-normal text-gray-900 w-full"
+              className="text-sm leading-normal text-gray-900 mb-2 p-1 w-full"
               value={title}
               onChange={handleChangeTitle}
             />
@@ -84,9 +85,7 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh }) 
 
       <div className="flex flex-col max-h-full gap-y-2 overflow-y-auto pb-6 mt-4">
         {tasks?.map((task) => (
-          <Card key={task.id}>
-            <p className="text-sm text-gray-900 leading-none">{task.title}</p>
-          </Card>
+          <TaskCard key={task.id} task={task} onRefresh={onRefresh} />
         ))}
       </div>
     </div>

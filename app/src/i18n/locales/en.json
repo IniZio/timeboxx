@@ -10,5 +10,6 @@
   "modules.tasks.constants.status.in_progress": "In Progress",
   "modules.tasks.constants.status.done": "Done",
   "modules.tasks.constants.status.cancelled": "Cancelled",
-  "modules.tasks.components.TaskList.add": "Add"
+  "modules.tasks.components.TaskList.add": "Add",
+  "modules.tasks.components.TaskList.save": "Save"
 }

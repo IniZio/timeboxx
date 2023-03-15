@@ -21,6 +21,7 @@ class TimeboxService:
             select(Timebox)
             .filter(Timebox.created_by_id == user_id)
             .order_by(Timebox.start_time, Timebox.end_time)
+            .order_by(Timebox.created_at)
         )
 
         if start_time:
