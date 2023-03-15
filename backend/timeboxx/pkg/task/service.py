@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from timeboxx.pkg.db_models.task import Task, TaskStatus
@@ -13,7 +13,7 @@ class TaskService:
 
     async def list_tasks(self, user_id: str) -> list[Task]:
         results = await self.session.scalars(
-            select(Task).filter(Task.created_by_id == user_id)
+            select(Task).where(Task.created_by_id == user_id)
         )
         return list(results.all())
 
@@ -28,6 +28,7 @@ class TaskService:
         status: Optional[TaskStatus] = None,
     ) -> Task:
         task = Task(
+            id=Task.id_factory(),
             created_by_id=user_id,
             updated_by_id=user_id,
             client_id=client_id,
@@ -39,5 +40,50 @@ class TaskService:
         )
 
         self.session.add(task)
-
         return task
+
+    async def update_task(
+        self,
+        user_id: Optional[str] = None,
+        id: Optional[str] = None,
+        client_id: Optional[str] = None,
+        title: Optional[str] = None,
+        description: Optional[str] = None,
+        start_time: Optional[datetime] = None,
+        end_time: Optional[datetime] = None,
+        status: Optional[TaskStatus] = None,
+        dirty_fields: Optional[list[str]] = None,
+    ) -> Optional[Task]:
+        find_task_stmt = select(Task)
+
+        if client_id and id:
+            find_task_stmt = find_task_stmt.where(
+                or_(Task.id == id, Task.client_id == client_id)
+            )
+        elif client_id:
+            find_task_stmt = find_task_stmt.where(Task.client_id == client_id)
+        elif id:
+            find_task_stmt = find_task_stmt.where(Task.id == id)
+        else:
+            raise ValueError("Either id or client_id is required to update timebox")
+
+        timebox = await self.session.scalar(find_task_stmt)
+
+        if not timebox:
+            return None
+
+        if not dirty_fields or "title" in dirty_fields:
+            timebox.title = title
+
+        if not dirty_fields or "description" in dirty_fields:
+            timebox.description = description
+
+        if not dirty_fields or "start_time" in dirty_fields:
+            timebox.start_time = start_time
+
+        if not dirty_fields or "end_time" in dirty_fields:
+            timebox.end_time = end_time
+
+        timebox.updated_by_id = user_id
+
+        return timebox
