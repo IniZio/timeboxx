@@ -8,10 +8,16 @@ const config: CodegenConfig = {
     "./src/apis/graphql/generated/": {
       preset: "client",
       plugins: [
-        // "typescript-urql"
+        // "typescript-urql",
       ],
       config: {
         useTypeImports: true,
+      },
+    },
+    "./src/apis/graphql/generated/introspection.json": {
+      plugins: ["introspection"],
+      config: {
+        minify: true,
       },
     },
   },

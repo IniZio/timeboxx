@@ -18,6 +18,8 @@ const UpdateTaskMutation = graphql(`
   mutation UpdateTask($input: UpdateTaskInput!) {
     updateTask(input: $input) {
       id
+      title
+      status
     }
   }
 `);

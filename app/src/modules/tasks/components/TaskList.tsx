@@ -5,6 +5,7 @@ import { useMutation } from "urql";
 
 import { graphql } from "@/apis/graphql/generated";
 import { Card } from "@/components/Card";
+import { Draggable } from "@/components/dnd-kit/Draggable";
 import { IconButton } from "@/components/IconButton";
 import { TaskCard } from "@/modules/tasks/components/TaskCard";
 import { TaskStatus } from "@/modules/tasks/constants";
@@ -54,8 +55,8 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh }) 
   );
 
   return (
-    <div className="flex flex-col max-h-full w-70">
-      <div className="flex w-70 flex-shrink-0">
+    <div className="flex flex-col max-h-full w-70 h-full p-2">
+      <div className="flex max-w-full">
         <p className="text-sm flex-1 leading-7 text-gray-500 capitalize">
           {t(`modules.tasks.constants.status.${status?.toLowerCase() ?? "no_status"}` as never)}
         </p>
@@ -83,9 +84,11 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh }) 
         </Card>
       )}
 
-      <div className="flex flex-col max-h-full gap-y-2 overflow-y-auto pb-6 mt-4">
+      <div className="flex flex-col max-h-full h-full gap-y-2 overflow-y-auto pb-6 mt-4 overflow-x-hidden">
         {tasks?.map((task) => (
-          <TaskCard key={task.id} task={task} onRefresh={onRefresh} />
+          <Draggable key={task.id} id={task.id}>
+            <TaskCard task={task} onRefresh={onRefresh} />
+          </Draggable>
         ))}
       </div>
     </div>

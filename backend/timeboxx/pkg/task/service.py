@@ -84,6 +84,9 @@ class TaskService:
         if not dirty_fields or "end_time" in dirty_fields:
             timebox.end_time = end_time  # type: ignore
 
+        if not dirty_fields or "status" in dirty_fields:
+            timebox.status = status  # type: ignore
+
         timebox.updated_by_id = user_id  # type: ignore
 
         return timebox
