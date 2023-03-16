@@ -73,17 +73,17 @@ class TaskService:
             return None
 
         if not dirty_fields or "title" in dirty_fields:
-            timebox.title = title
+            timebox.title = title  # type: ignore
 
         if not dirty_fields or "description" in dirty_fields:
-            timebox.description = description
+            timebox.description = description  # type: ignore
 
         if not dirty_fields or "start_time" in dirty_fields:
-            timebox.start_time = start_time
+            timebox.start_time = start_time  # type: ignore
 
         if not dirty_fields or "end_time" in dirty_fields:
-            timebox.end_time = end_time
+            timebox.end_time = end_time  # type: ignore
 
-        timebox.updated_by_id = user_id
+        timebox.updated_by_id = user_id  # type: ignore
 
         return timebox

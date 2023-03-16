@@ -19,7 +19,7 @@ class TaskMutation:
         task_service = info.context.task_service
 
         task = await task_service.create_task(
-            user_id=current_user.id if current_user else None,  # type: ignore
+            user_id=current_user.id if current_user else None,
             client_id=input.client_id,
             title=input.title,
             description=input.description,
@@ -40,7 +40,7 @@ class TaskMutation:
         task_service = info.context.task_service
 
         task = await task_service.update_task(
-            user_id=current_user.id if current_user else None,  # type: ignore
+            user_id=current_user.id if current_user else None,
             id=input.id,
             client_id=input.client_id,
             title=input.title,

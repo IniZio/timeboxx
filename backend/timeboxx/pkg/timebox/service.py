@@ -19,15 +19,15 @@ class TimeboxService:
     ) -> list[Timebox]:
         stmt = (
             select(Timebox)
-            .filter(Timebox.created_by_id == user_id)
+            .where(Timebox.created_by_id == user_id)
             .order_by(Timebox.start_time, Timebox.end_time)
             .order_by(Timebox.created_at)
         )
 
         if start_time:
-            stmt = stmt.filter(Timebox.start_time >= start_time)
+            stmt = stmt.where(Timebox.start_time >= start_time)
         if end_time:
-            stmt = stmt.filter(
+            stmt = stmt.where(
                 or_(Timebox.end_time <= end_time, Timebox.end_time.is_(None))
             )
 
@@ -69,13 +69,13 @@ class TimeboxService:
         find_timebox_stmt = select(Timebox)
 
         if client_id and id:
-            find_timebox_stmt = find_timebox_stmt.filter(
+            find_timebox_stmt = find_timebox_stmt.where(
                 or_(Timebox.id == id, Timebox.client_id == client_id)
             )
         elif client_id:
-            find_timebox_stmt = find_timebox_stmt.filter(Timebox.client_id == client_id)
+            find_timebox_stmt = find_timebox_stmt.where(Timebox.client_id == client_id)
         elif id:
-            find_timebox_stmt = find_timebox_stmt.filter(Timebox.id == id)
+            find_timebox_stmt = find_timebox_stmt.where(Timebox.id == id)
         else:
             raise ValueError("Either id or client_id is required to update timebox")
 

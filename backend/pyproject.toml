@@ -10,7 +10,6 @@ alembic = "^1.9.4"
 python = "^3.10"
 fastapi = "^0.92.0"
 uvicorn = {extras = ["standard"], version = "^0.20.0"}
-sqlalchemy = "^2.0.3"
 ulid = "^1.1"
 psycopg2-binary = "^2.9.5"
 strawberry-graphql = {version = "0.163.0", extras = ["fastapi"]}
@@ -25,6 +24,7 @@ marshmallow = "^3.19.0"
 requests = "^2.28.2"
 pydantic = "^1.10.5"
 asyncstdlib = "^3.10.5"
+sqlalchemy = "^2.0.6"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1.0"
