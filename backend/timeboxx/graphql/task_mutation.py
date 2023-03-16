@@ -52,3 +52,15 @@ class TaskMutation:
         )
 
         return cast(Task, task)
+
+    @strawberry.field
+    async def delete_task(
+        self,
+        info: Info[Context, Any],
+        id: str,
+    ) -> bool:
+        task_service = info.context.task_service
+
+        await task_service.delete_timebox(id=id)
+
+        return True

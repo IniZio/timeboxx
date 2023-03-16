@@ -54,8 +54,8 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh }) 
   );
 
   return (
-    <div className="flex flex-col max-h-full">
-      <div className="flex flex-shrink-0 w-70">
+    <div className="flex flex-col max-h-full w-70">
+      <div className="flex w-70 flex-shrink-0">
         <p className="text-sm flex-1 leading-7 text-gray-500 capitalize">
           {t(`modules.tasks.constants.status.${status?.toLowerCase() ?? "no_status"}` as never)}
         </p>

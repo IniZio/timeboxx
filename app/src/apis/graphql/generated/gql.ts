@@ -15,6 +15,7 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
 const documents = {
     "\n  query sayHello {\n    ping\n  }\n": types.SayHelloDocument,
     "\n  mutation UpdateTask($input: UpdateTaskInput!) {\n    updateTask(input: $input) {\n      id\n    }\n  }\n": types.UpdateTaskDocument,
+    "\n  mutation DeleteTask($id: String!) {\n    deleteTask(id: $id)\n  }\n": types.DeleteTaskDocument,
     "\n  mutation CreateTask($input: CreateTaskInput!) {\n    createTask(input: $input) {\n      id\n    }\n  }\n": types.CreateTaskDocument,
     "\n  query TasksScreen {\n    tasks {\n      id\n      description\n      endTime\n      startTime\n      title\n      status\n    }\n  }\n": types.TasksScreenDocument,
     "\n  mutation UpdateTimebox($input: UpdateTimeboxInput!) {\n    updateTimebox(input: $input) {\n      id\n    }\n  }\n": types.UpdateTimeboxDocument,
@@ -45,6 +46,10 @@ export function graphql(source: "\n  query sayHello {\n    ping\n  }\n"): (typeo
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation UpdateTask($input: UpdateTaskInput!) {\n    updateTask(input: $input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateTask($input: UpdateTaskInput!) {\n    updateTask(input: $input) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation DeleteTask($id: String!) {\n    deleteTask(id: $id)\n  }\n"): (typeof documents)["\n  mutation DeleteTask($id: String!) {\n    deleteTask(id: $id)\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

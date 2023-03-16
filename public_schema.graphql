@@ -23,6 +23,7 @@ type Mutation {
   deleteTimebox(id: String!): Boolean!
   createTask(input: CreateTaskInput!): Task!
   updateTask(input: UpdateTaskInput!): Task!
+  deleteTask(id: String!): Boolean!
 }
 
 type Query {

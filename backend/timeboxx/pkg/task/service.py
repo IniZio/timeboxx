@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import or_, select
+from sqlalchemy import delete, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from timeboxx.pkg.db_models.task import Task, TaskStatus
@@ -87,3 +87,6 @@ class TaskService:
         timebox.updated_by_id = user_id  # type: ignore
 
         return timebox
+
+    async def delete_timebox(self, id: str):
+        await self.session.execute(delete(Task).where(Task.id == id))
