@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING
+from enum import Enum
+from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import DateTime, Text
+from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from timeboxx.pkg.db_models.base import Base
@@ -14,8 +16,18 @@ if TYPE_CHECKING:
     from timeboxx.pkg.db_models.timeslot import Timeslot
 
 
+class TaskStatus(Enum):
+    BACKLOG = "BACKLOG"
+    TODO = "TODO"
+    IN_PROGRESS = "IN_PROGRESS"
+    DONE = "DONE"
+    CANCELLED = "CANCELLED"
+
+
 class Task(Base, IDMixin, AuditableMixin, OfflineMixin):
     __tablename__ = "task"
+
+    Status = TaskStatus
 
     title: Mapped[str] = mapped_column(
         Text,
@@ -39,3 +51,7 @@ class Task(Base, IDMixin, AuditableMixin, OfflineMixin):
 
     timeboxes: Mapped[list[Timebox]] = relationship(back_populates="task")
     timeslots: Mapped[list[Timeslot]] = relationship(back_populates="task")
+
+    status: Mapped[Optional[TaskStatus]] = mapped_column(
+        postgresql.ENUM(TaskStatus, name="task_status")
+    )

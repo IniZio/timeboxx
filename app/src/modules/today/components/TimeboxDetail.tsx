@@ -70,10 +70,10 @@ export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox
   return (
     <div className={cn(className, "p-6 flex-1")}>
       <div className="flex">
-        <input className="flex-1 text-lg leading-7 text-gray-900" value={title} onChange={handleChangeTitle} />
+        <input className="flex-1 text-gray-900 leading-7 text-lg" value={title} onChange={handleChangeTitle} />
         <Bin width={18} height={18} className="text-red cursor-pointer" onClick={handleDeleteTimebox} />
       </div>
-      <div className="my-4 gap-2">
+      <div className="gap-2 my-4">
         <div className="flex">
           <p className="leading-7 text-sm text-gray-500 w-32">Time</p>
           <div className="text-sm leading-7 text-gray-900 w-32 flex-1">

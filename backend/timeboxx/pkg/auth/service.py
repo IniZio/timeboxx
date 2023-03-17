@@ -74,7 +74,7 @@ class AuthService:
             return None
 
         user = await self.session.scalar(
-            select(User).filter(User.authgear_id == authgear_user.id)
+            select(User).where(User.authgear_id == authgear_user.id)
         )
 
         if user is None:
