@@ -23,4 +23,4 @@ tasks:
     dir: timeboxx-server
     cmds:
       - flyctl secrets import --stage < .env
-      - flyctl deploy --config {{.TASKFILE_DIR}}/timeboxx-server/fly.toml --remote-only ../../../backend
+      - flyctl deploy --config {{.TASKFILE_DIR}}/timeboxx-server/fly.toml --now --auto-confirm --force-machines --remote-only ../../../backend
