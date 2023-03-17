@@ -50,3 +50,4 @@ Taskfile.yaml
 /environments/production/.blackbox/pubring.gpg~
 /environments/production/.blackbox/pubring.kbx~
 /environments/production/.blackbox/secring.gpg
+docker-compose.override.yaml
