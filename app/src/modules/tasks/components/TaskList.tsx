@@ -21,8 +21,16 @@ export interface TaskListProps {
 const CreateTaskMutation = graphql(`
   mutation CreateTask($input: CreateTaskInput!) {
     createTask(input: $input) {
-      id
+      ...TaskList_TaskFragment
     }
+  }
+`);
+
+export const TaskList_TaskFragment = graphql(`
+  fragment TaskList_TaskFragment on Task {
+    id
+    title
+    status
   }
 `);
 
@@ -85,11 +93,13 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh }) 
       )}
 
       <div className="flex flex-col max-h-full h-full gap-y-2 overflow-y-auto pb-6 mt-4 overflow-x-hidden">
-        {tasks?.map((task) => (
-          <Draggable key={task.id} id={task.id}>
-            <TaskCard task={task} onRefresh={onRefresh} />
-          </Draggable>
-        ))}
+        {tasks?.map((task) => {
+          return (
+            <Draggable key={task.id} id={task.id}>
+              <TaskCard task={task} onRefresh={onRefresh} />
+            </Draggable>
+          );
+        })}
       </div>
     </div>
   );

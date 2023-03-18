@@ -16,6 +16,7 @@ export const IconButton: React.FC<IconButtonProps> = ({ className, children, onC
         className,
       )}
       onClick={onClick}
+      type="button"
     >
       {children}
     </button>

@@ -44,6 +44,11 @@ class AuthClient {
 
     return authgear.fetchUserInfo(...args);
   }
+
+  async logout(...args: Parameters<typeof authgear.logout>) {
+    await this.#ensureInitialized;
+    return authgear.logout(...args);
+  }
 }
 
 export const authClient = new AuthClient();

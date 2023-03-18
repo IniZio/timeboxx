@@ -24,25 +24,18 @@ const ORDERED_TASK_STATUS_LIST = [
   TaskStatus.Cancelled,
 ];
 
-const TasksScreenQuery = graphql(`
+export const TasksScreenQuery = graphql(`
   query TasksScreen {
     tasks {
-      id
-      description
-      endTime
-      startTime
-      title
-      status
+      ...TaskList_TaskFragment
     }
   }
 `);
 
-const UpdateTaskMutation = graphql(`
+export const UpdateTaskMutation = graphql(`
   mutation UpdateTask($input: UpdateTaskInput!) {
     updateTask(input: $input) {
-      id
-      title
-      status
+      ...TaskList_TaskFragment
     }
   }
 `);
@@ -50,7 +43,7 @@ const UpdateTaskMutation = graphql(`
 export const TasksScreen: React.FC<TasksScreenProps> = () => {
   const { t } = useTranslation();
 
-  const [tasksScreen, refetchTasksScreen] = useQuery({
+  const [tasksScreen] = useQuery({
     query: TasksScreenQuery,
     requestPolicy: "cache-and-network",
   });
@@ -79,9 +72,9 @@ export const TasksScreen: React.FC<TasksScreenProps> = () => {
       const { active, over } = evt;
       updateTaskMutation({
         input: { id: active.id.toString(), status: over?.id as TaskStatus, dirtyFields: ["status"] },
-      }).then(() => refetchTasksScreen());
+      });
     },
-    [refetchTasksScreen, updateTaskMutation],
+    [updateTaskMutation],
   );
 
   return (
@@ -98,7 +91,7 @@ export const TasksScreen: React.FC<TasksScreenProps> = () => {
 
               return (
                 <Droppable key={status} id={status as string}>
-                  <TaskList status={status} tasks={tasks} onRefresh={refetchTasksScreen} />
+                  <TaskList status={status} tasks={tasks} />
                 </Droppable>
               );
             })}
