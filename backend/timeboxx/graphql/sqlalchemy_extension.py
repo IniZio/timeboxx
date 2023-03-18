@@ -23,11 +23,7 @@ class SqlalchemyExtension(Extension):
             if isawaitable(resolved):
                 resolved = await resolved
 
-            if (
-                not root
-                and session.is_active
-                and (session.dirty or session.new or session.deleted)
-            ):
+            if session.is_active:
                 await session.commit()
 
             return resolved

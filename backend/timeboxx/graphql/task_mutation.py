@@ -36,6 +36,8 @@ class TaskMutation:
         info: Info[Context, Any],
         input: UpdateTaskInput,
     ) -> Task:
+        # raise Exception
+
         current_user = await info.context.current_user
         task_service = info.context.task_service
 
@@ -61,6 +63,6 @@ class TaskMutation:
     ) -> bool:
         task_service = info.context.task_service
 
-        await task_service.delete_timebox(id=id)
+        await task_service.delete_task(id=id)
 
         return True

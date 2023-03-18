@@ -20,6 +20,7 @@
     "@unocss/eslint-config": "^0.50.1",
     "@unocss/reset": "^0.49.5",
     "@urql/exchange-graphcache": "^5.2.0",
+    "@urql/exchange-refocus": "^1.0.0",
     "@wojtekmaj/react-datetimerange-picker": "^4.2.0",
     "@wojtekmaj/react-timerange-picker": "^4.2.0",
     "clsx": "^1.2.1",

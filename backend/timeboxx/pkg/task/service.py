@@ -13,7 +13,9 @@ class TaskService:
 
     async def list_tasks(self, user_id: str) -> list[Task]:
         results = await self.session.scalars(
-            select(Task).where(Task.created_by_id == user_id).order_by(Task.created_at)
+            select(Task)
+            .where(Task.created_by_id == user_id)
+            .order_by(Task.created_at.desc())
         )
         return list(results.all())
 
@@ -91,5 +93,5 @@ class TaskService:
 
         return timebox
 
-    async def delete_timebox(self, id: str):
+    async def delete_task(self, id: str):
         await self.session.execute(delete(Task).where(Task.id == id))

@@ -7,11 +7,20 @@ const config: CodegenConfig = {
   generates: {
     "./src/apis/graphql/generated/": {
       preset: "client",
-      plugins: [
-        // "typescript-urql",
-      ],
+      plugins: [],
+      presetConfig: {
+        fragmentMasking: false,
+        // fragmentMasking: { unmaskFunctionName: "getFragmentData" },
+        persistedDocuments: true,
+      },
       config: {
         useTypeImports: true,
+        avoidOptionals: {
+          field: true,
+          input: false,
+          object: true,
+          defaultValue: true,
+        },
       },
     },
     "./src/apis/graphql/generated/introspection.json": {

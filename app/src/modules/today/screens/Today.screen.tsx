@@ -14,7 +14,7 @@ import { TimeboxDetail } from "@/modules/today/components/TimeboxDetail";
 import { TimeboxItem } from "@/modules/today/components/TimeboxItem";
 import { TimeboxDetailTimebox, TimeboxItemTimebox } from "@/modules/today/view-models";
 
-const TodayScreenQuery = graphql(`
+export const TodayScreenQuery = graphql(`
   query Today($startTime: DateTime, $endTime: DateTime) {
     timeboxes(startTime: $startTime, endTime: $endTime) {
       id
@@ -22,10 +22,6 @@ const TodayScreenQuery = graphql(`
       description
       startTime
       endTime
-      task {
-        title
-        id
-      }
     }
   }
 `);
@@ -34,13 +30,17 @@ const CreateTimeboxMutation = graphql(`
   mutation CreateTimebox($input: CreateTimeboxInput!) {
     createTimebox(input: $input) {
       id
+      title
+      description
+      startTime
+      endTime
     }
   }
 `);
 
 export const TodayScreen: React.FC = () => {
   const [todayStart, todayEnd] = useMemo(() => [dayjs().startOf("day"), dayjs().endOf("day")], []);
-  const [todayScreen, refetchTodayScreen] = useQuery<TodayQuery, TodayQueryVariables>({
+  const [todayScreen] = useQuery<TodayQuery, TodayQueryVariables>({
     query: TodayScreenQuery,
     variables: {
       startTime: todayStart,
@@ -58,9 +58,9 @@ export const TodayScreen: React.FC = () => {
           startTime: value.dateRange[0],
           endTime: value.dateRange[1],
         },
-      }).then(refetchTodayScreen);
+      });
     },
-    [createTimeboxMutation, refetchTodayScreen],
+    [createTimeboxMutation],
   );
 
   const [focusedTimebox, setFocusedTimebox] = useState<TimeboxDetailTimebox>();
@@ -73,8 +73,7 @@ export const TodayScreen: React.FC = () => {
 
   const handleTimeboxDeleted = useCallback(() => {
     setFocusedTimebox(undefined);
-    refetchTodayScreen();
-  }, [refetchTodayScreen]);
+  }, []);
 
   return (
     <div className="flex h-full">

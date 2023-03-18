@@ -6,6 +6,7 @@ import { useMutation } from "urql";
 import { graphql } from "@/apis/graphql/generated";
 import { Card } from "@/components/Card";
 import { IconButton } from "@/components/IconButton";
+import { UpdateTaskMutation } from "@/modules/tasks/screens/Tasks.screen";
 import { TaskListTask } from "@/modules/tasks/view-models";
 
 export interface TaskCardProps {
@@ -13,16 +14,6 @@ export interface TaskCardProps {
   task: TaskListTask;
   onRefresh?: () => void;
 }
-
-const UpdateTaskMutation = graphql(`
-  mutation UpdateTask($input: UpdateTaskInput!) {
-    updateTask(input: $input) {
-      id
-      title
-      status
-    }
-  }
-`);
 
 const DeleteTaskMutation = graphql(`
   mutation DeleteTask($id: String!) {

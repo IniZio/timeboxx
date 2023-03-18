@@ -23,6 +23,10 @@ const UpdateTimeboxMutation = graphql(`
   mutation UpdateTimebox($input: UpdateTimeboxInput!) {
     updateTimebox(input: $input) {
       id
+      title
+      description
+      startTime
+      endTime
     }
   }
 `);

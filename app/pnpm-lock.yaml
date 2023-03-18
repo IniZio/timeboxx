@@ -21,6 +21,7 @@ specifiers:
   '@unocss/preset-web-fonts': ^0.50.1
   '@unocss/reset': ^0.49.5
   '@urql/exchange-graphcache': ^5.2.0
+  '@urql/exchange-refocus': ^1.0.0
   '@vitejs/plugin-react-swc': ^3.0.0
   '@wojtekmaj/react-datetimerange-picker': ^4.2.0
   '@wojtekmaj/react-timerange-picker': ^4.2.0
@@ -62,6 +63,7 @@ dependencies:
   '@unocss/eslint-config': 0.50.1_7kw3g6rralp5ps6mg3uyzz6azm
   '@unocss/reset': 0.49.5
   '@urql/exchange-graphcache': 5.2.0_graphql@16.6.0
+  '@urql/exchange-refocus': 1.0.0_graphql@16.6.0
   '@wojtekmaj/react-datetimerange-picker': 4.2.0_biqbaboplfbrettd7655fr4n2y
   '@wojtekmaj/react-timerange-picker': 4.2.0_biqbaboplfbrettd7655fr4n2y
   clsx: 1.2.1
@@ -2532,6 +2534,16 @@ packages:
 
   /@urql/exchange-graphcache/5.2.0_graphql@16.6.0:
     resolution: {integrity: sha512-wHSTkp6TAhioauK/85DyiiQP5vz4EAJx7JQ+39OaHZ9TSdDqWkg4zs9VAhV3OzSopA9DNbihZVZ32w7q8BSUEA==}
+    peerDependencies:
+      graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+    dependencies:
+      '@urql/core': 3.2.2_graphql@16.6.0
+      graphql: 16.6.0
+      wonka: 6.2.3
+    dev: false
+
+  /@urql/exchange-refocus/1.0.0_graphql@16.6.0:
+    resolution: {integrity: sha512-m2ZrY1ekn9IS+7hhvbVUFSG0Bb9b6s2uJvxx0uFrxscZ3r+Wc5M7wzzxdaImqXca4siSOPxjwME/NCy4/r/zuw==}
     peerDependencies:
       graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
