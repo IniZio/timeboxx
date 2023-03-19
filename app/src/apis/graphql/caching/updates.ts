@@ -12,7 +12,7 @@ import {
   DeleteTimeboxMutationVariables,
 } from "@/apis/graphql/generated/graphql";
 import { TasksScreenQuery } from "@/modules/tasks/screens/Tasks.screen";
-import { TodayScreenQuery } from "@/modules/today/screens/Today.screen";
+import { TodayScreenQuery } from "@/modules/timeboxes/screens/Today.screen";
 
 export const updates: UpdatesConfig = {
   Mutation: {

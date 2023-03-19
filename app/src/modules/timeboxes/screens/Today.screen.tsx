@@ -9,10 +9,10 @@ import {
   TodayQuery,
   TodayQueryVariables,
 } from "@/apis/graphql/generated/graphql";
-import { CreateTimeboxInput, CreateTimeboxInputProps } from "@/modules/today/components/CreateTimeboxInput";
-import { TimeboxDetail } from "@/modules/today/components/TimeboxDetail";
-import { TimeboxItem } from "@/modules/today/components/TimeboxItem";
-import { TimeboxDetailTimebox, TimeboxItemTimebox } from "@/modules/today/view-models";
+import { CreateTimeboxInput, CreateTimeboxInputProps } from "@/modules/timeboxes/components/CreateTimeboxInput";
+import { TimeboxDetail } from "@/modules/timeboxes/components/TimeboxDetail";
+import { TimeboxItem } from "@/modules/timeboxes/components/TimeboxItem";
+import { TimeboxDetailTimebox, TimeboxItemTimebox } from "@/modules/timeboxes/view-models";
 
 export const TodayScreenQuery = graphql(`
   query Today($startTime: DateTime, $endTime: DateTime) {

@@ -9,7 +9,7 @@ import {
   UpdateTimeboxMutationVariables,
 } from "@/apis/graphql/generated/graphql";
 import { TimeRangePicker } from "@/components/TimeRangePicker";
-import { TimeboxDetailTimebox } from "@/modules/today/view-models";
+import { TimeboxDetailTimebox } from "@/modules/timeboxes/view-models";
 import { cn } from "@/utils";
 
 export interface TimeboxDetailProps {

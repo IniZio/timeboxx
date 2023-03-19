@@ -7,7 +7,7 @@ import { FullScreenLoading } from "@/components/FullScreenLoading";
 import { HomeScreen } from "@/Home.screen";
 import { OAuthRedirectScreen } from "@/modules/auth/screens/OAuthRedirect.screen";
 import { TasksScreen } from "@/modules/tasks/screens/Tasks.screen";
-import { TodayScreen } from "@/modules/today/screens/Today.screen";
+import { TodayScreen } from "@/modules/timeboxes/screens/Today.screen";
 import { AppShell } from "@/shells";
 
 export const Routes = {

@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { useCallback, useMemo } from "react";
 
-import { TimeboxItemTimebox } from "@/modules/today/view-models";
+import { TimeboxItemTimebox } from "@/modules/timeboxes/view-models";
 
 export interface TimeboxItemProps {
   timebox: TimeboxItemTimebox;
