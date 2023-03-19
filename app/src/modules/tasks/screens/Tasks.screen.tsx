@@ -52,7 +52,7 @@ export const TasksScreen: React.FC<TasksScreenProps> = () => {
 
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
-      delay: 250,
+      delay: 150,
       tolerance: 5,
     },
   });

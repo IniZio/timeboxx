@@ -74,7 +74,7 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh }) 
       </div>
 
       {taskInputVisibility && (
-        <Card className="flex mt-2 p-2 gap-2">
+        <Card className="flex p-2 mt-2 gap-2">
           <form onSubmit={handleSubmitCreateTask}>
             <input
               placeholder="Title"
