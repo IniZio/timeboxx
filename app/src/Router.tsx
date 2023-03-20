@@ -7,6 +7,7 @@ import { FullScreenLoading } from "@/components/FullScreenLoading";
 import { HomeScreen } from "@/Home.screen";
 import { OAuthRedirectScreen } from "@/modules/auth/screens/OAuthRedirect.screen";
 import { TasksScreen } from "@/modules/tasks/screens/Tasks.screen";
+import { TimeboxesScreen } from "@/modules/timeboxes/screens/Timeboxes.screen";
 import { TodayScreen } from "@/modules/timeboxes/screens/Today.screen";
 import { AppShell } from "@/shells";
 
@@ -15,6 +16,7 @@ export const Routes = {
   OAuthRedirect: "/oauth-redirect",
   App: {
     Today: "/app/today",
+    Planned: "/app/planned",
     Tasks: "/app/tasks",
   },
 };
@@ -35,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: Routes.App.Today,
         element: <TodayScreen />,
+      },
+      {
+        path: Routes.App.Planned,
+        element: <TimeboxesScreen />,
       },
       {
         path: Routes.App.Tasks,

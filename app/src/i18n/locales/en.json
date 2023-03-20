@@ -1,6 +1,7 @@
 {
   "app.name": "Timeboxx",
   "shells.app.nav.today": "Today",
+  "shells.app.nav.timeboxes": "Planned",
   "shells.app.nav.tasks": "Tasks",
   "modules.today.components.CreateTimeboxInput.title.placeholder": "Title here",
   "modules.tasks.title": "Tasks",
@@ -11,5 +12,6 @@
   "modules.tasks.constants.status.done": "Done",
   "modules.tasks.constants.status.cancelled": "Cancelled",
   "modules.tasks.components.TaskList.add": "Add",
-  "modules.tasks.components.TaskList.save": "Save"
+  "modules.tasks.components.TaskList.save": "Save",
+  "modules.timeboxes.title": "Planned"
 }
