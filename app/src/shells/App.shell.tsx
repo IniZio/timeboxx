@@ -11,7 +11,7 @@ export const AppShell: LoaderScreen<UserInfo> = () => {
     <>
       <div className="flex h-screen">
         <SideNav />
-        <div className="flex-1 lg:min-w-0 isolate">
+        <div className="flex-1 min-w-0 isolate">
           <Outlet />
         </div>
       </div>

@@ -36,6 +36,7 @@ tasks:
 
   deploy:production:
     cmds:
+      - task: vendor
       - task: backend:graphql:export
       - task: app:build
       - cp -r app/dist/* backend/timeboxx/public
