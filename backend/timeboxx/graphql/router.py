@@ -22,7 +22,7 @@ def get_context(
 ):
     return Context(
         session=session,
-        sqlalchemy_loader=StrawberrySQLAlchemyLoader(bind=db.session),
+        sqlalchemy_loader=StrawberrySQLAlchemyLoader(bind=session),
         auth_service=auth_service,
         task_service=task_service,
         timebox_service=timebox_service,

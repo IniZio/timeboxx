@@ -1,8 +1,9 @@
 from datetime import datetime
-from typing import Optional
+from typing import cast, Any, Optional
 
-from sqlalchemy import delete, or_, select
+from sqlalchemy import delete, or_, select, tuple_
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.sql.functions import coalesce
 
 from timeboxx.pkg.db_models.timebox import Timebox
 
@@ -22,14 +23,13 @@ class TimeboxService:
             .where(Timebox.created_by_id == user_id)
             .order_by(Timebox.start_time, Timebox.end_time)
             .order_by(Timebox.created_at)
-        )
-
-        if start_time:
-            stmt = stmt.where(Timebox.start_time >= start_time)
-        if end_time:
-            stmt = stmt.where(
-                or_(Timebox.end_time <= end_time, Timebox.end_time.is_(None))
+            .filter(
+                cast(Any, tuple_(
+                    coalesce(Timebox.start_time, datetime.min),
+                    coalesce(Timebox.end_time, datetime.max),
+                ).op("overlaps")(tuple_(cast(Any, start_time or datetime.min), cast(Any, end_time or datetime.max))))
             )
+        )
 
         return list(await self.session.scalars(stmt))
 
