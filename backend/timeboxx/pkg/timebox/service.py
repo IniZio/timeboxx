@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import cast, Any, Optional
+from typing import Any, Optional, cast
 
 from sqlalchemy import delete, or_, select, tuple_
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -24,10 +24,18 @@ class TimeboxService:
             .order_by(Timebox.start_time, Timebox.end_time)
             .order_by(Timebox.created_at)
             .filter(
-                cast(Any, tuple_(
-                    coalesce(Timebox.start_time, datetime.min),
-                    coalesce(Timebox.end_time, datetime.max),
-                ).op("overlaps")(tuple_(cast(Any, start_time or datetime.min), cast(Any, end_time or datetime.max))))
+                cast(
+                    Any,
+                    tuple_(
+                        coalesce(Timebox.start_time, datetime.min),
+                        coalesce(Timebox.end_time, datetime.max),
+                    ).op("overlaps")(
+                        tuple_(
+                            cast(Any, start_time or datetime.min),
+                            cast(Any, end_time or datetime.max),
+                        )
+                    ),
+                )
             )
         )
 

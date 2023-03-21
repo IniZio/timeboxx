@@ -12,6 +12,7 @@ import {
   DeleteTimeboxMutationVariables,
 } from "@/apis/graphql/generated/graphql";
 import { TasksScreenQuery } from "@/modules/tasks/screens/Tasks.screen";
+import { TimeboxesScreenQuery } from "@/modules/timeboxes/screens/Timeboxes.screen";
 import { TodayScreenQuery } from "@/modules/timeboxes/screens/Today.screen";
 
 export const updates: UpdatesConfig = {
@@ -26,12 +27,31 @@ export const updates: UpdatesConfig = {
           return data;
         },
       );
+
+      const [_todayStart, sevenDaysLater] = [dayjs().startOf("day"), dayjs().add(7, "days").endOf("day")];
+      cache.updateQuery(
+        { query: TimeboxesScreenQuery, variables: { startTime: todayStart, endTime: sevenDaysLater } },
+        (data) => {
+          data?.timeboxes.push(result.createTimebox);
+          return data;
+        },
+      );
     },
     deleteTimebox(result: DeleteTimeboxMutation, vars: DeleteTimeboxMutationVariables, cache) {
       if (result.deleteTimebox) {
         const [todayStart, todayEnd] = [dayjs().startOf("day"), dayjs().endOf("day")];
         cache.updateQuery(
           { query: TodayScreenQuery, variables: { startTime: todayStart, endTime: todayEnd } },
+          (data) => {
+            if (!data) return data;
+            data.timeboxes = data.timeboxes.filter((t) => t.id !== vars.id);
+            return data;
+          },
+        );
+
+        const [_todayStart, sevenDaysLater] = [dayjs().startOf("day"), dayjs().add(7, "days").endOf("day")];
+        cache.updateQuery(
+          { query: TimeboxesScreenQuery, variables: { startTime: todayStart, endTime: sevenDaysLater } },
           (data) => {
             if (!data) return data;
             data.timeboxes = data.timeboxes.filter((t) => t.id !== vars.id);

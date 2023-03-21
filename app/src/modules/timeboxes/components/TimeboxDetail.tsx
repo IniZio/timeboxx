@@ -1,3 +1,5 @@
+import { parseAbsoluteToLocal } from "@internationalized/date";
+import dayjs from "dayjs";
 import { Bin } from "iconoir-react";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useMutation } from "urql";
@@ -8,7 +10,7 @@ import {
   UpdateTimeboxInput,
   UpdateTimeboxMutationVariables,
 } from "@/apis/graphql/generated/graphql";
-import { TimeRangePicker } from "@/components/TimeRangePicker";
+import { DateRangePicker } from "@/components/DateRangePicker";
 import { TimeboxDetailTimebox } from "@/modules/timeboxes/view-models";
 import { cn } from "@/utils";
 
@@ -41,7 +43,6 @@ export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox
   const [_, updateTimeboxMutation] = useMutation<UpdateTimeboxInput, UpdateTimeboxMutationVariables>(
     UpdateTimeboxMutation,
   );
-
   const [__, deleteTimeboxMutation] = useMutation<void, DeleteTimeboxMutationVariables>(DeleteTimeboxMutation);
 
   const [title, setTitle] = useState(() => timebox.title ?? "");
@@ -49,24 +50,29 @@ export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox
     setTitle(evt.target.value);
   }, []);
 
-  const [dateRange, setDateRange] = useState<[Maybe<Date>, Maybe<Date>]>(() => [timebox.startTime, timebox.endTime]);
-  const handleChangeDateRange = useCallback((value: [Maybe<Date>, Maybe<Date>]) => {
-    setDateRange(value);
-  }, []);
+  const [dateRange, setDateRange] = useState(() => ({
+    start: parseAbsoluteToLocal(dayjs(timebox.startTime).toISOString()),
+    end: parseAbsoluteToLocal(dayjs(timebox.endTime).toISOString()),
+  }));
 
   const handleDeleteTimebox = useCallback(() => {
     deleteTimeboxMutation({ id: timebox.id }).then(() => onDelete?.(timebox.id));
   }, [deleteTimeboxMutation, onDelete, timebox.id]);
 
   useEffect(() => {
-    if (timebox.title === title && timebox.startTime === dateRange[0] && timebox.endTime === dateRange[1]) return;
+    if (
+      timebox.title === title &&
+      dayjs(timebox.startTime).isSame(dateRange.start.toDate()) &&
+      dayjs(timebox.endTime).isSame(dateRange.end.toDate())
+    )
+      return;
 
     updateTimeboxMutation({
       input: {
         id: timebox.id,
         title: title,
-        startTime: dateRange[0],
-        endTime: dateRange[1],
+        startTime: dateRange.start.toDate(),
+        endTime: dateRange.end.toDate(),
       },
     });
   }, [dateRange, timebox.endTime, timebox.id, timebox.startTime, timebox.title, title, updateTimeboxMutation]);
@@ -78,11 +84,9 @@ export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox
         <Bin width={18} height={18} className="text-red cursor-pointer" onClick={handleDeleteTimebox} />
       </div>
       <div className="gap-2 my-4">
-        <div className="flex">
+        <div className="flex items-center">
           <p className="leading-7 text-sm text-gray-500 w-32">Time</p>
-          <div className="text-sm leading-7 text-gray-900 w-32 flex-1">
-            <TimeRangePicker value={dateRange} onChange={handleChangeDateRange} />
-          </div>
+          <DateRangePicker value={dateRange} onChange={setDateRange} />
         </div>
       </div>
     </div>

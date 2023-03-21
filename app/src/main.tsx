@@ -8,6 +8,7 @@ import "./i18n";
 import "./index.css";
 import "./plugins/dayjs";
 
+import { defaultTheme, Provider as SpectrumProvider } from "@adobe/react-spectrum";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider as UrqlProvider } from "urql";
@@ -17,8 +18,10 @@ import App from "./App";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <UrqlProvider value={grahpqlClient}>
-      <App />
-    </UrqlProvider>
+    <SpectrumProvider theme={defaultTheme}>
+      <UrqlProvider value={grahpqlClient}>
+        <App />
+      </UrqlProvider>
+    </SpectrumProvider>
   </React.StrictMode>,
 );

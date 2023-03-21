@@ -1,6 +1,5 @@
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
-from fastapi_async_sqlalchemy import db
 from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry.fastapi import GraphQLRouter
 from strawberry_sqlalchemy_mapper import StrawberrySQLAlchemyLoader

@@ -1,8 +1,11 @@
+import { DateValue, parseAbsoluteToLocal } from "@internationalized/date";
+import dayjs from "dayjs";
 import { Plus } from "iconoir-react";
 import { ChangeEvent, KeyboardEventHandler, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { TimeRangePicker } from "@/components/TimeRangePicker";
+import { DateRangePicker } from "@/components/DateRangePicker";
+import { RangeValue } from "@/components/react-aria";
 import { cn } from "@/utils";
 
 export interface CreateTimeboxInputProps {
@@ -19,24 +22,27 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
   const { t } = useTranslation();
 
   const [title, setTitle] = useState("");
-  const [dateRange, setDateRange] = useState(() => [new Date(), new Date()] as [Maybe<Date>, Maybe<Date>]);
+  const [dateRange, setDateRange] = useState<RangeValue<DateValue>>(() => ({
+    start: parseAbsoluteToLocal(dayjs().toISOString()),
+    end: parseAbsoluteToLocal(dayjs().toISOString()),
+  }));
 
   const onChangeTitle = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
     setTitle(evt.target.value);
   }, []);
 
-  const onChangeDateRange = useCallback((value: InputValue["dateRange"]) => {
-    setDateRange(value);
-  }, []);
-
   const reset = useCallback(() => {
-    setTitle(""), setDateRange([new Date(), new Date()]);
+    setTitle("");
+    setDateRange({
+      start: parseAbsoluteToLocal(new Date().toISOString()),
+      end: parseAbsoluteToLocal(new Date().toISOString()),
+    });
   }, []);
 
   const handleKeyDown = useCallback<KeyboardEventHandler<HTMLInputElement>>(
     (evt) => {
       if (evt.key === "Enter") {
-        onSubmit({ title, dateRange });
+        onSubmit({ title, dateRange: [dateRange.start.toDate(), dateRange.end.toDate()] });
         reset();
         return;
       }
@@ -55,14 +61,16 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
       )}
     >
       <Plus height={24} width={24} un-flex="none" un-text="gray-900" />
-      <input
-        className="leading-7 w-full text-gray-900 text-base focus:outline-none"
-        placeholder={t("modules.today.components.CreateTimeboxInput.title.placeholder")}
-        value={title}
-        onChange={onChangeTitle}
-        onKeyDown={handleKeyDown}
-      />
-      <TimeRangePicker value={dateRange} onChange={onChangeDateRange} />
+      <div className="flex flex-col">
+        <input
+          className="leading-7 w-full text-gray-900 text-base focus:outline-none"
+          placeholder={t("modules.today.components.CreateTimeboxInput.title.placeholder")}
+          value={title}
+          onChange={onChangeTitle}
+          onKeyDown={handleKeyDown}
+        />
+        <DateRangePicker value={dateRange} onChange={setDateRange} hideTimeZone hourCycle={24} />
+      </div>
     </div>
   );
 };

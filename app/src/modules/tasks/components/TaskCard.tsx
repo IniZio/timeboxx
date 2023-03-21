@@ -76,7 +76,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onRefresh }) => {
             </div>
           </div>
           <button
-            className="leading-normal mt-2 bg-slate-900 text-white rounded-md py-1 px-2 font-medium text-xs"
+            className="leading-normal py-1 mt-2 bg-slate-900 text-white rounded-md px-2 font-medium text-xs"
             type="submit"
           >
             {t("modules.tasks.components.TaskList.save")}
