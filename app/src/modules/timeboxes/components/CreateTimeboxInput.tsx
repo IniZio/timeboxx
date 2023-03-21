@@ -42,7 +42,7 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
   const handleKeyDown = useCallback<KeyboardEventHandler<HTMLInputElement>>(
     (evt) => {
       if (evt.key === "Enter") {
-        onSubmit({ title, dateRange: [dateRange.start.toDate(), dateRange.end.toDate()] });
+        onSubmit({ title, dateRange: [dateRange.start.toDate(""), dateRange.end.toDate("")] });
         reset();
         return;
       }
@@ -61,7 +61,7 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
       )}
     >
       <Plus height={24} width={24} un-flex="none" un-text="gray-900" />
-      <div className="flex flex-col">
+      <div className="flex flex-1 flex-col">
         <input
           className="leading-7 w-full text-gray-900 text-base focus:outline-none"
           placeholder={t("modules.today.components.CreateTimeboxInput.title.placeholder")}
@@ -69,7 +69,7 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
           onChange={onChangeTitle}
           onKeyDown={handleKeyDown}
         />
-        <DateRangePicker value={dateRange} onChange={setDateRange} hideTimeZone hourCycle={24} />
+        <DateRangePicker value={dateRange} onChange={setDateRange} />
       </div>
     </div>
   );

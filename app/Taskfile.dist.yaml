@@ -24,11 +24,13 @@ tasks:
     deps:
       - prettier:fix
       - eslint:fix
+      - type:check
 
   lint:
     deps:
       - prettier:check
       - eslint:check
+      - type:check
 
   eslint:fix:
     internal: true
@@ -49,6 +51,11 @@ tasks:
     internal: true
     cmds:
       - pnpm run prettier:check
+
+  type:check:
+    internal: true
+    cmds:
+      - pnpm tsc
 
   codegen:watch: pnpm graphql:codegen --watch
 

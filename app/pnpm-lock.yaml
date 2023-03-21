@@ -13,6 +13,7 @@ specifiers:
   '@iniz/react': ^0.7.0
   '@internationalized/date': ^3.1.0
   '@nabla/vite-plugin-eslint': ^1.5.0
+  '@react-types/datepicker': ^3.2.0
   '@types/react': ^18.0.27
   '@types/react-dom': ^18.0.10
   '@typescript-eslint/eslint-plugin': ^5.52.0
@@ -47,6 +48,7 @@ specifiers:
   react-aria: ^3.23.1
   react-dom: ^18.2.0
   react-helmet-async: ^1.3.0
+  react-hook-form: ^7.43.7
   react-i18next: ^12.2.0
   react-router-dom: ^6.8.1
   react-stately: ^3.21.0
@@ -82,6 +84,7 @@ dependencies:
   react-aria: 3.23.1_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
   react-helmet-async: 1.3.0_biqbaboplfbrettd7655fr4n2y
+  react-hook-form: 7.43.7_react@18.2.0
   react-i18next: 12.2.0_3yopsigl4h4eb2nqrqfsy65uwi
   react-router-dom: 6.8.1_biqbaboplfbrettd7655fr4n2y
   react-stately: 3.21.0_react@18.2.0
@@ -97,6 +100,7 @@ devDependencies:
   '@graphql-codegen/typescript-urql': 3.7.3_graphql@16.6.0
   '@graphql-typed-document-node/core': 3.1.2_graphql@16.6.0
   '@nabla/vite-plugin-eslint': 1.5.0_eslint@8.34.0+vite@4.1.1
+  '@react-types/datepicker': 3.2.0_react@18.2.0
   '@types/react': 18.0.28
   '@types/react-dom': 18.0.11
   '@typescript-eslint/eslint-plugin': 5.52.0_6cfvjsbua5ptj65675bqcn6oza
@@ -1873,7 +1877,6 @@ packages:
     resolution: {integrity: sha512-wjeur7K4AecT+YwoBmBXQ/+n5lP69tuZc34hw09s44EozZK7FZHSyfPvRp5/xEb2D6abLboskDY4jG+Nt0TNUQ==}
     dependencies:
       '@swc/helpers': 0.4.14
-    dev: false
 
   /@internationalized/message/3.1.0:
     resolution: {integrity: sha512-Oo5m70FcBdADf7G8NkUffVSfuCdeAYVfsvNjZDi9ELpjvkc4YNJVTHt/NyTI9K7FgAVoELxiP9YmN0sJ+HNHYQ==}
@@ -4081,7 +4084,6 @@ packages:
       '@react-types/overlays': 3.7.0_react@18.2.0
       '@react-types/shared': 3.17.0_react@18.2.0
       react: 18.2.0
-    dev: false
 
   /@react-types/dialog/3.5.0_react@18.2.0:
     resolution: {integrity: sha512-QsHqAK8zE4QSCQTJcRm/e6vweSE8S62o4GGvm+e+crMro/doA4it1Y4udE94Yy3WyDQEMFxyfd2P1Q6bI9JuyQ==}
@@ -4211,7 +4213,6 @@ packages:
     dependencies:
       '@react-types/shared': 3.17.0_react@18.2.0
       react: 18.2.0
-    dev: false
 
   /@react-types/progress/3.3.0_react@18.2.0:
     resolution: {integrity: sha512-k4xivWiEYogsROLyNqVDVjl33rm+X9RKNbKQXg5pqjGikaC8T9hmIwE4tJr26XkMIIvQS6duEBCcuQN/U1+dGQ==}
@@ -4265,7 +4266,6 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       react: 18.2.0
-    dev: false
 
   /@react-types/slider/3.4.0_react@18.2.0:
     resolution: {integrity: sha512-Kj+B6njpm4ltiu3gCBOPRnbzllV21IVr0bCQdNnWcf5DX8aN4VdI8EFkTz0DSwMm2WPCwZop0MDWDoRwXJK1ng==}
@@ -4532,7 +4532,6 @@ packages:
     resolution: {integrity: sha512-4C7nX/dvpzB7za4Ql9K81xK3HPxCpHMgwTZVyf+9JQ6VUbn9jjZVN7/Nkdz/Ugzs2CSjqnL/UPXroiVBVHUWUw==}
     dependencies:
       tslib: 2.5.0
-    dev: false
 
   /@tootallnate/once/2.0.0:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
@@ -8198,6 +8197,15 @@ packages:
       shallowequal: 1.1.0
     dev: false
 
+  /react-hook-form/7.43.7_react@18.2.0:
+    resolution: {integrity: sha512-38yehQkQQ5uufaPKFScs7jhLE8n3+LG9H/BZfFAiBL2+7piDmw/BrdNJV4irzMaPnWZGhmGLHVICHXNVGIuXZg==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /react-i18next/12.2.0_3yopsigl4h4eb2nqrqfsy65uwi:
     resolution: {integrity: sha512-5XeVgSygaGfyFmDd2WcXvINRw2WEC1XviW1LXY/xLOEMzsCFRwKqfnHN+hUjla8ZipbVJR27GCMSuTr0BhBBBQ==}
     peerDependencies:
@@ -8345,7 +8353,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /readable-stream/3.6.0:
     resolution: {integrity: sha512-BViHy7LKeTz4oNnkcLJ+lVSL6vpiFeX6/d3oSH8zCW7UxP2onchk+vTGB143xuFjHS3deTgkKoXXymXqymiIdA==}

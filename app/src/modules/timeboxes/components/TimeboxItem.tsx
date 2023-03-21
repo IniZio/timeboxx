@@ -1,6 +1,8 @@
+import { parseAbsoluteToLocal } from "@internationalized/date";
 import dayjs from "dayjs";
 import { useCallback, useMemo } from "react";
 
+import { DateRangePicker } from "@/components/DateRangePicker";
 import { TimeboxItemTimebox } from "@/modules/timeboxes/view-models";
 
 export interface TimeboxItemProps {
@@ -9,21 +11,13 @@ export interface TimeboxItemProps {
 }
 
 export const TimeboxItem: React.FC<TimeboxItemProps> = ({ timebox, onClick }) => {
-  const formattedPeriod = useMemo(() => {
-    const format = "h:mma";
-
-    if (timebox.startTime && timebox.endTime) {
-      return `${dayjs(timebox.startTime).format(format)} - ${dayjs(timebox.endTime).format(format)}`;
-    }
-    if (timebox.startTime) {
-      return dayjs(timebox.startTime).format(format);
-    }
-    if (timebox.endTime) {
-      return dayjs(timebox.endTime).format(format);
-    }
-
-    return "-";
-  }, [timebox.startTime, timebox.endTime]);
+  const dateRange = useMemo(
+    () => ({
+      start: parseAbsoluteToLocal(dayjs(timebox.startTime).toISOString()),
+      end: parseAbsoluteToLocal(dayjs(timebox.endTime).toISOString()),
+    }),
+    [timebox.endTime, timebox.startTime],
+  );
 
   const handleClick = useCallback(() => {
     onClick?.(timebox);
@@ -32,10 +26,12 @@ export const TimeboxItem: React.FC<TimeboxItemProps> = ({ timebox, onClick }) =>
   return (
     <button un-flex="~ row" un-justify="center" un-items="center" un-gap="4" un-p="3" un-w="full" onClick={handleClick}>
       <input type="checkbox" />
-      <p un-flex="1" un-leading="normal" un-text="left gray-900" un-line-clamp="2">
-        {timebox.title}
-      </p>
-      <span className="text-sm text-right text-gray-500 h-min">{formattedPeriod}</span>
+      <div className="flex flex-1 flex-col">
+        <p un-flex="1" un-leading="normal" un-text="left gray-900" un-line-clamp="2">
+          {timebox.title}
+        </p>
+        <DateRangePicker value={dateRange} isReadOnly />
+      </div>
     </button>
   );
 };
