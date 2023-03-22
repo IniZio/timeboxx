@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useMutation, useQuery } from "urql";
 
 import { graphql } from "@/apis/graphql/generated";
@@ -39,6 +40,8 @@ const CreateTimeboxMutation = graphql(`
 `);
 
 export const TodayScreen: React.FC = () => {
+  const { t } = useTranslation();
+
   const [todayStart, todayEnd] = useMemo(() => [dayjs().startOf("day"), dayjs().endOf("day")], []);
   const [todayScreen] = useQuery<TodayQuery, TodayQueryVariables>({
     query: TodayScreenQuery,
@@ -79,9 +82,9 @@ export const TodayScreen: React.FC = () => {
     <div className="flex h-full">
       <div un-p="x-6 y-6" un-h="full" un-w="128" un-border="r slate-200">
         <h1 un-m="b-4" un-text="3xl" un-font="semibold">
-          Today
+          {t("modules.today.title")}
         </h1>
-        <CreateTimeboxInput className="mb-2.5" onSubmit={handleSubmitCreateTimebox} />
+        <CreateTimeboxInput className="mb-2.5 w-full" onSubmit={handleSubmitCreateTimebox} />
         {todayScreen.fetching && !todayScreen.stale ? (
           "Loading..."
         ) : (

@@ -7,6 +7,6 @@
   "954771b1dbdf0522fe9e14c5be1038ff300f0d0a": "mutation UpdateTimebox($input: UpdateTimeboxInput!) { updateTimebox(input: $input) { description endTime id startTime title } }",
   "ef7bd6f578a50a6bb8f503ba47943f5540d7f072": "mutation DeleteTimebox($id: String!) { deleteTimebox(id: $id) }",
   "4e61e00454d1c7e301cc9a89acb2ff1cabf386ac": "query TimeboxesScreen($endTime: DateTime, $startTime: DateTime) { timeboxes(startTime: $startTime, endTime: $endTime) { description endTime id startTime title } }",
-  "7271a4b361621f7de698d3a71c8a32e7e2d2cbde": "query Today($endTime: DateTime, $startTime: DateTime) { timeboxes(startTime: $startTime, endTime: $endTime) { description endTime id startTime title } }",
-  "2183147b1c95dc41020523861badf0a0de879b1a": "mutation CreateTimebox($input: CreateTimeboxInput!) { createTimebox(input: $input) { description endTime id startTime title } }"
+  "2183147b1c95dc41020523861badf0a0de879b1a": "mutation CreateTimebox($input: CreateTimeboxInput!) { createTimebox(input: $input) { description endTime id startTime title } }",
+  "7271a4b361621f7de698d3a71c8a32e7e2d2cbde": "query Today($endTime: DateTime, $startTime: DateTime) { timeboxes(startTime: $startTime, endTime: $endTime) { description endTime id startTime title } }"
 }

@@ -3,6 +3,7 @@
   "shells.app.nav.today": "Today",
   "shells.app.nav.timeboxes": "Planned",
   "shells.app.nav.tasks": "Tasks",
+  "modules.today.title": "Today",
   "modules.today.components.CreateTimeboxInput.title.placeholder": "Title here",
   "modules.tasks.title": "Tasks",
   "modules.tasks.constants.status.no_status": "No Status",
@@ -13,5 +14,6 @@
   "modules.tasks.constants.status.cancelled": "Cancelled",
   "modules.tasks.components.TaskList.add": "Add",
   "modules.tasks.components.TaskList.save": "Save",
-  "modules.timeboxes.title": "Planned"
+  "modules.timeboxes.title": "Planned",
+  "modules.timeboxes.today": "Today"
 }

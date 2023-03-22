@@ -22,8 +22,8 @@ const documents = {
     "\n  mutation UpdateTimebox($input: UpdateTimeboxInput!) {\n    updateTimebox(input: $input) {\n      id\n      title\n      description\n      startTime\n      endTime\n    }\n  }\n": types.UpdateTimeboxDocument,
     "\n  mutation DeleteTimebox($id: String!) {\n    deleteTimebox(id: $id)\n  }\n": types.DeleteTimeboxDocument,
     "\n  query TimeboxesScreen($startTime: DateTime, $endTime: DateTime) {\n    timeboxes(startTime: $startTime, endTime: $endTime) {\n      id\n      title\n      description\n      startTime\n      endTime\n    }\n  }\n": types.TimeboxesScreenDocument,
-    "\n  query Today($startTime: DateTime, $endTime: DateTime) {\n    timeboxes(startTime: $startTime, endTime: $endTime) {\n      id\n      title\n      description\n      startTime\n      endTime\n    }\n  }\n": types.TodayDocument,
     "\n  mutation CreateTimebox($input: CreateTimeboxInput!) {\n    createTimebox(input: $input) {\n      id\n      title\n      description\n      startTime\n      endTime\n    }\n  }\n": types.CreateTimeboxDocument,
+    "\n  query Today($startTime: DateTime, $endTime: DateTime) {\n    timeboxes(startTime: $startTime, endTime: $endTime) {\n      id\n      title\n      description\n      startTime\n      endTime\n    }\n  }\n": types.TodayDocument,
 };
 
 /**
@@ -79,11 +79,11 @@ export function graphql(source: "\n  query TimeboxesScreen($startTime: DateTime,
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query Today($startTime: DateTime, $endTime: DateTime) {\n    timeboxes(startTime: $startTime, endTime: $endTime) {\n      id\n      title\n      description\n      startTime\n      endTime\n    }\n  }\n"): (typeof documents)["\n  query Today($startTime: DateTime, $endTime: DateTime) {\n    timeboxes(startTime: $startTime, endTime: $endTime) {\n      id\n      title\n      description\n      startTime\n      endTime\n    }\n  }\n"];
+export function graphql(source: "\n  mutation CreateTimebox($input: CreateTimeboxInput!) {\n    createTimebox(input: $input) {\n      id\n      title\n      description\n      startTime\n      endTime\n    }\n  }\n"): (typeof documents)["\n  mutation CreateTimebox($input: CreateTimeboxInput!) {\n    createTimebox(input: $input) {\n      id\n      title\n      description\n      startTime\n      endTime\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation CreateTimebox($input: CreateTimeboxInput!) {\n    createTimebox(input: $input) {\n      id\n      title\n      description\n      startTime\n      endTime\n    }\n  }\n"): (typeof documents)["\n  mutation CreateTimebox($input: CreateTimeboxInput!) {\n    createTimebox(input: $input) {\n      id\n      title\n      description\n      startTime\n      endTime\n    }\n  }\n"];
+export function graphql(source: "\n  query Today($startTime: DateTime, $endTime: DateTime) {\n    timeboxes(startTime: $startTime, endTime: $endTime) {\n      id\n      title\n      description\n      startTime\n      endTime\n    }\n  }\n"): (typeof documents)["\n  query Today($startTime: DateTime, $endTime: DateTime) {\n    timeboxes(startTime: $startTime, endTime: $endTime) {\n      id\n      title\n      description\n      startTime\n      endTime\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

@@ -21,7 +21,7 @@ export function DateRangePicker(props: DateRangePickerProps) {
     useDateRangePicker(props, state, ref);
 
   const isSameDay = useMemo(
-    () => dayjs(state.dateRange.start.toDate("")).isSame(state.dateRange.end.toDate(""), "day"),
+    () => dayjs.fromDateValue(state.dateRange.start).isSame(dayjs.fromDateValue(state.dateRange.end), "day"),
     [state.dateRange.end, state.dateRange.start],
   );
 

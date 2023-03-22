@@ -10,6 +10,7 @@ import { cn } from "@/utils";
 
 export interface CreateTimeboxInputProps {
   className?: string;
+  defaultValue?: InputValue;
   onSubmit: (value: InputValue) => void;
 }
 
@@ -18,13 +19,13 @@ interface InputValue {
   dateRange: [Maybe<Date>, Maybe<Date>];
 }
 
-export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ className, onSubmit }) => {
+export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ className, defaultValue, onSubmit }) => {
   const { t } = useTranslation();
 
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(defaultValue?.title ?? "");
   const [dateRange, setDateRange] = useState<RangeValue<DateValue>>(() => ({
-    start: parseAbsoluteToLocal(dayjs().toISOString()),
-    end: parseAbsoluteToLocal(dayjs().toISOString()),
+    start: parseAbsoluteToLocal(dayjs(defaultValue?.dateRange[0]).toISOString()),
+    end: parseAbsoluteToLocal(dayjs(defaultValue?.dateRange[1]).toISOString()),
   }));
 
   const onChangeTitle = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
@@ -32,17 +33,20 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
   }, []);
 
   const reset = useCallback(() => {
-    setTitle("");
+    setTitle(defaultValue?.title ?? "");
     setDateRange({
-      start: parseAbsoluteToLocal(new Date().toISOString()),
-      end: parseAbsoluteToLocal(new Date().toISOString()),
+      start: parseAbsoluteToLocal(dayjs(defaultValue?.dateRange[0]).toISOString()),
+      end: parseAbsoluteToLocal(dayjs(defaultValue?.dateRange[1]).toISOString()),
     });
-  }, []);
+  }, [defaultValue?.dateRange, defaultValue?.title]);
 
   const handleKeyDown = useCallback<KeyboardEventHandler<HTMLInputElement>>(
     (evt) => {
       if (evt.key === "Enter") {
-        onSubmit({ title, dateRange: [dateRange.start.toDate(""), dateRange.end.toDate("")] });
+        onSubmit({
+          title,
+          dateRange: [dayjs.fromDateValue(dateRange.start).toDate(), dayjs.fromDateValue(dateRange.end).toDate()],
+        });
         reset();
         return;
       }
@@ -54,7 +58,7 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
     <div
       className={cn(
         "items-center inline-flex space-x-2 justify-start",
-        "p-3 w-full",
+        "p-3",
         "bg-white shadow border rounded-md border-gray-200",
         "focus-within:ring",
         className,
