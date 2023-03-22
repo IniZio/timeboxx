@@ -4,13 +4,15 @@ import { useCallback, useMemo } from "react";
 
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { TimeboxItemTimebox } from "@/modules/timeboxes/view-models";
+import { cn } from "@/utils";
 
 export interface TimeboxItemProps {
   timebox: TimeboxItemTimebox;
   onClick?: (timebox: TimeboxItemTimebox) => void;
+  isActive?: boolean;
 }
 
-export const TimeboxItem: React.FC<TimeboxItemProps> = ({ timebox, onClick }) => {
+export const TimeboxItem: React.FC<TimeboxItemProps> = ({ timebox, isActive, onClick }) => {
   const dateRange = useMemo(
     () => ({
       start: parseAbsoluteToLocal(dayjs(timebox.startTime).toISOString()),
@@ -24,9 +26,18 @@ export const TimeboxItem: React.FC<TimeboxItemProps> = ({ timebox, onClick }) =>
   }, [onClick, timebox]);
 
   return (
-    <button un-flex="~ row" un-justify="center" un-items="center" un-gap="4" un-p="3" un-w="full" onClick={handleClick}>
+    <button
+      className={cn("rounded hover:shadow shadow-none transition-shadow", isActive && "shadow")}
+      un-flex="~ row"
+      un-justify="center"
+      un-items="center"
+      un-gap="4"
+      un-p="3"
+      un-w="full"
+      onClick={handleClick}
+    >
       <input type="checkbox" />
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-col flex-1">
         <p un-flex="1" un-leading="normal" un-text="left gray-900" un-line-clamp="2">
           {timebox.title}
         </p>

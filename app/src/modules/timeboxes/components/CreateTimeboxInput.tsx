@@ -59,13 +59,13 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
       className={cn(
         "items-center inline-flex space-x-2 justify-start",
         "p-3",
-        "bg-white shadow border rounded-md border-gray-200",
+        "bg-white shadow-sm border rounded-md",
         "focus-within:ring",
         className,
       )}
     >
       <Plus height={24} width={24} un-flex="none" un-text="gray-900" />
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-col flex-1">
         <input
           className="leading-7 w-full text-gray-900 text-base focus:outline-none"
           placeholder={t("modules.today.components.CreateTimeboxInput.title.placeholder")}

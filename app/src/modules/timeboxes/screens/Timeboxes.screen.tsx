@@ -113,7 +113,7 @@ export const TimeboxesScreen: React.FC<TimeboxesScreenProps> = () => {
         {timeboxesScreen.fetching && !timeboxesScreen.stale ? (
           "Loading..."
         ) : (
-          <div>
+          <div className="overflow-y-auto">
             {Array.from(Array(numofDays).keys()).map((dayOffset) => {
               const day = dayjs.fromDateValue(dateRange.start).add(dayOffset, "days");
               const timeboxes = timeboxesScreen.data?.timeboxes.filter((t) =>
@@ -123,17 +123,22 @@ export const TimeboxesScreen: React.FC<TimeboxesScreenProps> = () => {
               return (
                 <div key={dayOffset}>
                   <div className="flex items-center">
-                    <h3 className="mx-6 text-base text-gray-900 font-semibold leading-tight my-2">
+                    <h3 className="mx-6 text-base text-gray-900 font-medium leading-tight my-2">
                       {day.isToday() ? "Today" : day.format("dddd, D")}
                     </h3>
                   </div>
                   <div className="mx-6">
                     {timeboxes?.length ? (
                       timeboxes?.map((timebox) => (
-                        <TimeboxItem key={timebox.id} timebox={timebox} onClick={handleClickTimeboxItem} />
+                        <TimeboxItem
+                          key={timebox.id}
+                          timebox={timebox}
+                          onClick={handleClickTimeboxItem}
+                          isActive={focusedTimebox?.id === timebox.id}
+                        />
                       ))
                     ) : (
-                      <p className="italic">Nothing planned.</p>
+                      <p className="italic">-</p>
                     )}
                   </div>
                 </div>

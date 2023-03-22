@@ -16,13 +16,12 @@ export const NavItem: React.FC<NavItemProps> = ({ to, icon, label }) => {
       className={({ isActive }) =>
         cn(
           "items-center w-full inline-flex space-x-2 justify-start rounded-md py-2.5 px-2.5 transition-colors",
-          isActive && "bg-gray-100",
+          isActive ? "bg-gray-100" : "hover:bg-gray-50",
         )
       }
-      un-hover="bg-gray-200"
     >
       {icon}
-      <p className="text-sm text-gray-900 flex-1 font-medium leading-tight">{label}</p>
+      <p className="text-gray-900 flex-1 font-medium leading-tight text-sm">{label}</p>
     </NavLink>
   );
 };

@@ -84,13 +84,18 @@ export const TodayScreen: React.FC = () => {
         <h1 un-m="b-4" un-text="3xl" un-font="semibold">
           {t("modules.today.title")}
         </h1>
-        <CreateTimeboxInput className="mb-2.5 w-full" onSubmit={handleSubmitCreateTimebox} />
+        <CreateTimeboxInput className="w-full mb-2.5" onSubmit={handleSubmitCreateTimebox} />
         {todayScreen.fetching && !todayScreen.stale ? (
           "Loading..."
         ) : (
           <div>
             {todayScreen.data?.timeboxes.map((timebox) => (
-              <TimeboxItem key={timebox.id} timebox={timebox} onClick={handleClickTimeboxItem} />
+              <TimeboxItem
+                key={timebox.id}
+                timebox={timebox}
+                onClick={handleClickTimeboxItem}
+                isActive={focusedTimebox?.id === timebox.id}
+              />
             ))}
           </div>
         )}
