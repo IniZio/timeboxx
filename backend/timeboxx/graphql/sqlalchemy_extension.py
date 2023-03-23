@@ -1,32 +1,17 @@
-from inspect import isawaitable
-
 from sqlalchemy.ext.asyncio import AsyncSession
-from strawberry.extensions import Extension
+from strawberry.extensions import SchemaExtension
 
 
 # The sqlalchemy middlware doesn't work well with strawberry,
 # so we manually add the db session context here
-class SqlalchemyExtension(Extension):
-    async def resolve(self, _next, root, info, *args, **kwargs):
-        session: AsyncSession = info.context.session
-
-        # Only commit and close session at root resolver
-        if root:
-            resolved = super().resolve(_next, root, info, *args, **kwargs)
-            if isawaitable(resolved):
-                resolved = await resolved
-
-            return resolved
+class SqlalchemyExtension(SchemaExtension):
+    async def on_operation(self):
+        session: AsyncSession = self.execution_context.context.session
 
         try:
-            resolved = super().resolve(_next, root, info, *args, **kwargs)
-            if isawaitable(resolved):
-                resolved = await resolved
-
+            yield
             if session.is_active:
                 await session.commit()
-
-            return resolved
         except:
             await session.rollback()
             raise
