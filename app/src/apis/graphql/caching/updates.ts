@@ -22,7 +22,9 @@ export const updates: UpdatesConfig = {
       cache.updateQuery(
         { query: TodayScreenQuery, variables: { startTime: todayStart, endTime: todayEnd } },
         (data) => {
-          data?.timeboxes.push(result.createTimebox);
+          if (!data) return data;
+          data.timeboxes.push(result.createTimebox);
+          data.timeboxes = data.timeboxes.sort((a, b) => a.startTime - b.startTime);
           return data;
         },
       );
@@ -49,7 +51,8 @@ export const updates: UpdatesConfig = {
     // Task
     createTask(result: CreateTaskMutation, _vars: CreateTaskMutationVariables, cache) {
       cache.updateQuery({ query: TasksScreenQuery }, (data) => {
-        data?.tasks.push(result.createTask);
+        if (!data) return data;
+        data.tasks.push(result.createTask);
         return data;
       });
     },

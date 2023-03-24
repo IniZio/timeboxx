@@ -1,7 +1,7 @@
 import { DateValue } from "@internationalized/date";
 import dayjs from "dayjs";
 import { Calendar } from "iconoir-react";
-import { useMemo, useRef } from "react";
+import { forwardRef, useMemo, useRef } from "react";
 import { AriaDateRangePickerProps, useDateRangePicker } from "react-aria";
 import { useDateRangePickerState } from "react-stately";
 
@@ -14,11 +14,12 @@ import { TimeField, TimeFieldProps } from "@/components/TimeField";
 
 export type DateRangePickerProps = AriaDateRangePickerProps<DateValue>;
 
-export function DateRangePicker(props: DateRangePickerProps) {
+export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>((props: DateRangePickerProps, ref) => {
   const state = useDateRangePickerState(props);
-  const ref = useRef(null);
+  const fieldRef = useRef(null);
+
   const { labelProps, groupProps, startFieldProps, endFieldProps, buttonProps, dialogProps, calendarProps } =
-    useDateRangePicker(props, state, ref);
+    useDateRangePicker(props, state, fieldRef);
 
   const isSameDay = useMemo(
     () => dayjs.fromDateValue(state.dateRange.start).isSame(dayjs.fromDateValue(state.dateRange.end), "day"),
@@ -26,9 +27,9 @@ export function DateRangePicker(props: DateRangePickerProps) {
   );
 
   return (
-    <div className="inline-flex flex-col">
+    <div className="inline-flex flex-col" ref={ref}>
       <span {...labelProps}>{props.label}</span>
-      <div {...groupProps} ref={ref} className="flex gap-x-0.5 text-gray-500">
+      <div {...groupProps} ref={fieldRef} className="flex gap-x-0.5 text-gray-500">
         <div className="inline-flex">
           {isSameDay ? (
             <TimeField {...(startFieldProps as unknown as TimeFieldProps)} />
@@ -50,7 +51,7 @@ export function DateRangePicker(props: DateRangePickerProps) {
         )}
       </div>
       {state.isOpen && (
-        <Popover state={state} triggerRef={ref} placement="bottom start">
+        <Popover state={state} triggerRef={fieldRef} placement="bottom start">
           <Dialog {...dialogProps} className="p-4 w-60 bg-white">
             <RangeCalendar {...calendarProps} />
           </Dialog>
@@ -58,7 +59,9 @@ export function DateRangePicker(props: DateRangePickerProps) {
       )}
     </div>
   );
-}
+});
+
+DateRangePicker.displayName = "DateRangePicker";
 
 DateRangePicker.defaultProps = {
   hideTimeZone: true,
