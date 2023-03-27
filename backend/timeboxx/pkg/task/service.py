@@ -11,12 +11,21 @@ class TaskService:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
-    async def list_tasks(self, user_id: str) -> list[Task]:
-        results = await self.session.scalars(
+    async def list_tasks(
+        self, user_id: str, keyword: Optional[str] = None
+    ) -> list[Task]:
+        tasks_q = (
             select(Task)
             .where(Task.created_by_id == user_id)
             .order_by(Task.created_at.desc())
         )
+        if keyword:
+            tasks_q = tasks_q.filter(
+                or_(Task.title.contains(keyword), Task.description.contains(keyword))
+            )
+
+        results = await self.session.scalars(tasks_q)
+
         return list(results.all())
 
     async def create_task(

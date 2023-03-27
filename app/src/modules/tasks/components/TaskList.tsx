@@ -27,7 +27,7 @@ const CreateTaskMutation = graphql(`
 `);
 
 export const TaskList_TaskFragment = graphql(`
-  fragment TaskList_TaskFragment on Task {
+  fragment TaskList_TaskFragment on TaskType {
     id
     title
     status

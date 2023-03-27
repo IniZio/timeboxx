@@ -1,14 +1,17 @@
 import { DateValue, parseAbsoluteToLocal } from "@internationalized/date";
+import { RangeValue } from "@react-types/shared";
 import dayjs from "dayjs";
+import { t } from "i18next";
 import { Bin } from "iconoir-react";
-import { useCallback } from "react";
+import { Key, useCallback } from "react";
 import { useForm, useWatch } from "react-hook-form";
+import { Item } from "react-stately";
 import { useDebounce } from "react-use";
-import { useMutation } from "urql";
+import { useMutation, useQuery } from "urql";
 
 import { graphql } from "@/apis/graphql/generated";
+import { FormComboBox } from "@/components/form/FormComboBox";
 import { FormDateRangePicker } from "@/components/form/FormDateRangePicker";
-import { RangeValue } from "@/components/react-aria";
 import { TimeboxDetailTimebox } from "@/modules/timeboxes/view-models";
 import { cn } from "@/utils";
 
@@ -19,10 +22,23 @@ export interface TimeboxDetailProps {
   onDelete?: (id: string) => void;
 }
 
+export const SuggestTasksQuery = graphql(`
+  query SuggestTasks($keyword: String) {
+    tasks(keyword: $keyword) {
+      id
+      title
+    }
+  }
+`);
+
 const UpdateTimeboxMutation = graphql(`
   mutation UpdateTimebox($input: UpdateTimeboxInput!) {
     updateTimebox(input: $input) {
       id
+      task {
+        id
+        title
+      }
       title
       description
       startTime
@@ -38,16 +54,23 @@ const DeleteTimeboxMutation = graphql(`
 `);
 
 type TimeboxForm = {
+  task: { key: Maybe<Key>; input: Maybe<string> };
   title: Maybe<string>;
   dateRange: RangeValue<DateValue>;
 };
 
 export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox, onDelete }) => {
+  const [suggestedTasks, refetchSuggesstedTasks] = useQuery({
+    query: SuggestTasksQuery,
+    requestPolicy: "cache-and-network",
+    pause: true,
+  });
   const [_, updateTimeboxMutation] = useMutation(UpdateTimeboxMutation);
   const [__, deleteTimeboxMutation] = useMutation(DeleteTimeboxMutation);
 
   const timeboxForm = useForm<TimeboxForm>({
     values: {
+      task: { key: timebox.task?.id, input: timebox.task?.title },
       title: timebox.title,
       dateRange: {
         start: parseAbsoluteToLocal(dayjs(timebox.startTime).toISOString()),
@@ -63,6 +86,14 @@ export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox
   const timeboxFormValues = useWatch(timeboxForm) as unknown as TimeboxForm;
   useDebounce(
     () => {
+      if (!timeboxFormValues.task?.input) return;
+      refetchSuggesstedTasks({ variables: { keyword: timeboxFormValues.task?.input } });
+    },
+    500,
+    [timeboxFormValues.task?.input, refetchSuggesstedTasks],
+  );
+  useDebounce(
+    () => {
       if (!timeboxForm.formState.isDirty) {
         return;
       }
@@ -70,6 +101,7 @@ export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox
       updateTimeboxMutation({
         input: {
           id: timebox.id,
+          task: { id: String(timeboxFormValues.task.key) },
           title: timeboxFormValues.title,
           startTime: timeboxFormValues.dateRange?.start?.toDate?.(""),
           endTime: timeboxFormValues.dateRange?.end?.toDate?.(""),
@@ -79,7 +111,14 @@ export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox
       timeboxForm.reset(undefined, { keepValues: true });
     },
     1000,
-    [timebox, timeboxForm, timeboxFormValues, updateTimeboxMutation],
+    [
+      timebox,
+      timeboxForm,
+      timeboxFormValues.dateRange,
+      timeboxFormValues.task.key,
+      timeboxFormValues.title,
+      updateTimeboxMutation,
+    ],
   );
 
   return (
@@ -90,8 +129,14 @@ export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox
       </div>
       <div className="gap-2 my-4">
         <div className="flex items-center">
-          <p className="leading-7 text-sm text-gray-500 w-32">Time</p>
+          <p className="leading-7 text-sm text-gray-500 w-32">{t("modules.timeboxes.components.TimeboxDetail.time")}</p>
           <FormDateRangePicker control={timeboxForm.control} name="dateRange" />
+        </div>
+        <div className="flex items-center">
+          <p className="leading-7 text-sm text-gray-500 w-32">{t("modules.timeboxes.components.TimeboxDetail.task")}</p>
+          <FormComboBox control={timeboxForm.control} name="task" items={suggestedTasks.data?.tasks ?? []}>
+            {(item) => <Item key={item.id}>{item.title}</Item>}
+          </FormComboBox>
         </div>
       </div>
     </div>

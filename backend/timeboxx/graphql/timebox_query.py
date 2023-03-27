@@ -5,7 +5,7 @@ import strawberry
 from strawberry.types import Info
 
 from timeboxx.graphql.context import Context
-from timeboxx.graphql.timebox import Timebox
+from timeboxx.graphql.timebox import TimeboxType
 
 
 @strawberry.type
@@ -16,7 +16,7 @@ class TimeboxQuery:
         info: Info[Context, Any],
         start_time: Optional[datetime] = None,
         end_time: Optional[datetime] = None,
-    ) -> list[Timebox]:
+    ) -> list[TimeboxType]:
         current_user = await info.context.current_user
         timebox_service = info.context.timebox_service
 
@@ -29,4 +29,4 @@ class TimeboxQuery:
             end_time=end_time,
         )
 
-        return cast(list[Timebox], timeboxes)
+        return cast(list[TimeboxType], timeboxes)

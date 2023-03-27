@@ -10,7 +10,7 @@ import {
 export const optimistic: OptimisticMutationConfig = {
   updateTimebox(vars: UpdateTimeboxMutationVariables, _cache, _info): Partial<UpdateTimeboxMutation["updateTimebox"]> {
     return {
-      __typename: "Timebox",
+      __typename: "TimeboxType",
       id: vars.input.id ?? undefined,
       title: vars.input.title,
       description: vars.input.description,
@@ -23,7 +23,7 @@ export const optimistic: OptimisticMutationConfig = {
   },
   updateTask(vars: UpdateTaskMutationVariables, _cache, _info): Partial<UpdateTaskMutation["updateTask"]> {
     return {
-      __typename: "Task",
+      __typename: "TaskType",
       id: vars.input.id ?? undefined,
       title: vars.input.title,
       status: vars.input.status,

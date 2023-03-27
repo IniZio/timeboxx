@@ -13,22 +13,23 @@ input CreateTimeboxInput {
   description: String = null
   startTime: DateTime = null
   endTime: DateTime = null
+  task: UpdateTimeboxTaskInput = null
 }
 
 scalar DateTime
 
 type Mutation {
-  createTimebox(input: CreateTimeboxInput!): Timebox!
-  updateTimebox(input: UpdateTimeboxInput!): Timebox!
+  createTimebox(input: CreateTimeboxInput!): TimeboxType!
+  updateTimebox(input: UpdateTimeboxInput!): TimeboxType!
   deleteTimebox(id: String!): Boolean!
-  createTask(input: CreateTaskInput!): Task!
-  updateTask(input: UpdateTaskInput!): Task!
+  createTask(input: CreateTaskInput!): TaskType!
+  updateTask(input: UpdateTaskInput!): TaskType!
   deleteTask(id: String!): Boolean!
 }
 
 type Query {
-  tasks: [Task!]!
-  timeboxes(startTime: DateTime = null, endTime: DateTime = null): [Timebox!]!
+  tasks(keyword: String = null): [TaskType!]!
+  timeboxes(startTime: DateTime = null, endTime: DateTime = null): [TimeboxType!]!
   ping: String!
 }
 
@@ -43,6 +44,7 @@ type Task {
   updatedAt: DateTime!
   createdById: String
   updatedById: String
+  clientId: String
   timeboxes: TimeboxConnection!
   timeslots: TimeslotConnection!
 }
@@ -53,6 +55,21 @@ enum TaskStatus {
   IN_PROGRESS
   DONE
   CANCELLED
+}
+
+type TaskType {
+  title: String
+  description: String
+  startTime: DateTime
+  endTime: DateTime
+  status: TaskStatus
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdById: String
+  updatedById: String
+  timeboxes: TimeboxConnection!
+  timeslots: TimeslotConnection!
 }
 
 type Timebox {
@@ -66,6 +83,7 @@ type Timebox {
   updatedAt: DateTime!
   createdById: String
   updatedById: String
+  clientId: String
   task: Task
   timeslots: TimeslotConnection!
 }
@@ -76,6 +94,21 @@ type TimeboxConnection {
 
 type TimeboxEdge {
   node: Timebox!
+}
+
+type TimeboxType {
+  taskId: String
+  title: String
+  description: String
+  startTime: DateTime
+  endTime: DateTime
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdById: String
+  updatedById: String
+  task: Task
+  timeslots: TimeslotConnection!
 }
 
 type Timeslot {
@@ -115,10 +148,19 @@ input UpdateTaskInput {
 }
 
 input UpdateTimeboxInput {
-  id: String
-  clientId: String
-  title: String
-  description: String
-  startTime: DateTime
-  endTime: DateTime
+  id: String = null
+  clientId: String = null
+  title: String = null
+  description: String = null
+  startTime: DateTime = null
+  endTime: DateTime = null
+  task: UpdateTimeboxTaskInput = null
+  dirtyFields: [String!] = null
+}
+
+input UpdateTimeboxTaskInput {
+  id: String = null
+  clientId: String = null
+  title: String = null
+  description: String = null
 }

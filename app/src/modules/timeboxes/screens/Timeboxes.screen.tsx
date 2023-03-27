@@ -1,14 +1,14 @@
 import { DateValue, parseAbsoluteToLocal } from "@internationalized/date";
+import { RangeValue } from "@react-types/shared";
 import dayjs from "dayjs";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useMutation, useQuery } from "urql";
+import { useQuery } from "urql";
 
 import { graphql } from "@/apis/graphql/generated";
 import { Button } from "@/components/Button";
 import { DateRangePicker } from "@/components/DateRangePicker";
-import { RangeValue } from "@/components/react-aria";
-import { CreateTimeboxInput, CreateTimeboxInputProps } from "@/modules/timeboxes/components/CreateTimeboxInput";
+import { CreateTimeboxInput } from "@/modules/timeboxes/components/CreateTimeboxInput";
 import { TimeboxDetail } from "@/modules/timeboxes/components/TimeboxDetail";
 import { TimeboxItem } from "@/modules/timeboxes/components/TimeboxItem";
 import { TimeboxDetailTimebox, TimeboxItemTimebox } from "@/modules/timeboxes/view-models";
@@ -22,18 +22,10 @@ export const TimeboxesScreenQuery = graphql(`
   query TimeboxesScreen($startTime: DateTime, $endTime: DateTime) {
     timeboxes(startTime: $startTime, endTime: $endTime) {
       id
-      title
-      description
-      startTime
-      endTime
-    }
-  }
-`);
-
-const CreateTimeboxMutation = graphql(`
-  mutation CreateTimebox($input: CreateTimeboxInput!) {
-    createTimebox(input: $input) {
-      id
+      task {
+        id
+        title
+      }
       title
       description
       startTime
@@ -70,20 +62,6 @@ export const TimeboxesScreen: React.FC<TimeboxesScreenProps> = () => {
     },
     requestPolicy: "cache-and-network",
   });
-  const [_, createTimeboxMutation] = useMutation(CreateTimeboxMutation);
-
-  const handleSubmitCreateTimebox = useCallback<CreateTimeboxInputProps["onSubmit"]>(
-    (value) => {
-      createTimeboxMutation({
-        input: {
-          title: value.title,
-          startTime: value.dateRange[0],
-          endTime: value.dateRange[1],
-        },
-      });
-    },
-    [createTimeboxMutation],
-  );
 
   const [focusedTimebox, setFocusedTimebox] = useState<TimeboxDetailTimebox>();
   const handleClickTimeboxItem = useCallback(
@@ -108,7 +86,7 @@ export const TimeboxesScreen: React.FC<TimeboxesScreenProps> = () => {
           <DateRangePicker value={dateRange} onChange={setDateRange} granularity="day" />
         </div>
 
-        <CreateTimeboxInput className="mx-6 mb-2.5" onSubmit={handleSubmitCreateTimebox} />
+        <CreateTimeboxInput className="mx-6 mb-2.5" />
 
         {timeboxesScreen.fetching && !timeboxesScreen.stale ? (
           "Loading..."
@@ -123,7 +101,7 @@ export const TimeboxesScreen: React.FC<TimeboxesScreenProps> = () => {
               return (
                 <div key={dayOffset}>
                   <div className="flex items-center">
-                    <h3 className="mx-6 text-base text-gray-900 font-medium leading-tight my-2">
+                    <h3 className="mx-6 text-gray-900 font-medium text-base leading-tight my-2">
                       {day.isToday() ? "Today" : day.format("dddd, D")}
                     </h3>
                   </div>

@@ -42,7 +42,7 @@ export const updates: UpdatesConfig = {
         );
 
         cache.invalidate({
-          __typename: "Timebox",
+          __typename: "TimeboxType",
           id: vars.id,
         });
       }

@@ -1,16 +1,11 @@
 import dayjs from "dayjs";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useMutation, useQuery } from "urql";
+import { useQuery } from "urql";
 
 import { graphql } from "@/apis/graphql/generated";
-import {
-  CreateTimeboxMutationVariables,
-  Timebox,
-  TodayQuery,
-  TodayQueryVariables,
-} from "@/apis/graphql/generated/graphql";
-import { CreateTimeboxInput, CreateTimeboxInputProps } from "@/modules/timeboxes/components/CreateTimeboxInput";
+import { TodayQuery, TodayQueryVariables } from "@/apis/graphql/generated/graphql";
+import { CreateTimeboxInput } from "@/modules/timeboxes/components/CreateTimeboxInput";
 import { TimeboxDetail } from "@/modules/timeboxes/components/TimeboxDetail";
 import { TimeboxItem } from "@/modules/timeboxes/components/TimeboxItem";
 import { TimeboxDetailTimebox, TimeboxItemTimebox } from "@/modules/timeboxes/view-models";
@@ -19,18 +14,10 @@ export const TodayScreenQuery = graphql(`
   query Today($startTime: DateTime, $endTime: DateTime) {
     timeboxes(startTime: $startTime, endTime: $endTime) {
       id
-      title
-      description
-      startTime
-      endTime
-    }
-  }
-`);
-
-const CreateTimeboxMutation = graphql(`
-  mutation CreateTimebox($input: CreateTimeboxInput!) {
-    createTimebox(input: $input) {
-      id
+      task {
+        id
+        title
+      }
       title
       description
       startTime
@@ -52,20 +39,6 @@ export const TodayScreen: React.FC = () => {
     requestPolicy: "cache-and-network",
   });
 
-  const [_, createTimeboxMutation] = useMutation<Timebox, CreateTimeboxMutationVariables>(CreateTimeboxMutation);
-  const handleSubmitCreateTimebox = useCallback<CreateTimeboxInputProps["onSubmit"]>(
-    (value) => {
-      createTimeboxMutation({
-        input: {
-          title: value.title,
-          startTime: value.dateRange[0],
-          endTime: value.dateRange[1],
-        },
-      });
-    },
-    [createTimeboxMutation],
-  );
-
   const [focusedTimebox, setFocusedTimebox] = useState<TimeboxDetailTimebox>();
   const handleClickTimeboxItem = useCallback(
     (focused: TimeboxItemTimebox) => {
@@ -84,7 +57,7 @@ export const TodayScreen: React.FC = () => {
         <h1 un-m="b-4" un-text="3xl" un-font="semibold">
           {t("modules.today.title")}
         </h1>
-        <CreateTimeboxInput className="w-full mb-2.5" onSubmit={handleSubmitCreateTimebox} />
+        <CreateTimeboxInput className="w-full mb-2.5" />
         {todayScreen.fetching && !todayScreen.stale ? (
           "Loading..."
         ) : (

@@ -1,58 +1,113 @@
+import { ComboBox, Item } from "@adobe/react-spectrum";
 import { DateValue, parseAbsoluteToLocal } from "@internationalized/date";
+import { RangeValue } from "@react-types/shared";
 import dayjs from "dayjs";
 import { Plus } from "iconoir-react";
-import { ChangeEvent, KeyboardEventHandler, useCallback, useState } from "react";
+import { ChangeEvent, Key, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDebounce } from "react-use";
+import { useMutation, useQuery } from "urql";
 
+import { graphql } from "@/apis/graphql/generated";
 import { DateRangePicker } from "@/components/DateRangePicker";
-import { RangeValue } from "@/components/react-aria";
 import { cn } from "@/utils";
 
 export interface CreateTimeboxInputProps {
   className?: string;
-  defaultValue?: InputValue;
-  onSubmit: (value: InputValue) => void;
 }
 
-interface InputValue {
-  title: string;
-  dateRange: [Maybe<Date>, Maybe<Date>];
-}
+export const SuggestTasksQuery = graphql(`
+  query SuggestTasks($keyword: String) {
+    tasks(keyword: $keyword) {
+      id
+      title
+    }
+  }
+`);
 
-export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ className, defaultValue, onSubmit }) => {
+const CreateTimeboxMutation = graphql(`
+  mutation CreateTimebox($input: CreateTimeboxInput!) {
+    createTimebox(input: $input) {
+      id
+      task {
+        id
+        title
+      }
+      title
+      description
+      startTime
+      endTime
+    }
+  }
+`);
+
+export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ className }) => {
   const { t } = useTranslation();
 
-  const [title, setTitle] = useState(defaultValue?.title ?? "");
-  const [dateRange, setDateRange] = useState<RangeValue<DateValue>>(() => ({
-    start: parseAbsoluteToLocal(dayjs(defaultValue?.dateRange[0]).toISOString()),
-    end: parseAbsoluteToLocal(dayjs(defaultValue?.dateRange[1]).toISOString()),
-  }));
+  const [suggestedTasks, refetchSuggesstedTasks] = useQuery({
+    query: SuggestTasksQuery,
+    requestPolicy: "cache-and-network",
+    pause: true,
+  });
+  const [_, createTimeboxMutation] = useMutation(CreateTimeboxMutation);
 
-  const onChangeTitle = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
+  const [title, setTitle] = useState("");
+  const handleChangeTitle = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
     setTitle(evt.target.value);
   }, []);
 
-  const reset = useCallback(() => {
-    setTitle(defaultValue?.title ?? "");
-    setDateRange({
-      start: parseAbsoluteToLocal(dayjs(defaultValue?.dateRange[0]).toISOString()),
-      end: parseAbsoluteToLocal(dayjs(defaultValue?.dateRange[1]).toISOString()),
-    });
-  }, [defaultValue?.dateRange, defaultValue?.title]);
+  const [taskInput, setTaskInput] = useState({
+    taskId: "" as Key,
+    title: "",
+  });
 
-  const handleKeyDown = useCallback<KeyboardEventHandler<HTMLInputElement>>(
-    (evt) => {
-      if (evt.key === "Enter") {
-        onSubmit({
-          title,
-          dateRange: [dayjs.fromDateValue(dateRange.start).toDate(), dayjs.fromDateValue(dateRange.end).toDate()],
-        });
-        reset();
-        return;
-      }
+  const [dateRange, setDateRange] = useState<RangeValue<DateValue>>(() => ({
+    start: parseAbsoluteToLocal(dayjs().toISOString()),
+    end: parseAbsoluteToLocal(dayjs().toISOString()),
+  }));
+
+  const setTaskTitle = useCallback((value: string) => {
+    setTaskInput((t) => ({ ...t, title: value }));
+  }, []);
+  useDebounce(
+    () => {
+      if (!taskInput.title) return;
+      refetchSuggesstedTasks({ variables: { keyword: taskInput.title } });
     },
-    [dateRange, onSubmit, reset, title],
+    500,
+    [taskInput.title, refetchSuggesstedTasks],
   );
+
+  const onSelectionChange = useCallback((key: Key) => {
+    setTaskInput((t) => ({
+      ...t,
+      taskId: key,
+    }));
+  }, []);
+
+  const reset = useCallback(() => {
+    setTitle("");
+    setTaskInput({ taskId: "", title: "" });
+    setDateRange({
+      start: parseAbsoluteToLocal(dayjs().toISOString()),
+      end: parseAbsoluteToLocal(dayjs().toISOString()),
+    });
+  }, []);
+
+  const handleSubmit = useCallback(() => {
+    createTimeboxMutation({
+      input: {
+        title,
+        task: {
+          title: taskInput.title,
+          id: String(taskInput.taskId),
+        },
+        startTime: dayjs.fromDateValue(dateRange.start).toISOString(),
+        endTime: dayjs.fromDateValue(dateRange.end).toISOString(),
+      },
+    });
+    reset();
+  }, [createTimeboxMutation, dateRange.end, dateRange.start, reset, taskInput.taskId, taskInput.title, title]);
 
   return (
     <div
@@ -66,14 +121,24 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
     >
       <Plus height={24} width={24} un-flex="none" un-text="gray-900" />
       <div className="flex flex-col flex-1">
-        <input
-          className="leading-7 w-full text-gray-900 text-base focus:outline-none"
-          placeholder={t("modules.today.components.CreateTimeboxInput.title.placeholder")}
-          value={title}
-          onChange={onChangeTitle}
-          onKeyDown={handleKeyDown}
-        />
+        <input name="title" value={title} onChange={handleChangeTitle} />
+        <ComboBox
+          items={suggestedTasks.data?.tasks ?? []}
+          inputValue={taskInput.title}
+          onInputChange={setTaskTitle}
+          onSelectionChange={onSelectionChange}
+          loadingState={suggestedTasks.fetching ? "loading" : "idle"}
+          allowsCustomValue
+        >
+          {(item) => <Item key={item.id}>{item.title}</Item>}
+        </ComboBox>
         <DateRangePicker value={dateRange} onChange={setDateRange} />
+        <button
+          className="leading-normal bg-slate-900 text-white rounded-md py-1 px-2 font-medium text-xs w-min"
+          onClick={handleSubmit}
+        >
+          {t("modules.today.components.CreateTimeboxInput.submit")}
+        </button>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import strawberry
 from strawberry.types import Info
 
 from timeboxx.graphql.context import Context
-from timeboxx.graphql.task import CreateTaskInput, Task, UpdateTaskInput
+from timeboxx.graphql.task import CreateTaskInput, TaskType, UpdateTaskInput
 
 
 @strawberry.type
@@ -14,7 +14,7 @@ class TaskMutation:
         self,
         info: Info[Context, Any],
         input: CreateTaskInput,
-    ) -> Task:
+    ) -> TaskType:
         current_user = await info.context.current_user
         task_service = info.context.task_service
 
@@ -28,14 +28,14 @@ class TaskMutation:
             status=input.status,
         )
 
-        return cast(Task, task)
+        return cast(TaskType, task)
 
     @strawberry.field
     async def update_task(
         self,
         info: Info[Context, Any],
         input: UpdateTaskInput,
-    ) -> Task:
+    ) -> TaskType:
         # raise Exception
 
         current_user = await info.context.current_user
@@ -53,7 +53,7 @@ class TaskMutation:
             dirty_fields=input.dirty_fields,
         )
 
-        return cast(Task, task)
+        return cast(TaskType, task)
 
     @strawberry.field
     async def delete_task(

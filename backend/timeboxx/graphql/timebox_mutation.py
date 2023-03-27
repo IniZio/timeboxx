@@ -4,7 +4,7 @@ import strawberry
 from strawberry.types import Info
 
 from timeboxx.graphql.context import Context
-from timeboxx.graphql.timebox import CreateTimeboxInput, Timebox, UpdateTimeboxInput
+from timeboxx.graphql.timebox import CreateTimeboxInput, TimeboxType, UpdateTimeboxInput
 
 
 @strawberry.type
@@ -14,57 +14,49 @@ class TimeboxMutation:
         self,
         info: Info[Context, Any],
         input: CreateTimeboxInput,
-    ) -> Timebox:
+    ) -> TimeboxType:
         current_user = await info.context.current_user
         timebox_service = info.context.timebox_service
 
-        timebox: Timebox = await timebox_service.create_timebox(
+        model = input.to_pydantic()
+
+        timebox: TimeboxType = await timebox_service.create_timebox(
             user_id=current_user.id if current_user else None,
-            client_id=input.client_id,
-            title=input.title,
-            description=input.description,
-            start_time=input.start_time,
-            end_time=input.end_time,
+            client_id=model.client_id,
+            title=model.title,
+            description=model.description,
+            start_time=model.start_time,
+            end_time=model.end_time,
+            task=model.task,
         )
 
-        return cast(Timebox, timebox)
+        return cast(TimeboxType, timebox)
 
     @strawberry.field
     async def update_timebox(
         self,
         info: Info[Context, Any],
         input: UpdateTimeboxInput,
-    ) -> Timebox:
+    ) -> TimeboxType:
         current_user = await info.context.current_user
         timebox_service = info.context.timebox_service
 
-        dirty_fields: list[str] = []
+        model = input.to_pydantic()
+        dirty_fields = model.dirty_fields
 
-        if input.id is not strawberry.UNSET:
-            dirty_fields.append("id")
-        if input.client_id is not strawberry.UNSET:
-            dirty_fields.append("client_id")
-        if input.title is not strawberry.UNSET:
-            dirty_fields.append("title")
-        if input.description is not strawberry.UNSET:
-            dirty_fields.append("description")
-        if input.start_time is not strawberry.UNSET:
-            dirty_fields.append("start_time")
-        if input.end_time is not strawberry.UNSET:
-            dirty_fields.append("end_time")
-
-        timebox: Timebox = await timebox_service.update_timebox(
+        timebox: TimeboxType = await timebox_service.update_timebox(
             user_id=current_user.id if current_user else None,
-            id=input.id,
-            client_id=input.client_id,
-            title=input.title,
-            description=input.description,
-            start_time=input.start_time,
-            end_time=input.end_time,
+            id=model.id,
+            client_id=model.client_id,
+            title=model.title,
+            description=model.description,
+            start_time=model.start_time,
+            end_time=model.end_time,
+            task=model.task,
             dirty_fields=dirty_fields,
         )
 
-        return cast(Timebox, timebox)
+        return cast(TimeboxType, timebox)
 
     @strawberry.field
     async def delete_timebox(
