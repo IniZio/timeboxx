@@ -65,14 +65,16 @@ class TimeboxService:
                 description=task.description if task else description,
             )
         )
+        self.session.add(timebox_task)
+        assert timebox_task
 
         timebox = Timebox(
             id=Timebox.id_factory(),
             created_by_id=user_id,
             updated_by_id=user_id,
             client_id=client_id,
-            title=title,
-            description=description,
+            title=title or timebox_task.title,
+            description=description or timebox_task.description,
             start_time=start_time,
             end_time=end_time,
             task=timebox_task,

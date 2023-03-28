@@ -101,7 +101,7 @@ export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox
       updateTimeboxMutation({
         input: {
           id: timebox.id,
-          task: { id: String(timeboxFormValues.task.key) },
+          task: { id: timeboxFormValues.task.key?.toString() },
           title: timeboxFormValues.title,
           startTime: timeboxFormValues.dateRange?.start?.toDate?.(""),
           endTime: timeboxFormValues.dateRange?.end?.toDate?.(""),

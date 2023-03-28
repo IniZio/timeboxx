@@ -101,7 +101,7 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
         title,
         task: {
           title: taskInput.title,
-          id: String(taskInput.taskId),
+          id: taskInput.taskId.toString(),
         },
         startTime: dayjs.fromDateValue(dateRange.start).toISOString(),
         endTime: dayjs.fromDateValue(dateRange.end).toISOString(),
