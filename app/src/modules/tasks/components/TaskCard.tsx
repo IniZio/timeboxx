@@ -1,5 +1,6 @@
 import { Bin, EditPencil, EyeAlt } from "iconoir-react";
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
+import { DragItem, useDrag } from "react-aria";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "urql";
 
@@ -26,6 +27,12 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onRefresh }) => {
 
   const [_, updateTaskMutation] = useMutation(UpdateTaskMutation);
   const [__, deleteTaskMutation] = useMutation(DeleteTaskMutation);
+
+  const { dragProps, isDragging } = useDrag({
+    getItems() {
+      return [task as unknown as DragItem];
+    },
+  });
 
   const [isEditting, setIsEditting] = useState(false);
   const [title, setTitle] = useState(task.title ?? "");
@@ -58,7 +65,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onRefresh }) => {
 
   if (isEditting) {
     return (
-      <Card>
+      <Card {...dragProps} className={isDragging ? "hidden" : ""}>
         <form onSubmit={handleSubmit}>
           <div className="flex gap-x-1">
             <input
@@ -87,7 +94,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onRefresh }) => {
   }
 
   return (
-    <Card>
+    <Card {...dragProps} className={isDragging ? "hidden" : ""}>
       <div className="flex gap-x-1">
         <p className="text-sm text-gray-900 min-w-0 flex-1 overflow-hidden text-ellipsis break-words leading-relaxed">
           {task.title}

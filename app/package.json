@@ -15,7 +15,6 @@
   "dependencies": {
     "@adobe/react-spectrum": "^3.25.1",
     "@authgear/web": "^2.0.0",
-    "@dnd-kit/core": "^6.0.8",
     "@fontsource/inter": "^4.5.15",
     "@iniz/react": "^0.7.0",
     "@internationalized/date": "^3.1.0",
