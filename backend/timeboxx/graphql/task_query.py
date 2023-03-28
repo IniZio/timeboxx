@@ -1,16 +1,18 @@
-from typing import Any, cast
+from typing import Any, Optional, cast
 
 import strawberry
 from strawberry.types import Info
 
 from timeboxx.graphql.context import Context
-from timeboxx.graphql.task import Task
+from timeboxx.graphql.task import TaskType
 
 
 @strawberry.type
 class TaskQuery:
     @strawberry.field
-    async def tasks(self, info: Info[Context, Any]) -> list[Task]:
+    async def tasks(
+        self, info: Info[Context, Any], keyword: Optional[str] = None
+    ) -> list[TaskType]:
         current_user = await info.context.current_user
         task_service = info.context.task_service
 
@@ -19,4 +21,4 @@ class TaskQuery:
 
         tasks = await task_service.list_tasks(user_id=current_user.id)
 
-        return cast(list[Task], tasks)
+        return cast(list[TaskType], tasks)

@@ -1,4 +1,4 @@
-import { CheckCircle, Clock } from "iconoir-react";
+import { CheckCircle, Clock, TaskList } from "iconoir-react";
 import { useTranslation } from "react-i18next";
 
 import { LogoWithTitle } from "@/components/LogoWithTitle";
@@ -18,6 +18,11 @@ const SideNav: React.FC = () => {
           icon={<Clock width={16} height={16} strokeWidth={2} un-text="gray-900" />}
           label={t("shells.app.nav.today")}
           to={Routes.App.Today}
+        />
+        <NavItem
+          icon={<TaskList width={16} height={16} strokeWidth={2} un-text="gray-900" />}
+          label={t("shells.app.nav.timeboxes")}
+          to={Routes.App.Planned}
         />
         <NavItem
           icon={<CheckCircle width={16} height={16} strokeWidth={2} un-text="gray-900" />}

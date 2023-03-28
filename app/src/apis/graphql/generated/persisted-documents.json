@@ -1,11 +1,13 @@
 {
   "cbc4aa4c16cedd89db9109cbab61a8dc3318dc35": "query sayHello { ping }",
   "dde75ab7c5fce8ffe17a0846a4cc267efd5beabc": "mutation DeleteTask($id: String!) { deleteTask(id: $id) }",
-  "d5e3ef963f7deada9de9edd6b801e1cf5f2a61fe": "fragment TaskList_TaskFragment on Task { id status title } mutation CreateTask($input: CreateTaskInput!) { createTask(input: $input) { ...TaskList_TaskFragment } }",
-  "5b11db5e9e1a7238498a6441099390fc61668c45": "fragment TaskList_TaskFragment on Task { id status title } query TasksScreen { tasks { ...TaskList_TaskFragment } }",
-  "5f697b6f4f64b40059e88e8d61b44303e917cfcc": "fragment TaskList_TaskFragment on Task { id status title } mutation UpdateTask($input: UpdateTaskInput!) { updateTask(input: $input) { ...TaskList_TaskFragment } }",
-  "954771b1dbdf0522fe9e14c5be1038ff300f0d0a": "mutation UpdateTimebox($input: UpdateTimeboxInput!) { updateTimebox(input: $input) { description endTime id startTime title } }",
+  "f0de7b2c04ee65c78ab7fa3b02334dfa85e44504": "fragment TaskList_TaskFragment on TaskType { id status title } mutation CreateTask($input: CreateTaskInput!) { createTask(input: $input) { ...TaskList_TaskFragment } }",
+  "4b90df400200afac47b533c45082cf82b3251d5c": "fragment TaskList_TaskFragment on TaskType { id status title } query TasksScreen { tasks { ...TaskList_TaskFragment } }",
+  "af2b2118a46a98508410ff4281b6c6908072580e": "fragment TaskList_TaskFragment on TaskType { id status title } mutation UpdateTask($input: UpdateTaskInput!) { updateTask(input: $input) { ...TaskList_TaskFragment } }",
+  "78e02c39f4156efd181fb213c6ffabafa7f498e3": "query SuggestTasks($keyword: String) { tasks(keyword: $keyword) { id title } }",
+  "5591c51bb5d10acb6a5a5c9dd1eda2a3049ffbef": "mutation CreateTimebox($input: CreateTimeboxInput!) { createTimebox(input: $input) { description endTime id startTime task { id title } title } }",
+  "16835b2f598dc3b2db060b289be9b112c0bee055": "mutation UpdateTimebox($input: UpdateTimeboxInput!) { updateTimebox(input: $input) { description endTime id startTime task { id title } title } }",
   "ef7bd6f578a50a6bb8f503ba47943f5540d7f072": "mutation DeleteTimebox($id: String!) { deleteTimebox(id: $id) }",
-  "7271a4b361621f7de698d3a71c8a32e7e2d2cbde": "query Today($endTime: DateTime, $startTime: DateTime) { timeboxes(startTime: $startTime, endTime: $endTime) { description endTime id startTime title } }",
-  "2183147b1c95dc41020523861badf0a0de879b1a": "mutation CreateTimebox($input: CreateTimeboxInput!) { createTimebox(input: $input) { description endTime id startTime title } }"
+  "d4942ac83b76efaacd28b794b26942f63611b39c": "query TimeboxesScreen($endTime: DateTime, $startTime: DateTime) { timeboxes(startTime: $startTime, endTime: $endTime) { description endTime id startTime task { id title } title } }",
+  "607778322264479aa442f4dc9db07103ca76fc9f": "query Today($endTime: DateTime, $startTime: DateTime) { timeboxes(startTime: $startTime, endTime: $endTime) { description endTime id startTime task { id title } title } }"
 }

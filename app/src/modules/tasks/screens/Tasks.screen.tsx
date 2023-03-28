@@ -1,12 +1,8 @@
-import type { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
-import { DndContext, DragOverlay, MouseSensor, useSensor, useSensors } from "@dnd-kit/core";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useMutation, useQuery } from "urql";
 
 import { graphql } from "@/apis/graphql/generated";
-import { Droppable } from "@/components/dnd-kit/Droppable";
-import { TaskCard } from "@/modules/tasks/components/TaskCard";
 import { TaskList } from "@/modules/tasks/components/TaskList";
 import { TaskStatus } from "@/modules/tasks/constants";
 
@@ -50,53 +46,34 @@ export const TasksScreen: React.FC<TasksScreenProps> = () => {
 
   const [_, updateTaskMutation] = useMutation(UpdateTaskMutation);
 
-  const mouseSensor = useSensor(MouseSensor, {
-    activationConstraint: {
-      delay: 250,
-      tolerance: 5,
-    },
-  });
-  const sensors = useSensors(mouseSensor);
+  const handleTasksDrop = useCallback(
+    (taskIds: string[], status: Maybe<TaskStatus>) => {
+      // FIXME: Only handle single drag for now
+      const task = tasksScreen.data?.tasks.find((task) => task.id === taskIds[0]);
+      if (!task) {
+        return;
+      }
 
-  const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
-  const draggedTask = useMemo(
-    () => tasksScreen.data?.tasks.find((t) => t.id === draggedTaskId),
-    [draggedTaskId, tasksScreen.data?.tasks],
-  );
-  const handleDragStart = useCallback((evt: DragStartEvent) => {
-    setDraggedTaskId(evt.active.id.toString());
-  }, []);
-  const handleDragEnd = useCallback(
-    (evt: DragEndEvent) => {
-      setDraggedTaskId(null);
-      const { active, over } = evt;
       updateTaskMutation({
-        input: { id: active.id.toString(), status: over?.id as TaskStatus, dirtyFields: ["status"] },
+        input: { id: task.id.toString(), status, dirtyFields: ["status"] },
       });
     },
-    [updateTaskMutation],
+    [tasksScreen.data?.tasks, updateTaskMutation],
   );
 
   return (
     <div className="flex w-full h-full">
-      <div un-p="t-6" un-h="full" className="flex flex-col min-w-0">
+      <div un-p="t-6" un-h="full" className="flex min-w-0 flex-col">
         <h1 un-m="b-4" un-text="3xl" un-font="semibold" className="px-6">
           {t("modules.tasks.title")}
         </h1>
 
         <div className="flex px-6 flex-1 mt-2 gap-8 overflow-x-auto">
-          <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} sensors={sensors}>
-            {ORDERED_TASK_STATUS_LIST.map((status) => {
-              const tasks = tasksScreen.data?.tasks.filter((task) => task.status === status);
+          {ORDERED_TASK_STATUS_LIST.map((status) => {
+            const tasks = tasksScreen.data?.tasks.filter((task) => task.status === status);
 
-              return (
-                <Droppable key={status} id={status as string}>
-                  <TaskList status={status} tasks={tasks} />
-                </Droppable>
-              );
-            })}
-            <DragOverlay>{draggedTask ? <TaskCard task={draggedTask} /> : null}</DragOverlay>
-          </DndContext>
+            return <TaskList key={status} status={status} tasks={tasks} onDrop={handleTasksDrop} />;
+          })}
         </div>
       </div>
     </div>

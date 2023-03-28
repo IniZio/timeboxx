@@ -1,31 +1,30 @@
-from datetime import datetime
-from typing import Optional
-
 import strawberry
 
 from timeboxx.graphql.mapper import sqlalchemy_mapper
 from timeboxx.pkg import db_models
+from timeboxx.pkg.timebox.models import CreateTimebox, TimeboxTask, UpdateTimebox
 
 
 @sqlalchemy_mapper.type(db_models.Timebox)
-class Timebox:
+class TimeboxType:
     __exclude__ = ["client_id"]
 
 
-@strawberry.input
+@strawberry.experimental.pydantic.input(model=TimeboxTask, all_fields=True)
+class CreateTimeboxTaskInput:
+    pass
+
+
+@strawberry.experimental.pydantic.input(model=TimeboxTask, all_fields=True)
+class UpdateTimeboxTaskInput:
+    pass
+
+
+@strawberry.experimental.pydantic.input(model=CreateTimebox, all_fields=True)
 class CreateTimeboxInput:
-    client_id: Optional[str] = None
-    title: Optional[str] = None
-    description: Optional[str] = None
-    start_time: Optional[datetime] = None
-    end_time: Optional[datetime] = None
+    pass
 
 
-@strawberry.input
+@strawberry.experimental.pydantic.input(model=UpdateTimebox, all_fields=True)
 class UpdateTimeboxInput:
-    id: Optional[str] = strawberry.UNSET
-    client_id: Optional[str] = strawberry.UNSET
-    title: Optional[str] = strawberry.UNSET
-    description: Optional[str] = strawberry.UNSET
-    start_time: Optional[datetime] = strawberry.UNSET
-    end_time: Optional[datetime] = strawberry.UNSET
+    pass

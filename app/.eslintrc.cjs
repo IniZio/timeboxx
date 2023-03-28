@@ -15,10 +15,6 @@ module.exports = {
       version: "detect",
     },
     "import/resolver": {
-      node: {
-        paths: ["src"],
-        extensions: [".js", ".jsx", ".ts", ".tsx"],
-      },
       typescript: {
         project: ".",
       },

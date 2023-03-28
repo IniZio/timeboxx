@@ -1,21 +1,23 @@
 import { Plus } from "iconoir-react";
-import { ChangeEvent, FormEvent, useCallback, useState } from "react";
+import { ChangeEvent, FormEvent, useCallback, useRef, useState } from "react";
+import { TextDropItem, useDrop } from "react-aria";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "urql";
 
 import { graphql } from "@/apis/graphql/generated";
 import { Card } from "@/components/Card";
-import { Draggable } from "@/components/dnd-kit/Draggable";
 import { IconButton } from "@/components/IconButton";
 import { TaskCard } from "@/modules/tasks/components/TaskCard";
 import { TaskStatus } from "@/modules/tasks/constants";
 import { TaskListTask } from "@/modules/tasks/view-models";
+import { cn } from "@/utils";
 
 export interface TaskListProps {
   className?: string;
   status: Maybe<TaskStatus>;
   tasks?: TaskListTask[];
   onRefresh?: () => void;
+  onDrop?: (taskIds: string[], status: Maybe<TaskStatus>) => void;
 }
 
 const CreateTaskMutation = graphql(`
@@ -27,15 +29,27 @@ const CreateTaskMutation = graphql(`
 `);
 
 export const TaskList_TaskFragment = graphql(`
-  fragment TaskList_TaskFragment on Task {
+  fragment TaskList_TaskFragment on TaskType {
     id
     title
     status
   }
 `);
 
-export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh }) => {
+export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh, onDrop }) => {
   const { t } = useTranslation();
+
+  const ref = useRef<HTMLDivElement>(null);
+  const { dropProps, isDropTarget } = useDrop({
+    ref,
+    async onDrop(e) {
+      const taskIds = await Promise.all(
+        e.items.filter((item) => item.kind === "text").map((item) => (item as unknown as TextDropItem).getText("id")),
+      );
+
+      onDrop?.(taskIds, status);
+    },
+  });
 
   const [_, createTaskMutation] = useMutation(CreateTaskMutation);
 
@@ -63,9 +77,15 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh }) 
   );
 
   return (
-    <div className="flex flex-col max-h-full w-70 h-full p-2">
+    <div
+      className={cn(
+        "flex flex-col flex-shrink-0 max-h-full w-70 h-full p-2 rounded transition-colors",
+        isDropTarget && "bg-slate-100",
+      )}
+      {...dropProps}
+    >
       <div className="flex max-w-full">
-        <p className="text-sm flex-1 leading-7 text-gray-500 capitalize">
+        <p className="text-gray-500 text-sm flex-1 leading-7 capitalize">
           {t(`modules.tasks.constants.status.${status?.toLowerCase() ?? "no_status"}` as never)}
         </p>
         <IconButton onClick={() => setTaskInputVisibility((v) => !v)}>
@@ -74,7 +94,7 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh }) 
       </div>
 
       {taskInputVisibility && (
-        <Card className="flex mt-2 p-2 gap-2">
+        <Card className="flex p-2 mt-2 gap-2">
           <form onSubmit={handleSubmitCreateTask}>
             <input
               placeholder="Title"
@@ -94,11 +114,7 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh }) 
 
       <div className="flex flex-col max-h-full h-full gap-y-2 overflow-y-auto pb-6 mt-4 overflow-x-hidden">
         {tasks?.map((task) => {
-          return (
-            <Draggable key={task.id} id={task.id}>
-              <TaskCard task={task} onRefresh={onRefresh} />
-            </Draggable>
-          );
+          return <TaskCard key={task.id} task={task} onRefresh={onRefresh} />;
         })}
       </div>
     </div>

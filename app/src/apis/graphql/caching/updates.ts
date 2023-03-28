@@ -12,7 +12,7 @@ import {
   DeleteTimeboxMutationVariables,
 } from "@/apis/graphql/generated/graphql";
 import { TasksScreenQuery } from "@/modules/tasks/screens/Tasks.screen";
-import { TodayScreenQuery } from "@/modules/today/screens/Today.screen";
+import { TodayScreenQuery } from "@/modules/timeboxes/screens/Today.screen";
 
 export const updates: UpdatesConfig = {
   Mutation: {
@@ -22,10 +22,17 @@ export const updates: UpdatesConfig = {
       cache.updateQuery(
         { query: TodayScreenQuery, variables: { startTime: todayStart, endTime: todayEnd } },
         (data) => {
-          data?.timeboxes.push(result.createTimebox);
+          if (!data) return data;
+          data.timeboxes.push(result.createTimebox);
+          data.timeboxes = data.timeboxes.sort((a, b) => a.startTime - b.startTime);
           return data;
         },
       );
+
+      cache.invalidate({
+        __typename: "Query",
+        fieldName: "timeboxes",
+      });
     },
     deleteTimebox(result: DeleteTimeboxMutation, vars: DeleteTimeboxMutationVariables, cache) {
       if (result.deleteTimebox) {
@@ -38,13 +45,19 @@ export const updates: UpdatesConfig = {
             return data;
           },
         );
+
+        cache.invalidate({
+          __typename: "TimeboxType",
+          id: vars.id,
+        });
       }
     },
 
     // Task
     createTask(result: CreateTaskMutation, _vars: CreateTaskMutationVariables, cache) {
       cache.updateQuery({ query: TasksScreenQuery }, (data) => {
-        data?.tasks.push(result.createTask);
+        if (!data) return data;
+        data.tasks.push(result.createTask);
         return data;
       });
     },

@@ -17,10 +17,14 @@ if TYPE_CHECKING:
 class Timeslot(Base, IDMixin, AuditableMixin, OfflineMixin):
     __tablename__ = "timeslot"
 
-    task_id: Mapped[int] = mapped_column(ForeignKey("task.id"), nullable=True)
+    task_id: Mapped[int] = mapped_column(
+        ForeignKey("task.id", ondelete="CASCADE"), nullable=True
+    )
     task: Mapped[Task] = relationship(back_populates="timeslots", lazy=False)
 
-    timebox_id: Mapped[int] = mapped_column(ForeignKey("timebox.id"), nullable=True)
+    timebox_id: Mapped[int] = mapped_column(
+        ForeignKey("timebox.id", ondelete="CASCADE"), nullable=True
+    )
     timebox: Mapped[Timebox] = relationship(back_populates="timeslots", lazy=False)
 
     title: Mapped[str] = mapped_column(

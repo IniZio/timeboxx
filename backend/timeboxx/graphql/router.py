@@ -1,6 +1,5 @@
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
-from fastapi_async_sqlalchemy import db
 from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry.fastapi import GraphQLRouter
 from strawberry_sqlalchemy_mapper import StrawberrySQLAlchemyLoader
@@ -22,7 +21,7 @@ def get_context(
 ):
     return Context(
         session=session,
-        sqlalchemy_loader=StrawberrySQLAlchemyLoader(bind=db.session),
+        sqlalchemy_loader=StrawberrySQLAlchemyLoader(bind=session),
         auth_service=auth_service,
         task_service=task_service,
         timebox_service=timebox_service,

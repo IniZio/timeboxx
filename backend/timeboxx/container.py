@@ -1,9 +1,9 @@
 from dependency_injector import containers, providers
-from fastapi_async_sqlalchemy import db
 
 from timeboxx.pkg.auth.authgear_admin import AuthgearAdminAPI
 from timeboxx.pkg.auth.service import AuthService
 from timeboxx.pkg.config import MainSettings, WebsiteSettings
+from timeboxx.pkg.db import get_sessiomaker
 from timeboxx.pkg.task.service import TaskService
 from timeboxx.pkg.timebox.service import TimeboxService
 
@@ -16,7 +16,8 @@ class Container(containers.DeclarativeContainer):
     settings = providers.Singleton(MainSettings.from_env)
     website_settings = providers.Singleton(WebsiteSettings.from_env)
 
-    session = providers.ThreadLocalSingleton(lambda: db.session)
+    sessionmaker = providers.ThreadLocalSingleton(get_sessiomaker, settings=settings)
+    session = providers.Resource(sessionmaker)
 
     authgear_admin = providers.Factory(AuthgearAdminAPI, settings=settings)
 
