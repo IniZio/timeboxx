@@ -1,19 +1,21 @@
-import { useRef } from "react";
-import type { AriaPopoverProps } from "react-aria";
-import { DismissButton, Overlay, usePopover } from "react-aria";
-import type { OverlayTriggerState } from "react-stately";
+import * as React from "react";
+import { AriaPopoverProps, DismissButton, Overlay, usePopover } from "react-aria";
+import { OverlayTriggerState } from "react-stately";
 
 interface PopoverProps extends Omit<AriaPopoverProps, "popoverRef"> {
   children: React.ReactNode;
   state: OverlayTriggerState;
+  className?: string;
+  popoverRef?: React.RefObject<HTMLDivElement>;
 }
 
-export function Popover({ children, state, offset = 8, ...props }: PopoverProps) {
-  const popoverRef = useRef(null);
+export function Popover(props: PopoverProps) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const { popoverRef = ref, state, children, className, isNonModal } = props;
+
   const { popoverProps, underlayProps } = usePopover(
     {
       ...props,
-      offset,
       popoverRef,
     },
     state,
@@ -21,9 +23,13 @@ export function Popover({ children, state, offset = 8, ...props }: PopoverProps)
 
   return (
     <Overlay>
-      <div {...underlayProps} className="fixed inset-0" />
-      <div {...popoverProps} ref={popoverRef} className="shadow">
-        <DismissButton onDismiss={state.close} />
+      {!isNonModal && <div {...underlayProps} className="fixed inset-0" />}
+      <div
+        {...popoverProps}
+        ref={popoverRef}
+        className={`z-10 shadow-lg border border-gray-300 bg-white rounded-md mt-2 ${className}`}
+      >
+        {!isNonModal && <DismissButton onDismiss={state.close} />}
         {children}
         <DismissButton onDismiss={state.close} />
       </div>

@@ -28,6 +28,11 @@ export const updates: UpdatesConfig = {
           return data;
         },
       );
+
+      cache.invalidate({
+        __typename: "Query",
+        fieldName: "timeboxes",
+      });
     },
     deleteTimebox(result: DeleteTimeboxMutation, vars: DeleteTimeboxMutationVariables, cache) {
       if (result.deleteTimebox) {

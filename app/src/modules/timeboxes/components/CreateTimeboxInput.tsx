@@ -1,15 +1,16 @@
-import { ComboBox, Item } from "@adobe/react-spectrum";
 import { DateValue, parseAbsoluteToLocal } from "@internationalized/date";
 import { RangeValue } from "@react-types/shared";
 import dayjs from "dayjs";
 import { Plus } from "iconoir-react";
 import { ChangeEvent, Key, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Item } from "react-stately";
 import { useDebounce } from "react-use";
 import { useMutation, useQuery } from "urql";
 
 import { graphql } from "@/apis/graphql/generated";
 import { DateRangePicker } from "@/components/DateRangePicker";
+import { TimeboxTaskInput } from "@/modules/timeboxes/components/TimeboxTaskInput";
 import { cn } from "@/utils";
 
 export interface CreateTimeboxInputProps {
@@ -71,7 +72,7 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
   }, []);
   useDebounce(
     () => {
-      if (!taskInput.title) return;
+      // if (!taskInput.title) return;
       refetchSuggesstedTasks({ variables: { keyword: taskInput.title } });
     },
     500,
@@ -120,21 +121,21 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
       )}
     >
       <Plus height={24} width={24} un-flex="none" un-text="gray-900" />
-      <div className="flex flex-col flex-1">
-        <input name="title" value={title} onChange={handleChangeTitle} />
-        <ComboBox
+      <div className="flex flex-col flex-1 gap-y-0.5">
+        <TimeboxTaskInput
           items={suggestedTasks.data?.tasks ?? []}
           inputValue={taskInput.title}
           onInputChange={setTaskTitle}
           onSelectionChange={onSelectionChange}
-          loadingState={suggestedTasks.fetching ? "loading" : "idle"}
+          // loadingState={suggestedTasks.fetching ? "loading" : "idle"}
           allowsCustomValue
         >
           {(item) => <Item key={item.id}>{item.title}</Item>}
-        </ComboBox>
+        </TimeboxTaskInput>
+        {taskInput.taskId && <input name="title" value={title} onChange={handleChangeTitle} placeholder="Title" />}
         <DateRangePicker value={dateRange} onChange={setDateRange} />
         <button
-          className="leading-normal bg-slate-900 text-white rounded-md py-1 px-2 font-medium text-xs w-min"
+          className="text-xs leading-normal bg-slate-900 text-white rounded-md py-1 px-2 font-medium w-min"
           onClick={handleSubmit}
         >
           {t("modules.today.components.CreateTimeboxInput.submit")}

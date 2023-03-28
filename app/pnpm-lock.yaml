@@ -12,6 +12,8 @@ specifiers:
   '@iniz/react': ^0.7.0
   '@internationalized/date': ^3.1.0
   '@nabla/vite-plugin-eslint': ^1.5.0
+  '@react-aria/listbox': ^3.8.1
+  '@react-types/combobox': ^3.6.0
   '@react-types/datepicker': ^3.2.0
   '@react-types/shared': ^3.17.0
   '@types/react': ^18.0.27
@@ -99,6 +101,8 @@ devDependencies:
   '@graphql-codegen/typescript-urql': 3.7.3_graphql@16.6.0
   '@graphql-typed-document-node/core': 3.1.2_graphql@16.6.0
   '@nabla/vite-plugin-eslint': 1.5.0_eslint@8.34.0+vite@4.1.1
+  '@react-aria/listbox': 3.8.1_react@18.2.0
+  '@react-types/combobox': 3.6.0_react@18.2.0
   '@react-types/datepicker': 3.2.0_react@18.2.0
   '@react-types/shared': 3.17.0_react@18.2.0
   '@types/react': 18.0.28
@@ -1068,13 +1072,11 @@ packages:
     dependencies:
       '@formatjs/intl-localematcher': 0.2.32
       tslib: 2.5.0
-    dev: false
 
   /@formatjs/fast-memoize/2.0.0:
     resolution: {integrity: sha512-U88W/qhEs5ZuX+Inw/DZHjA6w2YCTWTNzTkprzNznyWoGl8h+XtlOCW3nM78+VX7lSbvpMdnaHmWLnDnjJjuwg==}
     dependencies:
       tslib: 2.5.0
-    dev: false
 
   /@formatjs/icu-messageformat-parser/2.3.0:
     resolution: {integrity: sha512-xqtlqYAbfJDF4b6e4O828LBNOWXrFcuYadqAbYORlDRwhyJ2bH+xpUBPldZbzRGUN2mxlZ4Ykhm7jvERtmI8NQ==}
@@ -1082,20 +1084,17 @@ packages:
       '@formatjs/ecma402-abstract': 1.14.3
       '@formatjs/icu-skeleton-parser': 1.3.18
       tslib: 2.5.0
-    dev: false
 
   /@formatjs/icu-skeleton-parser/1.3.18:
     resolution: {integrity: sha512-ND1ZkZfmLPcHjAH1sVpkpQxA+QYfOX3py3SjKWMUVGDow18gZ0WPqz3F+pJLYQMpS2LnnQ5zYR2jPVYTbRwMpg==}
     dependencies:
       '@formatjs/ecma402-abstract': 1.14.3
       tslib: 2.5.0
-    dev: false
 
   /@formatjs/intl-localematcher/0.2.32:
     resolution: {integrity: sha512-k/MEBstff4sttohyEpXxCmC3MqbUn9VvHGlZ8fauLzkbwXmVrEeyzS+4uhrvAk9DWU9/7otYWxyDox4nT/KVLQ==}
     dependencies:
       tslib: 2.5.0
-    dev: false
 
   /@graphql-codegen/add/4.0.0_graphql@16.6.0:
     resolution: {integrity: sha512-AxuDFdDi4Hx1fVVSkSo9O0i/kGEidjXw3gqSfx6H+dSeC/gcjpsVZyCyvXERVXpTNXYobVIJtTV3UaSzGNZMSw==}
@@ -1852,19 +1851,16 @@ packages:
     dependencies:
       '@swc/helpers': 0.4.14
       intl-messageformat: 10.3.2
-    dev: false
 
   /@internationalized/number/3.2.0:
     resolution: {integrity: sha512-GUXkhXSX1Ee2RURnzl+47uvbOxnlMnvP9Er+QePTjDjOPWuunmLKlEkYkEcLiiJp7y4l9QxGDLOlVr8m69LS5w==}
     dependencies:
       '@swc/helpers': 0.4.14
-    dev: false
 
   /@internationalized/string/3.1.0:
     resolution: {integrity: sha512-TJQKiyUb+wyAfKF59UNeZ/kELMnkxyecnyPCnBI1ma4NaXReJW+7Cc2mObXAqraIBJUVv7rgI46RLKrLgi35ng==}
     dependencies:
       '@swc/helpers': 0.4.14
-    dev: false
 
   /@jridgewell/gen-mapping/0.1.1:
     resolution: {integrity: sha512-sQXCasFk+U8lWYEe66WxRDOE9PjVz4vSM51fTu3Hw+ClTpUSQb718772vH3pyS5pShp6lvQM7SxgIDXXXmOX7w==}
@@ -2166,7 +2162,6 @@ packages:
       '@swc/helpers': 0.4.14
       clsx: 1.2.1
       react: 18.2.0
-    dev: false
 
   /@react-aria/grid/3.6.1_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-8u5oSqHrMNg4GVoOE21CEDcoAbTVpDUNg1mpJqM/ww2LrPZdEMQlU0Ro7Uq+zNg2tzVcdAtgPkh7EEErESIb4Q==}
@@ -2225,7 +2220,6 @@ packages:
       '@react-types/shared': 3.17.0_react@18.2.0
       '@swc/helpers': 0.4.14
       react: 18.2.0
-    dev: false
 
   /@react-aria/interactions/3.14.0_react@18.2.0:
     resolution: {integrity: sha512-e1Tkr0UTuYFpV21PJrXy7jEY542Vl+C2Fo70oukZ1fN+wtfQkzodsTIzyepXb7kVMGmC34wDisMJUrksVkfY2w==}
@@ -2236,7 +2230,6 @@ packages:
       '@react-types/shared': 3.17.0_react@18.2.0
       '@swc/helpers': 0.4.14
       react: 18.2.0
-    dev: false
 
   /@react-aria/label/3.5.0_react@18.2.0:
     resolution: {integrity: sha512-sNiPYiFg06s1zGuifEUeUqRiYje0lfHem+GIUh0Y5ZxfpqIyxEmyV9Aw+C7TTjjo8BAG4NZ4bR7iF9ujf9QvKQ==}
@@ -2248,7 +2241,6 @@ packages:
       '@react-types/shared': 3.17.0_react@18.2.0
       '@swc/helpers': 0.4.14
       react: 18.2.0
-    dev: false
 
   /@react-aria/link/3.4.0_react@18.2.0:
     resolution: {integrity: sha512-d/h4y7SFO+KweMX5IRU99L1jz9AAwp6mNStkBjYGxCD29QYTVWClpZHjRlO1s6a9e2QTpk/LzsvjiytowzfHyA==}
@@ -2280,7 +2272,6 @@ packages:
       '@react-types/shared': 3.17.0_react@18.2.0
       '@swc/helpers': 0.4.14
       react: 18.2.0
-    dev: false
 
   /@react-aria/live-announcer/3.2.0:
     resolution: {integrity: sha512-uSqDDy+9CbmNTZh0Roi4dvWKWcbuMTYKh3RnUw3XBPw0aYxSkcFQeWGfxFoOwXCDcXez02cFJtAxpR2bShkrsw==}
@@ -2450,7 +2441,6 @@ packages:
       '@react-types/shared': 3.17.0_react@18.2.0
       '@swc/helpers': 0.4.14
       react: 18.2.0
-    dev: false
 
   /@react-aria/separator/3.3.0_react@18.2.0:
     resolution: {integrity: sha512-AR3Pbik83dygOvmfBiCTRAHz+B13yyGz8nKyw521toT69RMtJTi8ha8qB6Iw1QP3YZWRv+Fn6WWrfGIvR+f2XQ==}
@@ -2505,7 +2495,6 @@ packages:
     dependencies:
       '@swc/helpers': 0.4.14
       react: 18.2.0
-    dev: false
 
   /@react-aria/switch/3.4.0_react@18.2.0:
     resolution: {integrity: sha512-FWbjqNcY+fAjRNXVQTvOx93udhaySgXLsMNLRAVUcFm45FqTaxAhHhNGtRnVhDvzHTJY/Y+kpcGzCcW2rXzPxg==}
@@ -2617,7 +2606,6 @@ packages:
       '@swc/helpers': 0.4.14
       clsx: 1.2.1
       react: 18.2.0
-    dev: false
 
   /@react-aria/virtualizer/3.7.0_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-aUXArcy6/mkEEP1haczDRKe2nl7KVQkliwBAe7Qhwp6QHaTgU6oSUlcEuC8NkMUhZtkjOYB71ox1V6/QfCxRaQ==}
@@ -3680,7 +3668,6 @@ packages:
       '@react-types/shared': 3.17.0_react@18.2.0
       '@swc/helpers': 0.4.14
       react: 18.2.0
-    dev: false
 
   /@react-stately/combobox/3.4.0_react@18.2.0:
     resolution: {integrity: sha512-QVKNosNqSS7PnjrNVrGat9KKlCcv7e3nTehQuIu18ZE2JVH7Jdf/73zkSMurrnQfbPVeiHkGK1deWqrzoNzYQQ==}
@@ -3770,7 +3757,6 @@ packages:
       '@react-types/shared': 3.17.0_react@18.2.0
       '@swc/helpers': 0.4.14
       react: 18.2.0
-    dev: false
 
   /@react-stately/menu/3.5.0_react@18.2.0:
     resolution: {integrity: sha512-JL6TcT+SbYdlxNLOS84SXp6njDNZuXfkt05o4rS51evmjM2+hlYaB9+yUMqrCb/J2nW7vVAg51TDAhLgmGTYKg==}
@@ -3859,7 +3845,6 @@ packages:
       '@react-types/shared': 3.17.0_react@18.2.0
       '@swc/helpers': 0.4.14
       react: 18.2.0
-    dev: false
 
   /@react-stately/slider/3.3.0_react@18.2.0:
     resolution: {integrity: sha512-17aGJYHBRY3g4ZeiIgCNOvYl3HBARvSJhUKoNxZMRa2pqREW+WmBRRAXv5KTymW/KfcGb0RCq1ytYsderEgZAQ==}
@@ -3946,7 +3931,6 @@ packages:
     dependencies:
       '@swc/helpers': 0.4.14
       react: 18.2.0
-    dev: false
 
   /@react-stately/virtualizer/3.5.0_react@18.2.0:
     resolution: {integrity: sha512-Jjk7V2T9uJ2+1EaVY+v1SJYeKb9dvZKayP35bcUq8/y9+I41kNE+qmgnkr5/SVzkExu4YeZTFxtuOm4l8UX5jg==}
@@ -4032,7 +4016,6 @@ packages:
     dependencies:
       '@react-types/shared': 3.17.0_react@18.2.0
       react: 18.2.0
-    dev: false
 
   /@react-types/contextualhelp/3.2.0_react@18.2.0:
     resolution: {integrity: sha512-hEymEvhqPDGeKFy1kLCr+kyY8BHRFQXqDq4FTNWglPsFebikyB6dqpca/ICEAQS6sv6vRYdwanx/FkT/5ee+9g==}
@@ -4116,7 +4099,6 @@ packages:
     dependencies:
       '@react-types/shared': 3.17.0_react@18.2.0
       react: 18.2.0
-    dev: false
 
   /@react-types/layout/3.3.6_react@18.2.0:
     resolution: {integrity: sha512-8YF7nb+0AtSDRj+rejMRS5djWpqAf5Q6sJzgdccn42JQxW7jvxoKqN0pCRPqpMzQqae5hOsYYpVNfuIHwUUkUA==}
@@ -4144,7 +4126,6 @@ packages:
     dependencies:
       '@react-types/shared': 3.17.0_react@18.2.0
       react: 18.2.0
-    dev: false
 
   /@react-types/menu/3.8.0_react@18.2.0:
     resolution: {integrity: sha512-1nwGUwKNHJf60vOsg7p48NPQIzMsSprxw8VXfStr8eE5uU4vvKfVNQNUgvpkRmHmel8BrYdh1WnERXJJ3yKUgQ==}
@@ -5642,7 +5623,6 @@ packages:
   /clsx/1.2.1:
     resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
     engines: {node: '>=6'}
-    dev: false
 
   /color-convert/1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
@@ -7021,7 +7001,6 @@ packages:
       '@formatjs/fast-memoize': 2.0.0
       '@formatjs/icu-messageformat-parser': 2.3.0
       tslib: 2.5.0
-    dev: false
 
   /invariant/2.2.4:
     resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
