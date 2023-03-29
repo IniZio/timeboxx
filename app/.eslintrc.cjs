@@ -52,20 +52,16 @@ module.exports = {
     // Remove unused imports
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "off",
-    // "@typescript-eslint/no-unused-vars": [
-    //   "error", // or "error"
-    //   {
-    //     "argsIgnorePattern": "^_",
-    //     "varsIgnorePattern": "^_",
-    //     "caughtErrorsIgnorePattern": "^_"
-    //   }
-    // ],
     "unused-imports/no-unused-imports": "error",
     "unused-imports/no-unused-vars": [
       "warn",
       { vars: "all", varsIgnorePattern: "^_", args: "after-used", argsIgnorePattern: "^_" },
     ],
 
+    // Raises error even when props type is declared, disabling for now
     "react/prop-types": "off",
+
+    "@unocss/order": "error",
+    "@unocss/order-attributify": "error",
   },
 };

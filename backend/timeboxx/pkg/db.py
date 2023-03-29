@@ -1,27 +1,41 @@
-from asyncio import current_task
+import logging
+import time
 
-from sqlalchemy.ext.asyncio import (
-    AsyncSession,
-    async_scoped_session,
-    async_sessionmaker,
-    create_async_engine,
-)
+from sqlalchemy import create_engine, event
+from sqlalchemy.engine import Engine
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 from timeboxx.pkg.config import MainSettings
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
 
 def get_sessiomaker(settings: MainSettings):
-    engine = create_async_engine(
-        settings.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://"),
+    engine = create_engine(
+        settings.DATABASE_URL,
         pool_size=50,
         max_overflow=10,
         future=True,
+        echo=False,
     )
-    async_session_factory = async_sessionmaker(
+    session_factory = sessionmaker(
         bind=engine,
-        class_=AsyncSession,
         autocommit=False,
         autoflush=False,
     )
-    Session = async_scoped_session(async_session_factory, scopefunc=current_task)
+    Session = scoped_session(session_factory)
     return Session
+
+
+@event.listens_for(Engine, "before_cursor_execute")
+def before_cursor_execute(conn, cursor, statement, parameters, context, executemany):
+    conn.info.setdefault("query_start_time", []).append(time.time())
+    # logger.debug("🛢 Start Query: %s", statement)
+
+
+@event.listens_for(Engine, "after_cursor_execute")
+def after_cursor_execute(conn, cursor, statement, parameters, context, executemany):
+    total = time.time() - conn.info["query_start_time"].pop(-1)
+    logger.debug(f"🛢 Finished Query:\n{statement}")
+    logger.debug(f"🛢 Total Time: {total:.2f} sec")

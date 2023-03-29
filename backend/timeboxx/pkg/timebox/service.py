@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Any, Optional, cast
 
 from sqlalchemy import delete, select, tuple_
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 from sqlalchemy.sql.functions import coalesce
 
 from timeboxx.pkg.db_models.task import Task
@@ -11,7 +11,7 @@ from timeboxx.pkg.timebox.models import TimeboxTask
 
 
 class TimeboxService:
-    def __init__(self, session: AsyncSession) -> None:
+    def __init__(self, session: Session) -> None:
         self.session = session
 
     async def list_timeboxes(
@@ -41,7 +41,7 @@ class TimeboxService:
             )
         )
 
-        return list(await self.session.scalars(stmt))
+        return list(self.session.scalars(stmt))
 
     async def create_timebox(
         self,
@@ -54,7 +54,7 @@ class TimeboxService:
         task: Optional[TimeboxTask] = None,
     ):
         timebox_task: Task = (
-            await self.session.get(Task, task.id)
+            self.session.get(Task, task.id)
             if task and task.id
             else Task(
                 id=Task.id_factory(),
@@ -94,13 +94,13 @@ class TimeboxService:
         task: Optional[TimeboxTask] = None,
         dirty_fields: Optional[list[str]] = None,
     ):
-        timebox = await self.session.get(Timebox, id)
+        timebox = self.session.get(Timebox, id)
 
         if not timebox:
             return None
 
         timebox_task: Task = (
-            await self.session.get(Task, task.id)
+            self.session.get(Task, task.id)
             if task and task.id
             else Task(
                 id=Task.id_factory(),
@@ -131,4 +131,4 @@ class TimeboxService:
         return timebox
 
     async def delete_timebox(self, id: str):
-        await self.session.execute(delete(Timebox).where(Timebox.id == id))
+        self.session.execute(delete(Timebox).where(Timebox.id == id))

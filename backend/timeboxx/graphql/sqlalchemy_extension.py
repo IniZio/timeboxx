@@ -1,4 +1,5 @@
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
+from starlette.requests import ClientDisconnect
 from strawberry.extensions import SchemaExtension
 
 
@@ -6,14 +7,20 @@ from strawberry.extensions import SchemaExtension
 # so we manually add the db session context here
 class SqlalchemyExtension(SchemaExtension):
     async def on_operation(self):
-        session: AsyncSession = self.execution_context.context.session
+        session: Session = self.execution_context.context.session
 
         try:
             yield
             if session.is_active:
-                await session.commit()
-        except:
-            await session.rollback()
+                session.commit()
+        except Exception as e:
+            session.rollback()
+
+            if isinstance(e, ClientDisconnect):
+                # If the client disconnects, we don't want to raise an exception
+                # because it's not really an error
+                return
+
             raise
         finally:
-            await session.close()
+            session.close()

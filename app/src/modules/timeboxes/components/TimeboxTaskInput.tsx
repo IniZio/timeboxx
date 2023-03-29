@@ -30,7 +30,7 @@ export function TimeboxTaskInput<T extends object>(props: ComboBoxProps<T>) {
 
   return (
     <div className="flex-col inline-flex relative">
-      <label {...labelProps} className="font-medium block text-sm text-gray-700 text-left">
+      <label {...labelProps} className="font-medium text-sm block text-gray-700 text-left">
         {props.label}
       </label>
       <div className={`relative flex inline-flex flex-row rounded-md overflow-hidden`}>

@@ -49,7 +49,7 @@ function ListBoxSection({ section, state }: SectionProps) {
     <>
       <li {...itemProps} className="pt-2">
         {section.rendered && (
-          <span {...headingProps} className="text-xs text-gray-500 font-bold uppercase mx-3">
+          <span {...headingProps} className="text-gray-500 text-xs font-bold uppercase mx-3">
             {section.rendered}
           </span>
         )}
