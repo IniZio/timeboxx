@@ -11,7 +11,7 @@ export interface TimeRangePickerProps {
 export const TimeRangePicker: React.FC<TimeRangePickerProps> = ({ value, onChange }) => {
   return (
     <DateTimeRangePicker
-      className="leading-7 text-sm text-right text-gray-500 h-min flex-none"
+      className="text-gray-500 leading-7 text-sm text-right h-min flex-none"
       value={value}
       onChange={onChange}
       disableCalendar

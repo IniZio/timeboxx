@@ -2,13 +2,13 @@ from datetime import datetime
 from typing import Optional
 
 from sqlalchemy import delete, or_, select
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 
 from timeboxx.pkg.db_models.task import Task, TaskStatus
 
 
 class TaskService:
-    def __init__(self, session: AsyncSession) -> None:
+    def __init__(self, session: Session) -> None:
         self.session = session
 
     async def list_tasks(
@@ -24,7 +24,7 @@ class TaskService:
                 or_(Task.title.contains(keyword), Task.description.contains(keyword))
             )
 
-        results = await self.session.scalars(tasks_q)
+        results = self.session.scalars(tasks_q)
 
         return list(results.all())
 
@@ -78,7 +78,7 @@ class TaskService:
         else:
             raise ValueError("Either id or client_id is required to update timebox")
 
-        timebox = await self.session.scalar(find_task_stmt)
+        timebox = self.session.scalar(find_task_stmt)
 
         if not timebox:
             return None
@@ -103,4 +103,4 @@ class TaskService:
         return timebox
 
     async def delete_task(self, id: str):
-        await self.session.execute(delete(Task).where(Task.id == id))
+        self.session.execute(delete(Task).where(Task.id == id))

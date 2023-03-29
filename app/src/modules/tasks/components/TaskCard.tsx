@@ -69,7 +69,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onRefresh }) => {
         <form onSubmit={handleSubmit}>
           <div className="flex gap-x-1">
             <input
-              className="flex-1 text-sm text-gray-900 leading-normal min-w-0"
+              className="text-sm flex-1 text-gray-900 leading-normal min-w-0"
               value={title}
               onChange={handleChangeTitle}
             />
@@ -83,7 +83,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onRefresh }) => {
             </div>
           </div>
           <button
-            className="leading-normal py-1 mt-2 bg-slate-900 text-white rounded-md px-2 font-medium text-xs"
+            className="leading-normal text-xs py-1 mt-2 bg-slate-900 text-white rounded-md px-2 font-medium"
             type="submit"
           >
             {t("modules.tasks.components.TaskList.save")}

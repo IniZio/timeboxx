@@ -1,4 +1,4 @@
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 from strawberry.extensions import SchemaExtension
 
 
@@ -6,14 +6,14 @@ from strawberry.extensions import SchemaExtension
 # so we manually add the db session context here
 class SqlalchemyExtension(SchemaExtension):
     async def on_operation(self):
-        session: AsyncSession = self.execution_context.context.session
+        session: Session = self.execution_context.context.session
 
         try:
             yield
             if session.is_active:
-                await session.commit()
+                session.commit()
         except:
-            await session.rollback()
+            session.rollback()
             raise
         finally:
-            await session.close()
+            session.close()

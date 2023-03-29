@@ -72,7 +72,7 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
   }, []);
   useDebounce(
     () => {
-      // if (!taskInput.title) return;
+      if (!taskInput.title) return;
       refetchSuggesstedTasks({ variables: { keyword: taskInput.title } });
     },
     500,

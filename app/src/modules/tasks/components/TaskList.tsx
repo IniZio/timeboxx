@@ -85,7 +85,7 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh, on
       {...dropProps}
     >
       <div className="flex max-w-full">
-        <p className="text-gray-500 text-sm flex-1 leading-7 capitalize">
+        <p className="text-gray-500 text-sm leading-7 flex-1 capitalize">
           {t(`modules.tasks.constants.status.${status?.toLowerCase() ?? "no_status"}` as never)}
         </p>
         <IconButton onClick={() => setTaskInputVisibility((v) => !v)}>
@@ -94,16 +94,16 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh, on
       </div>
 
       {taskInputVisibility && (
-        <Card className="flex p-2 mt-2 gap-2">
+        <Card className="flex mt-2 p-2 gap-2">
           <form onSubmit={handleSubmitCreateTask}>
             <input
               placeholder="Title"
-              className="text-sm leading-normal text-gray-900 mb-2 p-1 w-full"
+              className="text-sm w-full leading-normal text-gray-900 mb-2 p-1"
               value={title}
               onChange={handleChangeTitle}
             />
             <button
-              className="leading-normal bg-slate-900 text-white rounded-md py-1 px-2 font-medium text-xs"
+              className="leading-normal text-xs bg-slate-900 text-white rounded-md py-1 px-2 font-medium"
               type="submit"
             >
               {t("modules.tasks.components.TaskList.add")}
