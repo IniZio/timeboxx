@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from starlette.requests import ClientDisconnect
 from strawberry.extensions import SchemaExtension
 
 
@@ -12,8 +13,14 @@ class SqlalchemyExtension(SchemaExtension):
             yield
             if session.is_active:
                 session.commit()
-        except:
+        except Exception as e:
             session.rollback()
+
+            if isinstance(e, ClientDisconnect):
+                # If the client disconnects, we don't want to raise an exception
+                # because it's not really an error
+                return
+
             raise
         finally:
             session.close()
