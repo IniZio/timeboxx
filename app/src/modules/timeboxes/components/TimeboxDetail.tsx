@@ -12,6 +12,8 @@ import { useMutation, useQuery } from "urql";
 import { graphql } from "@/apis/graphql/generated";
 import { FormComboBox } from "@/components/form/FormComboBox";
 import { FormDateRangePicker } from "@/components/form/FormDateRangePicker";
+import { FormRichTextEditor } from "@/components/form/FormRichTextEditor";
+import { RichTextValue } from "@/components/RichTextEditor";
 import { TimeboxDetailTimebox } from "@/modules/timeboxes/view-models";
 import { cn } from "@/utils";
 
@@ -56,6 +58,7 @@ const DeleteTimeboxMutation = graphql(`
 type TimeboxForm = {
   task: { key: Maybe<Key>; input: Maybe<string> };
   title: Maybe<string>;
+  description: RichTextValue;
   dateRange: RangeValue<DateValue>;
 };
 
@@ -72,6 +75,7 @@ export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox
     values: {
       task: { key: timebox.task?.id, input: timebox.task?.title },
       title: timebox.title,
+      description: JSON.parse(timebox.description || "[]"),
       dateRange: {
         start: parseAbsoluteToLocal(dayjs(timebox.startTime).toISOString()),
         end: parseAbsoluteToLocal(dayjs(timebox.endTime).toISOString()),
@@ -103,8 +107,10 @@ export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox
           id: timebox.id,
           task: { id: timeboxFormValues.task.key?.toString() },
           title: timeboxFormValues.title,
+          description: JSON.stringify(timeboxFormValues.description),
           startTime: timeboxFormValues.dateRange?.start?.toDate?.(""),
           endTime: timeboxFormValues.dateRange?.end?.toDate?.(""),
+          dirtyFields: Object.keys(timeboxForm.formState.dirtyFields),
         },
       });
 
@@ -137,6 +143,9 @@ export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox
           <FormComboBox control={timeboxForm.control} name="task" items={suggestedTasks.data?.tasks ?? []}>
             {(item) => <Item key={item.id}>{item.title}</Item>}
           </FormComboBox>
+        </div>
+        <div className="mt-2">
+          <FormRichTextEditor key={timebox.id} control={timeboxForm.control} name="description" />
         </div>
       </div>
     </div>

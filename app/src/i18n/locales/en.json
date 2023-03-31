@@ -18,5 +18,6 @@
   "modules.timeboxes.title": "Planned",
   "modules.timeboxes.today": "Today",
   "modules.timeboxes.components.TimeboxDetail.time": "Time",
-  "modules.timeboxes.components.TimeboxDetail.task": "Task"
+  "modules.timeboxes.components.TimeboxDetail.task": "Task",
+  "modules.timeboxes.components.TimeboxDetail.description": "Description"
 }
