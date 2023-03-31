@@ -33,6 +33,7 @@ export const TaskList_TaskFragment = graphql(`
   fragment TaskList_TaskFragment on TaskType {
     id
     title
+    description
     status
   }
 `);
@@ -83,7 +84,7 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, collapsed: _c
     <div
       className={cn(
         "flex flex-col flex-shrink-0 max-h-full h-full p-2 rounded transition-colors",
-        collapsed ? "bg-slate-50 w-10 cursor-pointer" : "w-70",
+        collapsed ? "bg-slate-50 w-10 cursor-pointer" : "w-80",
         isDropTarget && "bg-slate-100",
       )}
       {...dropProps}
