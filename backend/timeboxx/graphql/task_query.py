@@ -19,6 +19,6 @@ class TaskQuery:
         if not current_user:
             return []
 
-        tasks = await task_service.list_tasks(user_id=current_user.id)
+        tasks = await task_service.list_tasks(user_id=current_user.id, keyword=keyword)
 
         return cast(list[TaskType], tasks)

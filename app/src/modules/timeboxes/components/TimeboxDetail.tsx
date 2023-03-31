@@ -63,11 +63,6 @@ type TimeboxForm = {
 };
 
 export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox, onDelete }) => {
-  const [suggestedTasks, refetchSuggesstedTasks] = useQuery({
-    query: SuggestTasksQuery,
-    requestPolicy: "cache-and-network",
-    pause: true,
-  });
   const [_, updateTimeboxMutation] = useMutation(UpdateTimeboxMutation);
   const [__, deleteTimeboxMutation] = useMutation(DeleteTimeboxMutation);
 
@@ -81,6 +76,13 @@ export const TimeboxDetail: React.FC<TimeboxDetailProps> = ({ className, timebox
         end: parseAbsoluteToLocal(dayjs(timebox.endTime).toISOString()),
       },
     },
+  });
+
+  const [suggestedTasks, refetchSuggesstedTasks] = useQuery({
+    query: SuggestTasksQuery,
+    requestPolicy: "cache-and-network",
+    pause: true,
+    variables: { keyword: timeboxForm.getValues().title ?? "" },
   });
 
   const handleDeleteTimebox = useCallback(() => {

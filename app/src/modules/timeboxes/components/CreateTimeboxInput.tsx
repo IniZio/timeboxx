@@ -45,10 +45,16 @@ const CreateTimeboxMutation = graphql(`
 export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ className }) => {
   const { t } = useTranslation();
 
+  const [taskInput, setTaskInput] = useState({
+    taskId: "" as Key,
+    title: "",
+  });
+
   const [suggestedTasks, refetchSuggesstedTasks] = useQuery({
     query: SuggestTasksQuery,
     requestPolicy: "cache-and-network",
     pause: true,
+    variables: { keyword: taskInput.title },
   });
   const [_, createTimeboxMutation] = useMutation(CreateTimeboxMutation);
 
@@ -56,11 +62,6 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
   const handleChangeTitle = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
     setTitle(evt.target.value);
   }, []);
-
-  const [taskInput, setTaskInput] = useState({
-    taskId: "" as Key,
-    title: "",
-  });
 
   const [dateRange, setDateRange] = useState<RangeValue<DateValue>>(() => ({
     start: parseAbsoluteToLocal(dayjs().toISOString()),
