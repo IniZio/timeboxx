@@ -2,15 +2,16 @@ import { DateValue, parseAbsoluteToLocal } from "@internationalized/date";
 import { RangeValue } from "@react-types/shared";
 import dayjs from "dayjs";
 import { Plus } from "iconoir-react";
-import { ChangeEvent, Key, useCallback, useState } from "react";
+import { Key, useCallback } from "react";
+import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Item } from "react-stately";
 import { useDebounce } from "react-use";
 import { useMutation, useQuery } from "urql";
 
 import { graphql } from "@/apis/graphql/generated";
-import { DateRangePicker } from "@/components/DateRangePicker";
-import { TimeboxTaskInput } from "@/modules/timeboxes/components/TimeboxTaskInput";
+import { FormDateRangePicker } from "@/components/form/FormDateRangePicker";
+import { FormTimeboxTaskInput } from "@/modules/timeboxes/components/TimeboxTaskInput";
 import { cn } from "@/utils";
 
 export interface CreateTimeboxInputProps {
@@ -42,73 +43,62 @@ const CreateTimeboxMutation = graphql(`
   }
 `);
 
+type CreateTimeboxForm = {
+  title: Maybe<string>;
+  task: { id: Maybe<Key>; title: Maybe<string> };
+  dateRange: RangeValue<DateValue>;
+};
+
 export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ className }) => {
   const { t } = useTranslation();
+
+  const timeboxForm = useForm<CreateTimeboxForm>({
+    defaultValues: {
+      title: "",
+      task: { id: null, title: "" },
+      dateRange: {
+        start: parseAbsoluteToLocal(dayjs().toISOString()),
+        end: parseAbsoluteToLocal(dayjs().toISOString()),
+      },
+    },
+  });
 
   const [suggestedTasks, refetchSuggesstedTasks] = useQuery({
     query: SuggestTasksQuery,
     requestPolicy: "cache-and-network",
     pause: true,
+    variables: { keyword: timeboxForm.getValues().title || timeboxForm.getValues().task.title || "" },
   });
   const [_, createTimeboxMutation] = useMutation(CreateTimeboxMutation);
 
-  const [title, setTitle] = useState("");
-  const handleChangeTitle = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
-    setTitle(evt.target.value);
-  }, []);
+  const timeboxTitle = useWatch({ control: timeboxForm.control, name: "title" });
+  const taskInput = useWatch({ control: timeboxForm.control, name: "task" });
 
-  const [taskInput, setTaskInput] = useState({
-    taskId: "" as Key,
-    title: "",
-  });
-
-  const [dateRange, setDateRange] = useState<RangeValue<DateValue>>(() => ({
-    start: parseAbsoluteToLocal(dayjs().toISOString()),
-    end: parseAbsoluteToLocal(dayjs().toISOString()),
-  }));
-
-  const setTaskTitle = useCallback((value: string) => {
-    setTaskInput((t) => ({ ...t, title: value }));
-  }, []);
   useDebounce(
     () => {
       if (!taskInput.title) return;
-      refetchSuggesstedTasks({ variables: { keyword: taskInput.title } });
+      refetchSuggesstedTasks({ variables: { keyword: timeboxTitle || taskInput.title } });
     },
     500,
-    [taskInput.title, refetchSuggesstedTasks],
+    [timeboxTitle, taskInput.title, refetchSuggesstedTasks],
   );
 
-  const onSelectionChange = useCallback((key: Key) => {
-    setTaskInput((t) => ({
-      ...t,
-      taskId: key,
-    }));
-  }, []);
-
-  const reset = useCallback(() => {
-    setTitle("");
-    setTaskInput({ taskId: "", title: "" });
-    setDateRange({
-      start: parseAbsoluteToLocal(dayjs().toISOString()),
-      end: parseAbsoluteToLocal(dayjs().toISOString()),
-    });
-  }, []);
-
   const handleSubmit = useCallback(() => {
+    const timeboxFormValues = timeboxForm.getValues();
+
     createTimeboxMutation({
       input: {
-        title,
+        title: timeboxFormValues.title,
         task: {
-          title: taskInput.title,
-          id: taskInput.taskId.toString(),
+          title: timeboxFormValues.task.title,
+          id: timeboxFormValues.task.id?.toString(),
         },
-        startTime: dayjs.fromDateValue(dateRange.start).toISOString(),
-        endTime: dayjs.fromDateValue(dateRange.end).toISOString(),
+        startTime: dayjs.fromDateValue(timeboxFormValues.dateRange.start).toISOString(),
+        endTime: dayjs.fromDateValue(timeboxFormValues.dateRange.end).toISOString(),
       },
     });
-    reset();
-  }, [createTimeboxMutation, dateRange.end, dateRange.start, reset, taskInput.taskId, taskInput.title, title]);
+    timeboxForm.reset();
+  }, [createTimeboxMutation, timeboxForm]);
 
   return (
     <div
@@ -121,26 +111,26 @@ export const CreateTimeboxInput: React.FC<CreateTimeboxInputProps> = ({ classNam
       )}
     >
       <Plus height={24} width={24} un-flex="none" un-text="gray-900" />
-      <div className="flex flex-col flex-1 gap-y-0.5">
-        <TimeboxTaskInput
+      <form className="flex flex-col flex-1 gap-y-0.5" onSubmit={timeboxForm.handleSubmit(handleSubmit)}>
+        <FormTimeboxTaskInput
           items={suggestedTasks.data?.tasks ?? []}
-          inputValue={taskInput.title}
-          onInputChange={setTaskTitle}
-          onSelectionChange={onSelectionChange}
-          // loadingState={suggestedTasks.fetching ? "loading" : "idle"}
+          control={timeboxForm.control}
+          name="task"
           allowsCustomValue
         >
           {(item) => <Item key={item.id}>{item.title}</Item>}
-        </TimeboxTaskInput>
-        {taskInput.taskId && <input name="title" value={title} onChange={handleChangeTitle} placeholder="Title" />}
-        <DateRangePicker value={dateRange} onChange={setDateRange} />
-        <button
-          className="text-xs leading-normal bg-slate-900 text-white rounded-md py-1 px-2 font-medium w-min"
-          onClick={handleSubmit}
-        >
-          {t("modules.today.components.CreateTimeboxInput.submit")}
-        </button>
-      </div>
+        </FormTimeboxTaskInput>
+        {taskInput.id && <input {...timeboxForm.register("title")} placeholder="Title" />}
+        <FormDateRangePicker control={timeboxForm.control} name="dateRange" />
+        {timeboxForm.formState.isDirty && (
+          <button
+            className="text-xs leading-normal bg-slate-900 text-white rounded-md py-1 px-2 font-medium w-min"
+            type="submit"
+          >
+            {t("modules.today.components.CreateTimeboxInput.submit")}
+          </button>
+        )}
+      </form>
     </div>
   );
 };

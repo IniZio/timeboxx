@@ -20,6 +20,8 @@ const ORDERED_TASK_STATUS_LIST = [
   TaskStatus.Cancelled,
 ];
 
+const COLLAPSED_TASK_STATUS_LIST = [null, TaskStatus.Backlog, TaskStatus.Done, TaskStatus.Cancelled];
+
 export const TasksScreenQuery = graphql(`
   query TasksScreen {
     tasks {
@@ -68,11 +70,14 @@ export const TasksScreen: React.FC<TasksScreenProps> = () => {
           {t("modules.tasks.title")}
         </h1>
 
-        <div className="flex px-6 flex-1 mt-2 gap-8 overflow-x-auto">
+        <div className="flex px-6 flex-1 mt-2 gap-2 overflow-x-auto">
           {ORDERED_TASK_STATUS_LIST.map((status) => {
             const tasks = tasksScreen.data?.tasks.filter((task) => task.status === status);
+            const collapsed = COLLAPSED_TASK_STATUS_LIST.includes(status);
 
-            return <TaskList key={status} status={status} tasks={tasks} onDrop={handleTasksDrop} />;
+            return (
+              <TaskList key={status} status={status} collapsed={collapsed} tasks={tasks} onDrop={handleTasksDrop} />
+            );
           })}
         </div>
       </div>

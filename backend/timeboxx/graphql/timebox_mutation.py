@@ -44,7 +44,7 @@ class TimeboxMutation:
         model = input.to_pydantic()
         dirty_fields = model.dirty_fields
 
-        timebox: TimeboxType = await timebox_service.update_timebox(
+        timebox = await timebox_service.update_timebox(
             user_id=current_user.id if current_user else None,
             id=model.id,
             client_id=model.client_id,
