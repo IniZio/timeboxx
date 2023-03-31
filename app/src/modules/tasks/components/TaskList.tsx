@@ -15,6 +15,7 @@ import { cn } from "@/utils";
 export interface TaskListProps {
   className?: string;
   status: Maybe<TaskStatus>;
+  collapsed?: boolean;
   tasks?: TaskListTask[];
   onRefresh?: () => void;
   onDrop?: (taskIds: string[], status: Maybe<TaskStatus>) => void;
@@ -36,7 +37,7 @@ export const TaskList_TaskFragment = graphql(`
   }
 `);
 
-export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh, onDrop }) => {
+export const TaskList: React.FC<TaskListProps> = ({ tasks, status, collapsed: _collapsed, onRefresh, onDrop }) => {
   const { t } = useTranslation();
 
   const ref = useRef<HTMLDivElement>(null);
@@ -59,6 +60,8 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh, on
     setTitle(evt.target.value);
   }, []);
 
+  const [collapsed, setCollapsed] = useState(_collapsed);
+
   const handleSubmitCreateTask = useCallback(
     (evt: FormEvent<HTMLFormElement>) => {
       evt.preventDefault();
@@ -79,18 +82,29 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh, on
   return (
     <div
       className={cn(
-        "flex flex-col flex-shrink-0 max-h-full w-70 h-full p-2 rounded transition-colors",
+        "flex flex-col flex-shrink-0 max-h-full h-full p-2 rounded transition-colors",
+        collapsed ? "bg-slate-50 w-10 cursor-pointer" : "w-70",
         isDropTarget && "bg-slate-100",
       )}
       {...dropProps}
     >
-      <div className="flex max-w-full">
-        <p className="text-gray-500 text-sm leading-7 flex-1 capitalize">
+      <div className="flex flex-1 max-w-full">
+        <div
+          className="text-gray-500 text-sm leading-7 flex-1 capitalize"
+          style={{ writingMode: collapsed ? "vertical-rl" : undefined }}
+          role="button"
+          tabIndex={0}
+          onClick={() => setCollapsed((c) => !c)}
+          // FIXME: Allow keyboard to open/close
+          aria-hidden="true"
+        >
           {t(`modules.tasks.constants.status.${status?.toLowerCase() ?? "no_status"}` as never)}
-        </p>
-        <IconButton onClick={() => setTaskInputVisibility((v) => !v)}>
-          <Plus />
-        </IconButton>
+        </div>
+        {!collapsed && (
+          <IconButton onClick={() => setTaskInputVisibility((v) => !v)}>
+            <Plus />
+          </IconButton>
+        )}
       </div>
 
       {taskInputVisibility && (
@@ -112,11 +126,13 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onRefresh, on
         </Card>
       )}
 
-      <div className="flex flex-col max-h-full h-full gap-y-2 overflow-y-auto pb-6 mt-4 overflow-x-hidden">
-        {tasks?.map((task) => {
-          return <TaskCard key={task.id} task={task} onRefresh={onRefresh} />;
-        })}
-      </div>
+      {!collapsed && (
+        <div className="flex flex-col max-h-full h-full gap-y-2 overflow-y-auto pb-6 mt-4 overflow-x-hidden">
+          {tasks?.map((task) => {
+            return <TaskCard key={task.id} task={task} onRefresh={onRefresh} />;
+          })}
+        </div>
+      )}
     </div>
   );
 };
