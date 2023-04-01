@@ -25,6 +25,7 @@ class TaskMutation:
             description=input.description,
             start_time=input.start_time,
             end_time=input.end_time,
+            deadline=input.deadline,
             status=input.status,
         )
 
@@ -36,8 +37,6 @@ class TaskMutation:
         info: Info[Context, Any],
         input: UpdateTaskInput,
     ) -> TaskType:
-        # raise Exception
-
         current_user = await info.context.current_user
         task_service = info.context.task_service
 
@@ -49,6 +48,7 @@ class TaskMutation:
             description=input.description,
             start_time=input.start_time,
             end_time=input.end_time,
+            deadline=input.deadline,
             status=input.status,
             dirty_fields=input.dirty_fields,
         )

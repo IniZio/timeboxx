@@ -36,6 +36,7 @@ class TaskService:
         description: Optional[str] = None,
         start_time: Optional[datetime] = None,
         end_time: Optional[datetime] = None,
+        deadline: Optional[datetime] = None,
         status: Optional[TaskStatus] = None,
     ) -> Task:
         task = Task(
@@ -47,6 +48,7 @@ class TaskService:
             description=description,
             start_time=start_time,
             end_time=end_time,
+            deadline=deadline,
             status=status.value if status else None,
         )
 
@@ -62,6 +64,7 @@ class TaskService:
         description: Optional[str] = None,
         start_time: Optional[datetime] = None,
         end_time: Optional[datetime] = None,
+        deadline: Optional[datetime] = None,
         status: Optional[TaskStatus] = None,
         dirty_fields: Optional[list[str]] = None,
     ) -> Optional[Task]:
@@ -94,6 +97,9 @@ class TaskService:
 
         if not dirty_fields or "end_time" in dirty_fields:
             timebox.end_time = end_time  # type: ignore
+
+        if not dirty_fields or "deadline" in dirty_fields:
+            timebox.deadline = deadline  # type: ignore
 
         if not dirty_fields or "status" in dirty_fields:
             timebox.status = status  # type: ignore

@@ -23,6 +23,7 @@ class CreateTaskInput:
     description: Optional[str] = None
     start_time: Optional[datetime] = None
     end_time: Optional[datetime] = None
+    deadline: Optional[datetime] = None
     status: Optional[TaskStatus] = None
 
 
@@ -34,5 +35,6 @@ class UpdateTaskInput:
     description: Optional[str] = None
     start_time: Optional[datetime] = None
     end_time: Optional[datetime] = None
+    deadline: Optional[datetime] = None
     status: Optional[TaskStatus] = None
     dirty_fields: Optional[list[str]] = None
