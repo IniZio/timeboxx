@@ -4,6 +4,7 @@ input CreateTaskInput {
   description: String = null
   startTime: DateTime = null
   endTime: DateTime = null
+  deadline: DateTime = null
   status: TaskStatus = null
 }
 
@@ -38,6 +39,7 @@ type Task {
   description: String
   startTime: DateTime
   endTime: DateTime
+  deadline: DateTime
   status: TaskStatus
   id: String!
   createdAt: DateTime!
@@ -62,6 +64,7 @@ type TaskType {
   description: String
   startTime: DateTime
   endTime: DateTime
+  deadline: DateTime
   status: TaskStatus
   id: String!
   createdAt: DateTime!
@@ -143,6 +146,7 @@ input UpdateTaskInput {
   description: String = null
   startTime: DateTime = null
   endTime: DateTime = null
+  deadline: DateTime = null
   status: TaskStatus = null
   dirtyFields: [String!] = null
 }

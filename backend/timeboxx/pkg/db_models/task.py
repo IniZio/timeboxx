@@ -49,6 +49,11 @@ class Task(Base, IDMixin, AuditableMixin, OfflineMixin):
         nullable=True,
     )
 
+    deadline: Mapped[datetime] = mapped_column(
+        DateTime,
+        nullable=True,
+    )
+
     timeboxes: Mapped[list[Timebox]] = relationship(back_populates="task")
     timeslots: Mapped[list[Timeslot]] = relationship(back_populates="task")
 

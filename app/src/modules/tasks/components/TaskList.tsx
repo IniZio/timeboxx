@@ -34,6 +34,7 @@ export const TaskList_TaskFragment = graphql(`
     id
     title
     description
+    deadline
     status
   }
 `);
@@ -91,7 +92,7 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, collapsed: _c
     >
       <div className="flex flex-1 max-w-full">
         <div
-          className="text-gray-500 text-sm leading-7 flex-1 capitalize"
+          className="text-sm flex-1 text-gray-500 leading-7 capitalize"
           style={{ writingMode: collapsed ? "vertical-rl" : undefined }}
           role="button"
           tabIndex={0}
@@ -113,7 +114,7 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, collapsed: _c
           <form onSubmit={handleSubmitCreateTask}>
             <input
               placeholder="Title"
-              className="text-sm w-full leading-normal text-gray-900 mb-2 p-1"
+              className="text-sm leading-normal text-gray-900 w-full mb-2 p-1"
               value={title}
               onChange={handleChangeTitle}
             />

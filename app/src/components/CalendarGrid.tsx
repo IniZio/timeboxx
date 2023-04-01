@@ -3,9 +3,9 @@ import "./CalendarGrid.css";
 import { CalendarDate, getWeeksInMonth } from "@internationalized/date";
 import { useRef } from "react";
 import { useCalendarCell, useCalendarGrid, useLocale } from "react-aria";
-import { RangeCalendarState } from "react-stately";
+import { CalendarState, RangeCalendarState } from "react-stately";
 
-export function CalendarGrid({ state, ...props }: { state: RangeCalendarState }) {
+export function CalendarGrid({ state, ...props }: { state: CalendarState | RangeCalendarState }) {
   const { locale } = useLocale();
   const { gridProps, headerProps, weekDays } = useCalendarGrid(props, state);
 
@@ -34,7 +34,7 @@ export function CalendarGrid({ state, ...props }: { state: RangeCalendarState })
   );
 }
 
-function CalendarCell({ state, date }: { state: RangeCalendarState; date: CalendarDate }) {
+function CalendarCell({ state, date }: { state: CalendarState | RangeCalendarState; date: CalendarDate }) {
   const ref = useRef(null);
   const { cellProps, buttonProps, isSelected, isOutsideVisibleRange, isDisabled, isUnavailable, formattedDate } =
     useCalendarCell({ date }, state, ref);
