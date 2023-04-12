@@ -35,7 +35,12 @@ export function TimeboxTaskInput(props: ComboBoxProps<{ id: Maybe<string>; title
         {props.label}
       </label>
       <div className={`relative flex inline-flex flex-row rounded-md overflow-hidden`}>
-        <input {...inputProps} ref={inputRef} className="py-1 w-full outline-none" placeholder="Task / Title" />
+        <input
+          {...inputProps}
+          ref={inputRef}
+          className="py-1 w-full outline-none bg-white"
+          placeholder="Task / Title"
+        />
       </div>
       {state.isOpen && (
         <Popover

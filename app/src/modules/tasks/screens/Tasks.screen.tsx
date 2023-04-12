@@ -65,8 +65,8 @@ export const TasksScreen: React.FC<TasksScreenProps> = () => {
 
   return (
     <div className="flex w-full h-full">
-      <div un-p="t-6" un-h="full" className="flex min-w-0 flex-col">
-        <h1 un-m="b-4" un-text="3xl" un-font="semibold" className="px-6">
+      <div un-p="t-6" un-h="full" className="flex flex-col min-w-0">
+        <h1 un-m="b-4" un-text="3xl" un-font="semibold" className="px-6 text-gray-700">
           {t("modules.tasks.title")}
         </h1>
 

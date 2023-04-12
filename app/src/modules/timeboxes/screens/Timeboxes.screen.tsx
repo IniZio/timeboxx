@@ -78,7 +78,7 @@ export const TimeboxesScreen: React.FC<TimeboxesScreenProps> = () => {
     <div className="flex w-full h-full">
       <div un-p="t-6" un-h="full" className="flex flex-col min-w-0 w-128 border-r border-slate-200">
         <div className="flex items-center mb-4 mx-6">
-          <h1 un-text="3xl" un-font="semibold" className="flex-1">
+          <h1 un-text="3xl" un-font="semibold" className="flex-1 text-gray-700">
             {t("modules.timeboxes.title")}
           </h1>
 

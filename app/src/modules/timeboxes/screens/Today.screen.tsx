@@ -54,7 +54,7 @@ export const TodayScreen: React.FC = () => {
   return (
     <div className="flex h-full">
       <div un-p="x-6 y-6" un-h="full" un-w="128" un-border="r slate-200">
-        <h1 un-m="b-4" un-text="3xl" un-font="semibold">
+        <h1 un-m="b-4" un-text="3xl" un-font="semibold" className="text-gray-700">
           {t("modules.today.title")}
         </h1>
         <CreateTimeboxInput className="w-full mb-2.5" />

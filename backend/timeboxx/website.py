@@ -1,6 +1,5 @@
 import json
 from functools import cache
-from string import Template
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends
@@ -27,7 +26,8 @@ def get_index_html(
     index_html_file.close()
 
     website_settings_json_str = json.dumps(website_settings.dict())
-    rendered = Template(index_html.decode()).safe_substitute(
-        website_config=website_settings_json_str
+    rendered = index_html.decode().replace(
+        "<!-- $website_config -->",
+        f"window.__timeboxx_config = {website_settings_json_str};",
     )
     return rendered

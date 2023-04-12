@@ -114,7 +114,7 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, collapsed: _c
           <form onSubmit={handleSubmitCreateTask}>
             <input
               placeholder="Title"
-              className="text-sm leading-normal text-gray-900 w-full mb-2 p-1"
+              className="text-sm w-full leading-normal text-gray-900 mb-2 p-1"
               value={title}
               onChange={handleChangeTitle}
             />

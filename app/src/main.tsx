@@ -9,7 +9,6 @@ import "./index.css";
 import "./plugins/dayjs";
 
 import { defaultTheme, Provider as SpectrumProvider } from "@adobe/react-spectrum";
-// import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider as UrqlProvider } from "urql";
 
@@ -19,7 +18,7 @@ import App from "./App";
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // FIXME: Disabling due to https://github.com/adobe/react-spectrum/issues/4228
   // <React.StrictMode>
-  <SpectrumProvider theme={defaultTheme}>
+  <SpectrumProvider theme={defaultTheme} colorScheme="light">
     <UrqlProvider value={grahpqlClient}>
       <App />
     </UrqlProvider>
