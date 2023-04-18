@@ -9,9 +9,11 @@ import { useMutation } from "urql";
 
 import { graphql } from "@/apis/graphql/generated";
 import { Card } from "@/components/Card";
+import { DateField } from "@/components/DateField";
 import { FormDateTimePicker } from "@/components/form/FormDateTimePickerr";
 import { FormRichTextEditor } from "@/components/form/FormRichTextEditor";
 import { IconButton } from "@/components/IconButton";
+import { Timer, useTimer } from "@/components/Timer";
 import { UpdateTaskMutation } from "@/modules/tasks/screens/Tasks.screen";
 import { TaskListTask } from "@/modules/tasks/view-models";
 import { cn } from "@/utils";
@@ -87,6 +89,8 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onRefresh }) => {
     });
   }, [deleteTaskMutation, onRefresh, task.id]);
 
+  const { timerProps } = useTimer();
+
   if (isEditting) {
     return (
       <Card {...dragProps} className={isDragging ? "hidden" : ""}>
@@ -128,10 +132,12 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onRefresh }) => {
         <p className="text-sm text-gray-900 min-w-0 flex-1 overflow-hidden text-ellipsis break-words leading-relaxed">
           {task.title}
         </p>
+        {task.deadline && <DateField value={parseAbsoluteToLocal(task.deadline.toISOString())} />}
         <IconButton onClick={() => setIsEditting(true)}>
           <EditPencil width={16} height={16} />
         </IconButton>
       </div>
+      <Timer {...timerProps} />
     </Card>
   );
 };
