@@ -41,7 +41,7 @@ export const UpdateTaskMutation = graphql(`
 export const TasksScreen: React.FC<TasksScreenProps> = () => {
   const { t } = useTranslation();
 
-  const [tasksScreen] = useQuery({
+  const [tasksScreen, refetchTasks] = useQuery({
     query: TasksScreenQuery,
     requestPolicy: "cache-and-network",
   });
@@ -76,7 +76,14 @@ export const TasksScreen: React.FC<TasksScreenProps> = () => {
             const collapsed = COLLAPSED_TASK_STATUS_LIST.includes(status);
 
             return (
-              <TaskList key={status} status={status} collapsed={collapsed} tasks={tasks} onDrop={handleTasksDrop} />
+              <TaskList
+                key={status}
+                status={status}
+                collapsed={collapsed}
+                tasks={tasks}
+                onDrop={handleTasksDrop}
+                onRefresh={refetchTasks}
+              />
             );
           })}
         </div>

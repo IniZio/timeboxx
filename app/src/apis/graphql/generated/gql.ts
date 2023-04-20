@@ -15,8 +15,10 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
 const documents = {
     "\n  query sayHello {\n    ping\n  }\n": types.SayHelloDocument,
     "\n  mutation DeleteTask($id: String!) {\n    deleteTask(id: $id)\n  }\n": types.DeleteTaskDocument,
+    "\n  mutation CreateTimeslot($input: CreateTimeslotInput!) {\n    createTimeslot(input: $input) {\n      id\n      taskId\n      title\n      status\n      startTime\n      endTime\n      duration\n    }\n  }\n": types.CreateTimeslotDocument,
+    "\n  mutation UpdateTimeslot($input: UpdateTimeslotInput!) {\n    updateTimeslot(input: $input) {\n      id\n      taskId\n      title\n      status\n      startTime\n      endTime\n      duration\n    }\n  }\n": types.UpdateTimeslotDocument,
     "\n  mutation CreateTask($input: CreateTaskInput!) {\n    createTask(input: $input) {\n      ...TaskList_TaskFragment\n    }\n  }\n": types.CreateTaskDocument,
-    "\n  fragment TaskList_TaskFragment on TaskType {\n    id\n    title\n    description\n    deadline\n    status\n  }\n": types.TaskList_TaskFragmentFragmentDoc,
+    "\n  fragment TaskList_TaskFragment on TaskType {\n    id\n    title\n    description\n    deadline\n    status\n    timeslots {\n      id\n      startTime\n      endTime\n      duration\n      title\n      status\n    }\n  }\n": types.TaskList_TaskFragmentFragmentDoc,
     "\n  query TasksScreen {\n    tasks {\n      ...TaskList_TaskFragment\n    }\n  }\n": types.TasksScreenDocument,
     "\n  mutation UpdateTask($input: UpdateTaskInput!) {\n    updateTask(input: $input) {\n      ...TaskList_TaskFragment\n    }\n  }\n": types.UpdateTaskDocument,
     "\n  query SuggestTasks($keyword: String) {\n    tasks(keyword: $keyword) {\n      id\n      title\n    }\n  }\n": types.SuggestTasksDocument,
@@ -52,11 +54,19 @@ export function graphql(source: "\n  mutation DeleteTask($id: String!) {\n    de
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  mutation CreateTimeslot($input: CreateTimeslotInput!) {\n    createTimeslot(input: $input) {\n      id\n      taskId\n      title\n      status\n      startTime\n      endTime\n      duration\n    }\n  }\n"): (typeof documents)["\n  mutation CreateTimeslot($input: CreateTimeslotInput!) {\n    createTimeslot(input: $input) {\n      id\n      taskId\n      title\n      status\n      startTime\n      endTime\n      duration\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateTimeslot($input: UpdateTimeslotInput!) {\n    updateTimeslot(input: $input) {\n      id\n      taskId\n      title\n      status\n      startTime\n      endTime\n      duration\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateTimeslot($input: UpdateTimeslotInput!) {\n    updateTimeslot(input: $input) {\n      id\n      taskId\n      title\n      status\n      startTime\n      endTime\n      duration\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  mutation CreateTask($input: CreateTaskInput!) {\n    createTask(input: $input) {\n      ...TaskList_TaskFragment\n    }\n  }\n"): (typeof documents)["\n  mutation CreateTask($input: CreateTaskInput!) {\n    createTask(input: $input) {\n      ...TaskList_TaskFragment\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment TaskList_TaskFragment on TaskType {\n    id\n    title\n    description\n    deadline\n    status\n  }\n"): (typeof documents)["\n  fragment TaskList_TaskFragment on TaskType {\n    id\n    title\n    description\n    deadline\n    status\n  }\n"];
+export function graphql(source: "\n  fragment TaskList_TaskFragment on TaskType {\n    id\n    title\n    description\n    deadline\n    status\n    timeslots {\n      id\n      startTime\n      endTime\n      duration\n      title\n      status\n    }\n  }\n"): (typeof documents)["\n  fragment TaskList_TaskFragment on TaskType {\n    id\n    title\n    description\n    deadline\n    status\n    timeslots {\n      id\n      startTime\n      endTime\n      duration\n      title\n      status\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

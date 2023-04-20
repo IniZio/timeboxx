@@ -10,6 +10,7 @@ from timeboxx.graphql.schema import public_schema
 from timeboxx.pkg.auth.service import AuthService
 from timeboxx.pkg.task.service import TaskService
 from timeboxx.pkg.timebox.service import TimeboxService
+from timeboxx.pkg.timeslot.service import TimeslotService
 
 
 @inject
@@ -18,6 +19,7 @@ def get_context(
     auth_service: AuthService = Depends(Provide[Container.auth_service]),
     task_service: TaskService = Depends(Provide[Container.task_service]),
     timebox_service: TimeboxService = Depends(Provide[Container.timebox_service]),
+    timeslot_service: TimeslotService = Depends(Provide[Container.timeslot_service]),
 ):
     return Context(
         session=session,
@@ -25,6 +27,7 @@ def get_context(
         auth_service=auth_service,
         task_service=task_service,
         timebox_service=timebox_service,
+        timeslot_service=timeslot_service,
     )
 
 

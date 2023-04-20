@@ -34,14 +34,21 @@ export type CreateTimeboxInput = {
   title?: InputMaybe<Scalars['String']>;
 };
 
+export type CreateTimeslotInput = {
+  taskId: Scalars['String'];
+  title?: InputMaybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createTask: TaskType;
   createTimebox: TimeboxType;
+  createTimeslot: TimeslotType;
   deleteTask: Scalars['Boolean'];
   deleteTimebox: Scalars['Boolean'];
   updateTask: TaskType;
   updateTimebox: TimeboxType;
+  updateTimeslot: TimeslotType;
 };
 
 
@@ -52,6 +59,11 @@ export type MutationCreateTaskArgs = {
 
 export type MutationCreateTimeboxArgs = {
   input: CreateTimeboxInput;
+};
+
+
+export type MutationCreateTimeslotArgs = {
+  input: CreateTimeslotInput;
 };
 
 
@@ -72,6 +84,11 @@ export type MutationUpdateTaskArgs = {
 
 export type MutationUpdateTimeboxArgs = {
   input: UpdateTimeboxInput;
+};
+
+
+export type MutationUpdateTimeslotArgs = {
+  input: UpdateTimeslotInput;
 };
 
 export type Query = {
@@ -129,7 +146,7 @@ export type TaskType = {
   startTime: Maybe<Scalars['DateTime']>;
   status: Maybe<TaskStatus>;
   timeboxes: TimeboxConnection;
-  timeslots: TimeslotConnection;
+  timeslots: Array<TimeslotType>;
   title: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
   updatedById: Maybe<Scalars['String']>;
@@ -184,9 +201,11 @@ export type Timeslot = {
   createdAt: Scalars['DateTime'];
   createdById: Maybe<Scalars['String']>;
   description: Maybe<Scalars['String']>;
+  duration: Maybe<Scalars['Int']>;
   endTime: Maybe<Scalars['DateTime']>;
   id: Scalars['String'];
   startTime: Scalars['DateTime'];
+  status: Maybe<TimeslotStatus>;
   task: Maybe<Task>;
   taskId: Maybe<Scalars['String']>;
   timebox: Maybe<Timebox>;
@@ -204,6 +223,31 @@ export type TimeslotConnection = {
 export type TimeslotEdge = {
   __typename?: 'TimeslotEdge';
   node: Timeslot;
+};
+
+export enum TimeslotStatus {
+  Paused = 'PAUSED',
+  Started = 'STARTED',
+  Stopped = 'STOPPED'
+}
+
+export type TimeslotType = {
+  __typename?: 'TimeslotType';
+  createdAt: Scalars['DateTime'];
+  createdById: Maybe<Scalars['String']>;
+  description: Maybe<Scalars['String']>;
+  duration: Maybe<Scalars['Int']>;
+  endTime: Maybe<Scalars['DateTime']>;
+  id: Scalars['String'];
+  startTime: Scalars['DateTime'];
+  status: Maybe<TimeslotStatus>;
+  task: Maybe<Task>;
+  taskId: Maybe<Scalars['String']>;
+  timebox: Maybe<Timebox>;
+  timeboxId: Maybe<Scalars['String']>;
+  title: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  updatedById: Maybe<Scalars['String']>;
 };
 
 export type UpdateTaskInput = {
@@ -236,6 +280,17 @@ export type UpdateTimeboxTaskInput = {
   title?: InputMaybe<Scalars['String']>;
 };
 
+export type UpdateTimeslotInput = {
+  dirtyFields?: InputMaybe<Array<Scalars['String']>>;
+  duration?: InputMaybe<Scalars['Int']>;
+  endTime?: InputMaybe<Scalars['DateTime']>;
+  id: Scalars['String'];
+  startTime?: InputMaybe<Scalars['DateTime']>;
+  status?: InputMaybe<TimeslotStatus>;
+  taskId: Scalars['String'];
+  title?: InputMaybe<Scalars['String']>;
+};
+
 export type SayHelloQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -248,26 +303,40 @@ export type DeleteTaskMutationVariables = Exact<{
 
 export type DeleteTaskMutation = { __typename?: 'Mutation', deleteTask: boolean };
 
+export type CreateTimeslotMutationVariables = Exact<{
+  input: CreateTimeslotInput;
+}>;
+
+
+export type CreateTimeslotMutation = { __typename?: 'Mutation', createTimeslot: { __typename?: 'TimeslotType', id: string, taskId: string | null, title: string | null, status: TimeslotStatus | null, startTime: any, endTime: any | null, duration: number | null } };
+
+export type UpdateTimeslotMutationVariables = Exact<{
+  input: UpdateTimeslotInput;
+}>;
+
+
+export type UpdateTimeslotMutation = { __typename?: 'Mutation', updateTimeslot: { __typename?: 'TimeslotType', id: string, taskId: string | null, title: string | null, status: TimeslotStatus | null, startTime: any, endTime: any | null, duration: number | null } };
+
 export type CreateTaskMutationVariables = Exact<{
   input: CreateTaskInput;
 }>;
 
 
-export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'TaskType', id: string, title: string | null, description: string | null, deadline: any | null, status: TaskStatus | null } };
+export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'TaskType', id: string, title: string | null, description: string | null, deadline: any | null, status: TaskStatus | null, timeslots: Array<{ __typename?: 'TimeslotType', id: string, startTime: any, endTime: any | null, duration: number | null, title: string | null, status: TimeslotStatus | null }> } };
 
-export type TaskList_TaskFragmentFragment = { __typename?: 'TaskType', id: string, title: string | null, description: string | null, deadline: any | null, status: TaskStatus | null };
+export type TaskList_TaskFragmentFragment = { __typename?: 'TaskType', id: string, title: string | null, description: string | null, deadline: any | null, status: TaskStatus | null, timeslots: Array<{ __typename?: 'TimeslotType', id: string, startTime: any, endTime: any | null, duration: number | null, title: string | null, status: TimeslotStatus | null }> };
 
 export type TasksScreenQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type TasksScreenQuery = { __typename?: 'Query', tasks: Array<{ __typename?: 'TaskType', id: string, title: string | null, description: string | null, deadline: any | null, status: TaskStatus | null }> };
+export type TasksScreenQuery = { __typename?: 'Query', tasks: Array<{ __typename?: 'TaskType', id: string, title: string | null, description: string | null, deadline: any | null, status: TaskStatus | null, timeslots: Array<{ __typename?: 'TimeslotType', id: string, startTime: any, endTime: any | null, duration: number | null, title: string | null, status: TimeslotStatus | null }> }> };
 
 export type UpdateTaskMutationVariables = Exact<{
   input: UpdateTaskInput;
 }>;
 
 
-export type UpdateTaskMutation = { __typename?: 'Mutation', updateTask: { __typename?: 'TaskType', id: string, title: string | null, description: string | null, deadline: any | null, status: TaskStatus | null } };
+export type UpdateTaskMutation = { __typename?: 'Mutation', updateTask: { __typename?: 'TaskType', id: string, title: string | null, description: string | null, deadline: any | null, status: TaskStatus | null, timeslots: Array<{ __typename?: 'TimeslotType', id: string, startTime: any, endTime: any | null, duration: number | null, title: string | null, status: TimeslotStatus | null }> } };
 
 export type SuggestTasksQueryVariables = Exact<{
   keyword: InputMaybe<Scalars['String']>;
@@ -313,12 +382,14 @@ export type TodayQueryVariables = Exact<{
 
 export type TodayQuery = { __typename?: 'Query', timeboxes: Array<{ __typename?: 'TimeboxType', id: string, title: string | null, description: string | null, startTime: any | null, endTime: any | null, task: { __typename?: 'Task', id: string, title: string | null } | null }> };
 
-export const TaskList_TaskFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskList_TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TaskType"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]} as unknown as DocumentNode<TaskList_TaskFragmentFragment, unknown>;
+export const TaskList_TaskFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskList_TaskFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TaskType"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"timeslots"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"startTime"}},{"kind":"Field","name":{"kind":"Name","value":"endTime"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]} as unknown as DocumentNode<TaskList_TaskFragmentFragment, unknown>;
 export const SayHelloDocument = {"__meta__":{"hash":"cbc4aa4c16cedd89db9109cbab61a8dc3318dc35"},"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"sayHello"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ping"}}]}}]} as unknown as DocumentNode<SayHelloQuery, SayHelloQueryVariables>;
 export const DeleteTaskDocument = {"__meta__":{"hash":"dde75ab7c5fce8ffe17a0846a4cc267efd5beabc"},"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteTask"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteTask"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<DeleteTaskMutation, DeleteTaskMutationVariables>;
-export const CreateTaskDocument = {"__meta__": {"hash":"af8af4ac3be846fd2464d387b86072f7a2549451"}, "kind":"Document", "definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateTask"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateTaskInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTask"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskList_TaskFragment"}}]}}]}},...TaskList_TaskFragmentFragmentDoc.definitions]} as unknown as DocumentNode<CreateTaskMutation, CreateTaskMutationVariables>;
-export const TasksScreenDocument = {"__meta__": {"hash":"63acd603445122f28cf06ee10642fd1bc155c8d8"}, "kind":"Document", "definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"TasksScreen"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskList_TaskFragment"}}]}}]}},...TaskList_TaskFragmentFragmentDoc.definitions]} as unknown as DocumentNode<TasksScreenQuery, TasksScreenQueryVariables>;
-export const UpdateTaskDocument = {"__meta__": {"hash":"48a4d2d750684598cf18934ae8603e1038f66684"}, "kind":"Document", "definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateTask"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateTaskInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTask"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskList_TaskFragment"}}]}}]}},...TaskList_TaskFragmentFragmentDoc.definitions]} as unknown as DocumentNode<UpdateTaskMutation, UpdateTaskMutationVariables>;
+export const CreateTimeslotDocument = {"__meta__":{"hash":"cbb1de51b81a671872983d9953367ae72423ee28"},"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateTimeslot"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateTimeslotInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTimeslot"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"taskId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"startTime"}},{"kind":"Field","name":{"kind":"Name","value":"endTime"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}}]}}]}}]} as unknown as DocumentNode<CreateTimeslotMutation, CreateTimeslotMutationVariables>;
+export const UpdateTimeslotDocument = {"__meta__":{"hash":"f707b775a7478aa7564837e5f4de8b8d92b6b595"},"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateTimeslot"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateTimeslotInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTimeslot"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"taskId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"startTime"}},{"kind":"Field","name":{"kind":"Name","value":"endTime"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}}]}}]}}]} as unknown as DocumentNode<UpdateTimeslotMutation, UpdateTimeslotMutationVariables>;
+export const CreateTaskDocument = {"__meta__": {"hash":"01a235508a6605f2fa0fab9029fcef2f7d2513fc"}, "kind":"Document", "definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateTask"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateTaskInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTask"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskList_TaskFragment"}}]}}]}},...TaskList_TaskFragmentFragmentDoc.definitions]} as unknown as DocumentNode<CreateTaskMutation, CreateTaskMutationVariables>;
+export const TasksScreenDocument = {"__meta__": {"hash":"fb5eed448ef8626c0f8d9e0c375c1a8cb6c6be7a"}, "kind":"Document", "definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"TasksScreen"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskList_TaskFragment"}}]}}]}},...TaskList_TaskFragmentFragmentDoc.definitions]} as unknown as DocumentNode<TasksScreenQuery, TasksScreenQueryVariables>;
+export const UpdateTaskDocument = {"__meta__": {"hash":"ac17cdfcbdf719600da491f774928a4367ec53f5"}, "kind":"Document", "definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateTask"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateTaskInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTask"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskList_TaskFragment"}}]}}]}},...TaskList_TaskFragmentFragmentDoc.definitions]} as unknown as DocumentNode<UpdateTaskMutation, UpdateTaskMutationVariables>;
 export const SuggestTasksDocument = {"__meta__":{"hash":"78e02c39f4156efd181fb213c6ffabafa7f498e3"},"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SuggestTasks"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"keyword"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tasks"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"keyword"},"value":{"kind":"Variable","name":{"kind":"Name","value":"keyword"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}}]}}]} as unknown as DocumentNode<SuggestTasksQuery, SuggestTasksQueryVariables>;
 export const CreateTimeboxDocument = {"__meta__":{"hash":"5591c51bb5d10acb6a5a5c9dd1eda2a3049ffbef"},"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateTimebox"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateTimeboxInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTimebox"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"task"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"startTime"}},{"kind":"Field","name":{"kind":"Name","value":"endTime"}}]}}]}}]} as unknown as DocumentNode<CreateTimeboxMutation, CreateTimeboxMutationVariables>;
 export const UpdateTimeboxDocument = {"__meta__":{"hash":"16835b2f598dc3b2db060b289be9b112c0bee055"},"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateTimebox"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateTimeboxInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTimebox"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"task"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"startTime"}},{"kind":"Field","name":{"kind":"Name","value":"endTime"}}]}}]}}]} as unknown as DocumentNode<UpdateTimeboxMutation, UpdateTimeboxMutationVariables>;

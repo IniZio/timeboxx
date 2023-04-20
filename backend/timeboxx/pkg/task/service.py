@@ -2,9 +2,10 @@ from datetime import datetime
 from typing import Optional
 
 from sqlalchemy import delete, or_, select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from timeboxx.pkg.db_models.task import Task, TaskStatus
+from timeboxx.pkg.db_models.timeslot import Timeslot
 
 
 class TaskService:

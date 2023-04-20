@@ -90,7 +90,7 @@ tasks:
     poetry run alembic check
 
   db:revision:
-    poetry run alembic revision --autogenerate -m "{{.CLI_ARGS}}"
+    poetry run alembic revision --autogenerate -m {{.CLI_ARGS}}
 
   db:upgrade:
     poetry run alembic upgrade {{or .CLI_ARGS "head"}}

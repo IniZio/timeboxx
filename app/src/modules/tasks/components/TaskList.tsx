@@ -36,6 +36,14 @@ export const TaskList_TaskFragment = graphql(`
     description
     deadline
     status
+    timeslots {
+      id
+      startTime
+      endTime
+      duration
+      title
+      status
+    }
   }
 `);
 

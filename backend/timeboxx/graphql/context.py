@@ -10,6 +10,7 @@ from timeboxx.pkg.auth.service import AuthService
 from timeboxx.pkg.db_models.user import User
 from timeboxx.pkg.task.service import TaskService
 from timeboxx.pkg.timebox.service import TimeboxService
+from timeboxx.pkg.timeslot.service import TimeslotService
 
 
 @dataclass
@@ -18,6 +19,7 @@ class Context(BaseContext):
     sqlalchemy_loader: StrawberrySQLAlchemyLoader
     task_service: TaskService
     timebox_service: TimeboxService
+    timeslot_service: TimeslotService
     auth_service: AuthService
 
     # TODO: Should move to middleware level

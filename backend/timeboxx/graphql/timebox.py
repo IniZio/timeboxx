@@ -1,6 +1,7 @@
 import strawberry
 
 from timeboxx.graphql.mapper import sqlalchemy_mapper
+from timeboxx.graphql.timeslot import TimeslotType
 from timeboxx.pkg import db_models
 from timeboxx.pkg.timebox.models import CreateTimebox, TimeboxTask, UpdateTimebox
 

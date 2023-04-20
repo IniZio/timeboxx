@@ -49,9 +49,9 @@ class AuditableMixin:
         server_default=sa_func.now(),
     )
 
-    created_by_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=True)
+    created_by_id: Mapped[str] = mapped_column(ForeignKey("user.id"), nullable=True)
 
-    updated_by_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=True)
+    updated_by_id: Mapped[str] = mapped_column(ForeignKey("user.id"), nullable=True)
 
     @staticmethod
     def update_time(mapper, connection, instance):

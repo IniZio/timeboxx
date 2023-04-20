@@ -29,33 +29,33 @@ class Task(Base, IDMixin, AuditableMixin, OfflineMixin):
 
     Status = TaskStatus
 
-    title: Mapped[str] = mapped_column(
+    title: Mapped[Optional[str]] = mapped_column(
         Text,
         nullable=True,
     )
 
-    description: Mapped[str] = mapped_column(
+    description: Mapped[Optional[str]] = mapped_column(
         Text,
         nullable=True,
     )
 
-    start_time: Mapped[datetime] = mapped_column(
+    start_time: Mapped[Optional[datetime]] = mapped_column(
         DateTime,
         nullable=True,
     )
 
-    end_time: Mapped[datetime] = mapped_column(
+    end_time: Mapped[Optional[datetime]] = mapped_column(
         DateTime,
         nullable=True,
     )
 
-    deadline: Mapped[datetime] = mapped_column(
+    deadline: Mapped[Optional[datetime]] = mapped_column(
         DateTime,
         nullable=True,
     )
 
     timeboxes: Mapped[list[Timebox]] = relationship(back_populates="task")
-    timeslots: Mapped[list[Timeslot]] = relationship(back_populates="task")
+    timeslots: Mapped[list[Timeslot]] = relationship(back_populates="task", order_by="Timeslot.start_time")
 
     status: Mapped[Optional[TaskStatus]] = mapped_column(
         postgresql.ENUM(TaskStatus, name="task_status")

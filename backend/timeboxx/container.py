@@ -6,6 +6,7 @@ from timeboxx.pkg.config import MainSettings, WebsiteSettings
 from timeboxx.pkg.db import get_sessiomaker
 from timeboxx.pkg.task.service import TaskService
 from timeboxx.pkg.timebox.service import TimeboxService
+from timeboxx.pkg.timeslot.service import TimeslotService
 
 
 class Container(containers.DeclarativeContainer):
@@ -35,5 +36,10 @@ class Container(containers.DeclarativeContainer):
 
     timebox_service = providers.Factory(
         TimeboxService,
+        session=session,
+    )
+
+    timeslot_service = providers.Factory(
+        TimeslotService,
         session=session,
     )

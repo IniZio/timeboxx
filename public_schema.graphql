@@ -17,6 +17,11 @@ input CreateTimeboxInput {
   task: UpdateTimeboxTaskInput = null
 }
 
+input CreateTimeslotInput {
+  taskId: String!
+  title: String = null
+}
+
 scalar DateTime
 
 type Mutation {
@@ -26,6 +31,8 @@ type Mutation {
   createTask(input: CreateTaskInput!): TaskType!
   updateTask(input: UpdateTaskInput!): TaskType!
   deleteTask(id: String!): Boolean!
+  createTimeslot(input: CreateTimeslotInput!): TimeslotType!
+  updateTimeslot(input: UpdateTimeslotInput!): TimeslotType!
 }
 
 type Query {
@@ -72,7 +79,7 @@ type TaskType {
   createdById: String
   updatedById: String
   timeboxes: TimeboxConnection!
-  timeslots: TimeslotConnection!
+  timeslots: [TimeslotType!]!
 }
 
 type Timebox {
@@ -121,6 +128,8 @@ type Timeslot {
   description: String
   startTime: DateTime!
   endTime: DateTime
+  duration: Int
+  status: TimeslotStatus
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -137,6 +146,30 @@ type TimeslotConnection {
 
 type TimeslotEdge {
   node: Timeslot!
+}
+
+enum TimeslotStatus {
+  STARTED
+  PAUSED
+  STOPPED
+}
+
+type TimeslotType {
+  taskId: String
+  timeboxId: String
+  title: String
+  description: String
+  startTime: DateTime!
+  endTime: DateTime
+  duration: Int
+  status: TimeslotStatus
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdById: String
+  updatedById: String
+  task: Task
+  timebox: Timebox
 }
 
 input UpdateTaskInput {
@@ -167,4 +200,15 @@ input UpdateTimeboxTaskInput {
   clientId: String = null
   title: String = null
   description: String = null
+}
+
+input UpdateTimeslotInput {
+  id: String!
+  taskId: String!
+  title: String = null
+  startTime: DateTime = null
+  endTime: DateTime = null
+  duration: Int = null
+  dirtyFields: [String!] = null
+  status: TimeslotStatus = null
 }

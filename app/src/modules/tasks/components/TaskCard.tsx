@@ -8,12 +8,13 @@ import { useTranslation } from "react-i18next";
 import { useMutation } from "urql";
 
 import { graphql } from "@/apis/graphql/generated";
+import { TimeslotStatus } from "@/apis/graphql/generated/graphql";
 import { Card } from "@/components/Card";
 import { DateField } from "@/components/DateField";
 import { FormDateTimePicker } from "@/components/form/FormDateTimePickerr";
 import { FormRichTextEditor } from "@/components/form/FormRichTextEditor";
 import { IconButton } from "@/components/IconButton";
-import { Timer, useTimer } from "@/components/Timer";
+import { DurationField, Timer, TimerStatus, useTimer } from "@/components/Timer";
 import { UpdateTaskMutation } from "@/modules/tasks/screens/Tasks.screen";
 import { TaskListTask } from "@/modules/tasks/view-models";
 import { cn } from "@/utils";
@@ -30,6 +31,34 @@ const DeleteTaskMutation = graphql(`
   }
 `);
 
+const CreateTimeslotMutation = graphql(`
+  mutation CreateTimeslot($input: CreateTimeslotInput!) {
+    createTimeslot(input: $input) {
+      id
+      taskId
+      title
+      status
+      startTime
+      endTime
+      duration
+    }
+  }
+`);
+
+const UpdateTimeslotMutation = graphql(`
+  mutation UpdateTimeslot($input: UpdateTimeslotInput!) {
+    updateTimeslot(input: $input) {
+      id
+      taskId
+      title
+      status
+      startTime
+      endTime
+      duration
+    }
+  }
+`);
+
 type TaskForm = {
   title: Maybe<string>;
   description: Maybe<string>;
@@ -41,6 +70,9 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onRefresh }) => {
 
   const [_, updateTaskMutation] = useMutation(UpdateTaskMutation);
   const [__, deleteTaskMutation] = useMutation(DeleteTaskMutation);
+
+  const [___, createTimeslotMutation] = useMutation(CreateTimeslotMutation);
+  const [____, updateTimeslotMutation] = useMutation(UpdateTimeslotMutation);
 
   const { dragProps, isDragging } = useDrag({
     getItems() {
@@ -89,7 +121,79 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onRefresh }) => {
     });
   }, [deleteTaskMutation, onRefresh, task.id]);
 
-  const { timerProps } = useTimer();
+  const lastTimeslot = task.timeslots?.at(-1);
+  const {
+    timerProps,
+    duration,
+    status: timerStatus,
+  } = useTimer({
+    status: lastTimeslot?.status as Maybe<TimerStatus>,
+    startTime:
+      lastTimeslot?.status !== TimeslotStatus.Stopped ? dayjs(task.timeslots?.at(-1)?.startTime).toDate() : null,
+    duration: lastTimeslot?.status !== TimeslotStatus.Stopped ? lastTimeslot?.duration : null,
+    onStart() {
+      createTimeslotMutation({
+        input: {
+          taskId: task.id,
+          title: task.title,
+        },
+      }).then(() => {
+        onRefresh?.();
+      });
+    },
+    onResume() {
+      if (!lastTimeslot) return;
+
+      updateTimeslotMutation({
+        input: {
+          id: lastTimeslot.id,
+          taskId: task.id,
+          duration,
+          startTime: dayjs().toISOString(),
+          status: TimeslotStatus.Started,
+          dirtyFields: ["duration", "start_time", "status"],
+        },
+      }).then(() => {
+        onRefresh?.();
+      });
+    },
+    onPause(duration) {
+      if (!lastTimeslot) return;
+
+      updateTimeslotMutation({
+        input: {
+          id: lastTimeslot.id,
+          taskId: task.id,
+          duration,
+          status: TimeslotStatus.Paused,
+          dirtyFields: ["duration", "status"],
+        },
+      }).then(() => {
+        onRefresh?.();
+      });
+    },
+    onStop(duration) {
+      if (!lastTimeslot) return;
+
+      updateTimeslotMutation({
+        input: {
+          id: lastTimeslot.id,
+          taskId: task.id,
+          duration,
+          endTime: dayjs().toISOString(),
+          status: TimeslotStatus.Stopped,
+          dirtyFields: ["duration", "end_time", "status"],
+        },
+      }).then(() => {
+        onRefresh?.();
+      });
+    },
+  });
+
+  const totalDuration = useMemo(
+    () => task.timeslots?.reduce((acc, timeslot) => acc + (timeslot.duration ?? 0), 0) || 0,
+    [task.timeslots],
+  );
 
   if (isEditting) {
     return (
@@ -113,7 +217,16 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onRefresh }) => {
               name="deadline"
               granularity="minute"
               className={cn(isDeadlineFighter && "text-red")}
+              aria-label="deadline"
             />
+            {task.timeslots?.map((timeslot) => (
+              <div key={timeslot.id}>
+                <p className="text-xs">
+                  {dayjs(timeslot.startTime).format("MMM D h:mm A")}{" -> "}
+                  {timeslot.endTime && dayjs(timeslot.endTime).format("MMM D, YYYY h:mm A")}
+                </p>
+              </div>
+            ))}
           </div>
           <button
             className="leading-normal text-xs py-1 mt-2 bg-slate-900 text-white rounded-md px-2 font-medium"
@@ -132,12 +245,15 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onRefresh }) => {
         <p className="text-sm text-gray-900 min-w-0 flex-1 overflow-hidden text-ellipsis break-words leading-relaxed">
           {task.title}
         </p>
-        {task.deadline && <DateField value={parseAbsoluteToLocal(task.deadline.toISOString())} />}
+        {task.deadline && <DateField value={parseAbsoluteToLocal(task.deadline)} aria-label="deadline" />}
         <IconButton onClick={() => setIsEditting(true)}>
           <EditPencil width={16} height={16} />
         </IconButton>
       </div>
-      <Timer {...timerProps} />
+      <div className="flex">
+        <Timer {...timerProps} />
+        {timerStatus === TimerStatus.Stopped && <DurationField duration={totalDuration} />}
+      </div>
     </Card>
   );
 };
